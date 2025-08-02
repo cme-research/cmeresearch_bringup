@@ -21,11 +21,11 @@ The `cmeresearch_bringup` package provides launch files, configuration parameter
 # ROS Distro Support #
 
 
-|         |                                        melodic                                        |      noetic      |                  rolling                  |
-|:-------:|:-------------------------------------------------------------------------------------:|:----------------:|:-----------------------------------------:|
-| Branch  | [`melodic_dev`](https://bitbucket.org/ce-robotics/unico_description/src/melodic_dev/) |                  |   [`rolling_dev`] |
-| Status  |                                       supported                                       |  not supported   |  supported |
-| Version |                                    no yet released                                    | not yet released |    not yet released |
+|         |                                         melodic                                          |      noetic      |                  rolling                  |
+|:-------:|:----------------------------------------------------------------------------------------:|:----------------:|:-----------------------------------------:|
+| Branch  | [`melodic_dev`](https://bitbucket.org/cme-robotics/cmeresearch_bringup/src/melodic_dev/) |                  |   [`rolling_dev`] |
+| Status  |                                        supported                                         |  not supported   |  supported |
+| Version |                                     no yet released                                      | not yet released |    not yet released |
 
 
 ## Supported Robots
@@ -100,23 +100,33 @@ There might be multiple packages be required for the build!
 
 2. Clone the following repositories to the src/ folder:
 
--    git clone https://cme-research@bitbucket.org/cme-robotics/cmeresearch_bringup.git
--    git clone https://cme-research@bitbucket.org/cme-robotics/cmeresearch_description.git
--    git clone https://cme-research@bitbucket.org/cme-robotics/cmeresearch_environments.git
--    git clone https://cme-research@bitbucket.org/cme-robotics/cmeresearch_simulation.git
-
+````
+    git clone https://cme-research@bitbucket.org/cme-robotics/cmeresearch_bringup.git
+````
+````
+    git clone https://cme-research@bitbucket.org/cme-robotics/cmeresearch_description.git
+````
+````
+    git clone https://cme-research@bitbucket.org/cme-robotics/cmeresearch_environments.git
+````
+````
+    git clone https://cme-research@bitbucket.org/cme-robotics/cmeresearch_simulation.git
+````
 
 3. Build all in one docker images for cmexaiii from root of your workspace:
 
 
    ```
+   cd ros_ws/
    bash src/cmeresearch_bringup/docker/stage_cmexa_full/build.sh
    ```
 
 4. To allow access to the display for the docker container you need to run
 
 
+````
     xhost +si:localuser:root
+````
 
 once in every terminal you want to start the container.
 
@@ -130,9 +140,9 @@ once in every terminal you want to start the container.
 
 6. To connect to the running container (optional):
 
-
+````
     docker exec -it <container-name> bash
-
+````
 
 > **Note:** The container will also start a mosquito mqtt broker. If you already run a broker on your host system the second broker will fail and show some warnings you can ignore.
 
@@ -147,9 +157,11 @@ To move the robot you have to send the following Twist message to the mqtt topic
 
 #### commands
 
-Send to topic
+Send to mqtt topic
 
+````
     vel_command
+````
 
 the following structure as json will move the robot. Only a set of frequent velocity command produce a continous movement.
 
@@ -174,10 +186,12 @@ See the ROS message definition for further explanation:
 https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html
 
 
-Send to topic
+Send to mqtt topic
 
-
+````
     pose_goal
+````
+
 
 to send the robot to a specifc position and orientation relative to the robot internal map of the environment.
 
