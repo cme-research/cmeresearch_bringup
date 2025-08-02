@@ -1,0 +1,20 @@
+mqtt:
+  client:
+    protocol: 4      # MQTTv311
+  connection:
+    host: localhost
+    port: 1883
+    keepalive: 60
+  private_path: unico/ash/
+#serializer: json:dumps
+#deserializer: json:loads
+bridge:
+  # ping pong
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: nav_msgs.msg:Odometry
+    topic_from: /base_pose_ground_truth
+    topic_to: fake_odom
+  - factory: mqtt_bridge.bridge:MqttToRosBridge
+    msg_type: geometry_msgs.msg:Twist
+    topic_from: command
+    topic_to: /base/base_controller/command

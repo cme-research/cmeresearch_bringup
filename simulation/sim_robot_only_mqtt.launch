@@ -1,0 +1,41 @@
+<launch>
+	<arg name="robot" default="$(optenv ROBOT !!NO_ROBOT_SET!!)"/>
+	<arg name="robot_env" default="$(optenv ROBOT_ENV !!NO_ROBOT_ENV_SET!!)"/>
+	<arg name="pkg_config" default="$(find unico_bringup)"/>
+
+  <!--  ************** Global Parameters ***************  -->
+  <param name="/use_sim_time" value="true"/>
+
+  <!--  ************** Stage Simulator ***************  -->
+	<node pkg="stage_ros" type="stageros" name="stageros" args="$(find unico_stage)/worlds/$(arg robot)/$(arg robot_env).world">
+		<remap from="base_scan" to="scan"/>
+		<remap from="cmd_vel" to="/base/base_controller/command"/>
+		<remap from="odom" to="stage_odom"/>
+	</node>
+
+	<node pkg="unico_stage" type="correct_odometry_msg" name="stage_odom_corrector">
+		<remap from="odom_in" to="stage_odom" />
+		<remap from="odom_out" to="/base/base_controller/odometry" />
+	</node>
+
+	<!-- Load robot model -->
+	<param name="robot_description"
+      command="$(find xacro)/xacro '$(find unico_description)/urdf/$(arg robot)/$(arg robot).urdf.xacro'"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+	 <!--  ****** Maps *****  -->
+
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen" ns="/base/base_controller">
+     <remap from="cmd_vel_out" to="/base/base_controller/command"/>
+     <rosparam file="$(arg pkg_config)/config/$(arg robot)/twist_mux.yaml"/>
+  </node>
+
+  <node name="mqtt_bridge" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen">
+    <rosparam command="load" file="$(find unico_bringup)/config/$(arg robot)/mqtt_bridge_params.yaml" />
+  </node>
+
+
+	<!--  **************** Visualisation ****************  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find unico_bringup)/config/$(arg robot)/stage_navigation.rviz"/>
+
+</launch>

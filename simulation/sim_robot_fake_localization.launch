@@ -1,0 +1,70 @@
+<launch>
+	<arg name="robot" default="$(optenv ROBOT !!NO_ROBOT_SET!!)"/>
+	<arg name="robot_env" default="$(optenv ROBOT_ENV !!NO_ROBOT_ENV_SET!!)"/>
+	<arg name="pkg_config" default="$(find unico_bringup)"/>
+
+  <!--  ************** Global Parameters ***************  -->
+  <param name="/use_sim_time" value="true"/>
+
+  <!--  ************** Stage Simulator ***************  -->
+	<node pkg="stage_ros" type="stageros" name="stageros" args="$(find unico_stage)/worlds/$(arg robot)/$(arg robot_env).world">
+		<remap from="base_scan" to="scan"/>
+		<remap from="cmd_vel" to="/base/base_controller/command"/>
+		<remap from="odom" to="stage_odom"/>
+	</node>
+
+	<!-- Load robot model -->
+	<param name="robot_description"
+      command="$(find xacro)/xacro '$(find unico_description)/urdf/$(arg robot)/$(arg robot).urdf.xacro'"/>
+
+   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+	 <!--  ****** Maps *****  -->
+
+ 	<node name="map_server" pkg="map_server" type="map_server" args="$(find unico_stage)/maps/$(arg robot_env)/$(arg robot_env).yaml" output="screen">
+ 		<remap from="map" to="/static_map"/>
+ 	</node>
+
+	<node name="fake_loc_map_server" pkg="map_server" type="map_server" args="$(find unico_stage)/maps/$(arg robot_env)/$(arg robot_env).yaml" output="screen">
+		<remap from="map" to="/map"/>
+	</node>
+
+	 <!-- Run fake localization compatible with AMCL output -->
+   <node pkg="fake_localization" type="fake_localization" name="fake_localization" output="screen" />
+
+   <!-- For fake localization we need static transform between /odom and /map -->
+   <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom 100" />
+
+	 <!--  ************** Navigation ***************  -->
+ 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+   	<rosparam file="$(find unico_bringup)/config/$(arg robot)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+ 	 	<rosparam file="$(find unico_bringup)/config/$(arg robot)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+ 		<rosparam file="$(find unico_bringup)/config/$(arg robot)/local_costmap_params.yaml" command="load" />
+ 		<rosparam file="$(find unico_bringup)/config/$(arg robot)/global_costmap_params.yaml" command="load" />
+ 		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+ 		<param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" />
+ 	 	<rosparam file="$(find unico_bringup)/config/$(arg robot)/base_local_planner_params.yaml" command="load" />
+		<remap from="cmd_vel" to="/base/base_controller/twist_mux/command_navigation"/>
+ 	</node>
+	<!--
+	<node pkg="joy" type="joy_node" name="$(anon joy_node)" ns="teleop" >
+    <param name="dev" value="/dev/input/js0"/>
+    <rosparam command="load" file="$(arg pkg_config)/config/$(arg robot)/joy.yaml"/>
+  </node>
+-->
+<!--
+  <node pkg="unico_teleop" type="unico_teleop_node" name="teleop_node" ns="teleop">
+    <remap from="joy" to="/teleop/joy"/>
+   <remap from="cmd_vel" to="/base_controller/twist_mux/command_teleop_joy" />
+   <remap from="cmd_horn" to="/cmd_horn" />
+   <rosparam command="load" ns="/robot_config" file="$(arg pkg_config)/config/$(arg robot)/robot_modules.yaml"/>
+    <rosparam command="load" ns="/teleop" file="$(arg pkg_config)/config/$(arg robot)/teleop.yaml"/>
+  </node>
+-->
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen" ns="/base/base_controller">
+     <remap from="cmd_vel_out" to="/base/base_controller/command"/>
+     <rosparam file="$(arg pkg_config)/config/$(arg robot)/twist_mux.yaml"/>
+  </node>
+	<!--  **************** Visualisation ****************  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find unico_bringup)/config/$(arg robot)/stage_navigation.rviz"/>
+
+</launch>

@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="robot" value="$(optenv ROBOT NO_ROBOT_SET!)"/>
+  <arg name="robot_env" value="$(optenv ROBOT_ENV NO_ROBOT_ENV_SET!!)"/>
+  <arg name="pkg_config" value="$(find unico_bringup)"/>
+
+  <!-- Load robot model -->
+	<param name="robot_description"
+      command="$(find xacro)/xacro '$(find unico_description)/urdf/$(arg robot)/$(arg robot).urdf.xacro'"/>
+
+   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+   <node pkg="ash_base" type="ash_base_node" name="base_controller_node">
+
+   </node>
+
+  <rosparam command="load" file="$(find unico_bringup)/config/$(arg robot)/control.yaml"/>
+
+  <node name="joint_controller_spawner" pkg="controller_manager" type="spawner"
+      args="$(arg robot)_joint_publisher"/>
+
+  <node name="vel_controller_spawner" pkg="controller_manager" type="spawner"
+      args="$(arg robot)_velocity_controller">
+  </node>
+
+  <node pkg="joy" type="joy_node" name="$(anon joy_node)" ns="teleop" >
+    <param name="dev" value="/dev/input/js0"/>
+    <rosparam command="load" file="$(arg pkg_config)/config/$(arg robot)/joy.yaml"/>
+    <param name="autorepeat_rate" value="20" />
+  </node>
+
+  <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
+    <rosparam command="load" file="$(find unico_bringup)/config/$(arg robot)/logi_teleop.yaml" />
+    <remap from="joy" to="/teleop/joy" />
+    <remap from="cmd_vel" to="/base_controller/twist_mux/command_teleop_joy" />
+  </node>
+
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen" ns="/base_controller">
+     <remap from="cmd_vel_out" to="/ash_velocity_controller/cmd_vel"/>
+     <rosparam file="$(arg pkg_config)/config/$(arg robot)/twist_mux.yaml"/>
+  </node>
+
+  <node pkg="tfstepper_driver" type="stepper_ros_wrapper" name="stepper_right_front" output="screen" ns="front_right">
+    <param name="acceleration" value="5000"/>
+    <param name="decceleration" value="5000"/>
+    <param name="step_resolution" value="6"/>
+    <param name="interpolation" value="true"/>
+    <param name="max_step_vel" value="3000"/>
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="stack_pos" value="1"/>
+    <param name="steps_per_revolution" value="200"/>
+    <param name="mirror_direction" value="false"/>
+    <param name="wheel_name" value="front_right_wheel"/>
+    <remap from="cmd_drive" to="/cmd_drive"/>
+  </node>
+
+  <node pkg="tfstepper_driver" type="stepper_ros_wrapper" name="stepper_right_rear" output="screen" ns="rear_right">
+    <param name="acceleration" value="5000"/>
+    <param name="decceleration" value="5000"/>
+    <param name="step_resolution" value="6"/>
+    <param name="interpolation" value="true"/>
+    <param name="max_step_vel" value="3000"/>
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="stack_pos" value="2"/>
+    <param name="steps_per_revolution" value="200"/>
+    <param name="mirror_direction" value="false"/>
+    <param name="wheel_name" value="rear_right_wheel"/>
+    <remap from="cmd_drive" to="/cmd_drive"/>
+  </node>
+
+  <node pkg="tfstepper_driver" type="stepper_ros_wrapper" name="stepper_left_front" output="screen" ns="front_left">
+    <param name="acceleration" value="5000"/>
+    <param name="decceleration" value="5000"/>
+    <param name="step_resolution" value="6"/>
+    <param name="interpolation" value="true"/>
+    <param name="max_step_vel" value="3000"/>
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="stack_pos" value="3"/>
+    <param name="steps_per_revolution" value="200"/>
+    <param name="mirror_direction" value="true"/>
+    <param name="wheel_name" value="front_left_wheel"/>
+    <remap from="cmd_drive" to="/cmd_drive"/>
+  </node>
+
+  <node pkg="tfstepper_driver" type="stepper_ros_wrapper" name="stepper_left_rear" output="screen" ns="rear_left">
+    <param name="acceleration" value="5000"/>
+    <param name="decceleration" value="5000"/>
+    <param name="step_resolution" value="6"/>
+    <param name="interpolation" value="true"/>
+    <param name="max_step_vel" value="3000"/>
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="stack_pos" value="4"/>
+    <param name="steps_per_revolution" value="200"/>
+    <param name="mirror_direction" value="true"/>
+    <param name="wheel_name" value="rear_left_wheel"/>
+    <remap from="cmd_drive" to="/cmd_drive"/>
+  </node>
+
+  <node pkg="tfvolcur_pub" type="vol_cur_ros_wrapper" name="battery_state_pub_node" output="screen">
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="battery_design_capacity" value="3.5"/>
+  </node>
+
+  <node pkg="tinkerforge_bricklets" type="rgb_led_button_ros_wrapper" name="rgb_button_node" output="screen">
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="setback_timeout" value="3" />
+  </node>
+
+  <node pkg="unico_system_watchdog" type="system_watchdog" name="system_watchdog" output="screen">
+	  <rosparam file="$(find unico_bringup)/config/ash/watchdog.yaml" />
+  </node>
+
+</launch>

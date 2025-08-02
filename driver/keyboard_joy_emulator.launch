@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="robot" default="ash"/>
+    <arg name="pkg_config" default="$(find unico_bringup)"/>
+
+    <node pkg="keyboard_joy_emulator" type="keyboard_joy_emulator_node" name="keyboard_joy_emulator_node" output="screen">
+
+        <rosparam command="load" file="$(find unico_bringup)/config/$(arg robot)/keyboard_joy_emulator_params.yaml" />
+        <remap from="/joy"   to="/teleop/keyboard" />
+
+    </node>
+
+    <node pkg="unico_teleop" type="unico_teleop_node" name="$(anon teleop_node)" ns="teleop">
+      <remap from="joy" to="/teleop/keyboard"/>
+      <remap from="cmd_vel" to="/base/base_controller/twist_mux/command_teleop_keyboard" />
+      <remap from="cmd_horn" to="cmd_horn" />
+      <rosparam command="load" ns="/robot_config" file="$(arg pkg_config)/config/$(arg robot)/robot_modules.yaml"/>
+      <rosparam command="load" ns="/teleop" file="$(arg pkg_config)/config/$(arg robot)/teleop.yaml"/>
+    </node>
+</launch>

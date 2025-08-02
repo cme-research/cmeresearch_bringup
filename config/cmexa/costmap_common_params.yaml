@@ -1,0 +1,38 @@
+
+#---standard pioneer footprint---
+#---(in meters)---
+
+#footprint: [[x0, y0], [x1, y1], ... [xn, yn]]
+#footprint: [[-1.15, -0.7], [1.15, -0.7], [1.15, 0.7], [-1.15, 0.7]] # base shape of apollon
+# add the minimal distance of 0.5 to the robot footprint for safety
+footprint: [[-0.25, -0.2], [0.25, -0.2], [0.25, 0.2], [-0.25, 0.2]] # base shape of apollon
+inflation_radius: 0.8 #0.55 #1.75# inflation_radius should be bigger thant the indiscribed circumscribed radii
+cost_scaling_factor: 5.0 #2.5
+#robot_radius: 0.2
+
+transform_tolerance: 0.2
+map_type: costmap
+resolution: 0.05
+
+always_send_full_costmap: true
+
+obstacle_layer:
+ enabled: true
+ max_obstacle_height: 1.0
+ obstacle_range: 4.0
+ raytrace_range: 4.0
+ track_unknown_space: true
+ combination_method: 1
+
+ observation_sources: laser_scan_sensor
+ laser_scan_sensor: {data_type: LaserScan, topic: scan, marking: true, clearing: true}
+
+
+inflation_layer:
+  enabled:              true
+  cost_scaling_factor:  0.55 #2.5 #5.0  # exponential rate at which the obstacle cost drops off (default: 10)
+  inflation_radius:     5.0 #0.4  # max. distance from an obstacle at which costs are incurred for planning paths.
+
+static_layer:
+  enabled:              true
+  map_topic:            "map"

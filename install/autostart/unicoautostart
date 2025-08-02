@@ -1,0 +1,5 @@
+#!/bin/bash
+
+bash -c "source /opt/unico/install/share/unico_bringup/install/env.bash && roslaunch unico_bringup robot.launch"
+
+exit 0

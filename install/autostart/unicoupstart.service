@@ -1,0 +1,13 @@
+[Unit]
+Description=ROT13 demo service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+ExecStart=/usr/local/bin/unicoautostart
+
+[Install]
+WantedBy=multi-user.target

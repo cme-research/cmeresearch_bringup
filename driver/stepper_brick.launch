@@ -1,0 +1,60 @@
+<launch>
+
+<!--
+  <node pkg="tfstepper_driver" type="stepper_ros_wrapper.py" name="stepper_right_front" output="screen">
+    <param name="acceleration" value="5000"/>
+    <param name="decceleration" value="5000"/>
+    <param name="step_resolution" value="8"/>
+    <param name="interpolation" value="true"/>
+    <param name="max_step_vel" value="2500"/>
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="stack_pos" value="1"/>
+    <param name="steps_per_revolution" value="200"/>
+    <param name="mirror_direction" value="false"/>
+    <param name="wheel_side" value="right"/>
+  </node>
+
+  <node pkg="tfstepper_driver" type="stepper_ros_wrapper.py" name="stepper_right_rear" output="screen">
+    <param name="acceleration" value="5000"/>
+    <param name="decceleration" value="5000"/>
+    <param name="step_resolution" value="8"/>
+    <param name="interpolation" value="true"/>
+    <param name="max_step_vel" value="2500"/>
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="stack_pos" value="2"/>
+    <param name="steps_per_revolution" value="200"/>
+    <param name="mirror_direction" value="false"/>
+    <param name="wheel_side" value="right"/>
+  </node>
+-->
+  <node pkg="tfstepper_driver" type="stepper_ros_wrapper.py" name="stepper_left_front" output="screen">
+    <param name="acceleration" value="5000"/>
+    <param name="decceleration" value="5000"/>
+    <param name="step_resolution" value="8"/>
+    <param name="interpolation" value="true"/>
+    <param name="max_step_vel" value="2500"/>
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="stack_pos" value="3"/>
+    <param name="steps_per_revolution" value="200"/>
+    <param name="mirror_direction" value="true"/>
+    <param name="wheel_side" value="left"/>
+  </node>
+<!--
+  <node pkg="tfstepper_driver" type="stepper_ros_wrapper.py" name="stepper_left_rear" output="screen">
+    <param name="acceleration" value="5000"/>
+    <param name="decceleration" value="5000"/>
+    <param name="step_resolution" value="8"/>
+    <param name="interpolation" value="true"/>
+    <param name="max_step_vel" value="2500"/>
+    <param name="brick_port" value="4223"/>
+    <param name="brick_host" value="localhost"/>
+    <param name="stack_pos" value="4"/>
+    <param name="steps_per_revolution" value="200"/>
+    <param name="mirror_direction" value="true"/>
+    <param name="wheel_side" value="left"/>
+  </node>
+-->
+</launch>
