@@ -1,0 +1,13 @@
+<launch>
+
+  <node pkg="tinkerforge_bricks" type="tinkerforge_stepper_brick.py" ns="/base/front_right" name="stepper_driver_front_right" output="screen">
+    <rosparam file="$(find gub_config)/config/stepper_front_right.yaml" command="load"/>
+  </node>
+
+  <node pkg="tinkerforge_bricks" type="tinkerforge_stepper_brick.py" ns="/base/rear_right" name="stepper_driver_rear_right" output="screen">
+    <rosparam file="$(find gub_config)/config/stepper_rear_right.yaml" command="load"/>
+  </node>
+
+
+
+</launch>

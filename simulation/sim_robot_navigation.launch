@@ -1,0 +1,50 @@
+<launch>
+	<arg name="robot" default="$(optenv ROBOT !!NO_ROBOT_SET!!)"/>
+	<arg name="robot_env" default="$(optenv ROBOT_ENV !!NO_ROBOT_ENV_SET!!)"/>
+	<arg name="pkg_config" default="$(find unico_bringup)"/>
+
+  <!--  ************** Global Parameters ***************  -->
+  <param name="/use_sim_time" value="true"/>
+
+  <!--  ************** Stage Simulator ***************  -->
+	<node pkg="stage_ros" type="stageros" name="stageros" args="$(find unico_stage)/worlds/$(arg robot)/$(arg robot_env).world">
+		<remap from="base_scan" to="scan"/>
+		<remap from="cmd_vel" to="/base/base_controller/command"/>
+	</node>
+
+	<!-- Load robot model -->
+	<param name="robot_description"
+      command="$(find xacro)/xacro '$(find unico_description)/urdf/$(arg robot)/$(arg robot).urdf.xacro'"/>
+
+   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+	 <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen" ns="/base/base_controller">
+      <remap from="cmd_vel_out" to="/base/base_controller/command"/>
+      <rosparam file="$(arg pkg_config)/config/$(arg robot)/twist_mux.yaml"/>
+   </node>
+
+	 <!--  ****** Maps *****  -->
+
+ 	<node name="map_server" pkg="map_server" type="map_server" args="$(find unico_environments)/envs/$(arg robot_env)/map.yaml" output="screen">
+ 		<remap from="map" to="/static_map"/>
+ 	</node>
+
+	 <!--  ************** Navigation ***************  -->
+ 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+   	<rosparam file="$(find unico_bringup)/config/$(arg robot)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+ 	 	<rosparam file="$(find unico_bringup)/config/$(arg robot)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+ 		<rosparam file="$(find unico_bringup)/config/$(arg robot)/local_costmap_params.yaml" command="load" />
+ 		<rosparam file="$(find unico_bringup)/config/$(arg robot)/global_costmap_params.yaml" command="load" />
+ 		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+ 		<param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" />
+ 	 	<rosparam file="$(find unico_bringup)/config/$(arg robot)/base_local_planner_params.yaml" command="load" />
+		<remap from="cmd_vel" to="/base/base_controller/twist_mux/command_navigation"/>
+ 	</node>
+
+	<node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
+		<rosparam command="load" file="$(find unico_bringup)/config/$(arg robot)/slam_localization_only.yaml" />
+		<remap from="odometry" to="/ash_velocity_controller/odom"/>
+		<param name="map_file_name" value="$(find unico_environments)/envs/$(arg robot_env)/map"/>
+	</node>
+
+</launch>

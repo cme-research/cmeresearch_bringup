@@ -1,0 +1,7 @@
+<launch>
+  <arg name="image_view" default="false" />
+
+  <node name="web_video_server" pkg="web_video_server" type="web_video_server_node" output="screen" >
+      <rosparam command="load" file="$(find unico_bringup)/config/ash/web_video_server.yml"/>
+  </node>
+</launch>

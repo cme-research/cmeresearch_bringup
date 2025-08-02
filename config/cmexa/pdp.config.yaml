@@ -1,0 +1,23 @@
+# Configuration for PDP joystick controllers. See # Configuration for PDP joystick controllers
+teleop_twist_joy_node:
+  ros__parameters:
+    # Left joystick configuration (X and Y motion)
+    axis_linear:
+      x: 0  # Left stick horizontal
+      y: 1  # Left stick vertical
+    scale_linear:
+      x: 0.5  # Maximum speed in m/s for X direction
+      y: 0.5  # Maximum speed in m/s for Y direction
+    scale_linear_turbo:
+      x: 0.8  # Turbo speed in m/s for X direction
+      y: 0.8  # Turbo speed in m/s for Y direction
+
+    # Right joystick configuration (Rotation)
+    axis_angular:
+      yaw: 2  # Right stick horizontal
+    scale_angular:
+      yaw: 1.5  # Maximum angular velocity in rad/s
+
+    # Control buttons
+    enable_button: 4      # Left 'LB' button - Dead man's switch
+    enable_turbo_button: 5  # Right 'RB' button - Turbo mode

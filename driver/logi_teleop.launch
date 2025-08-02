@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="robot" value="ash"/>
+  <arg name="pkg_config" value="$(find unico_bringup)"/>
+
+  <node pkg="joy" type="joy_node" name="$(anon joy_node)" ns="teleop" >
+    <param name="dev" value="/dev/input/js0"/>
+    <rosparam command="load" file="$(arg pkg_config)/config/$(arg robot)/joy.yaml"/>
+  </node>
+
+  <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
+    <rosparam command="load" file="$(find unico_bringup)/config/$(arg robot)/logi_teleop.yaml" />
+    <remap from="joy" to="/teleop/joy" />
+    <remap from="cmd_vel" to="/base_controller/twist_mux/command_teleop_joy" />
+  </node>
+
+</launch>

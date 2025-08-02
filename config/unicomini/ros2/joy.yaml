@@ -1,0 +1,4 @@
+# joystick device port
+dev: /dev/input/js1
+# deadzone of joystick axes
+deadzone: 0.12

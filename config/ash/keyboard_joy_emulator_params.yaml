@@ -1,0 +1,20 @@
+dev: '/dev/input/event3'
+autorepeat_rate:  0 #Hz; 0 means onyl on input change.
+
+# See https://wiki.libsdl.org/SDL_Keycode for List of Key Names
+# buttons
+button_0: 'Left'
+button_1: 'Down'
+button_2: 'Right'
+button_3: 'Up'
+button_4: 'Space'
+button_5: 'Space'
+button_7: 'Left Shift'
+
+# axes
+axis_0_positiv: 'A'
+axis_0_negativ: 'D'
+axis_1_positiv: 'W'
+axis_1_negativ: 'S'
+axis_2_positiv: 'Q'
+axis_2_negativ: 'E'

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="robot"/>
+  <arg name="pkg_config"/>
+  <arg name="joy_dev"/>
+
+  <node ns="teleop" pkg="joy" type="joy_node" name="$(anon joy_node)">
+    <param name="dev" value="$(arg joy_dev)"/>
+    <rosparam command="load" file="$(arg pkg_config)/config/$(arg robot)/joy.yaml"/>
+  </node>
+
+</launch>

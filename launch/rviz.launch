@@ -1,0 +1,5 @@
+<launch>
+  <arg name="robot" value="$(optenv ROBOT NO_ROBOT_SET!)"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find unico_bringup)/config/$(arg robot)/default.rviz" />
+</launch>

@@ -1,0 +1,77 @@
+<launch>
+	<arg name="robot" default="$(optenv ROBOT !!NO_ROBOT_SET!!)"/>
+	<arg name="robot_env" default="$(optenv ROBOT_ENV !!NO_ROBOT_ENV_SET!!)"/>
+	<arg name="pkg_config" default="$(find cmeresearch_bringup)"/>
+
+  <!--  ************** Global Parameters ***************  -->
+  <param name="/use_sim_time" value="true"/>
+
+  <!--  ************** Stage Simulator ***************  -->
+	<node pkg="stage_ros" type="stageros" name="stageros" args="$(find cmeresearch_simulation)/worlds/$(arg robot)/$(arg robot_env).world">
+		<remap from="base_scan" to="scan"/>
+		<remap from="cmd_vel" to="/base/base_controller/command"/>
+		<remap from="odom" to="stage_odom"/>
+	</node>
+
+	<node pkg="cmeresearch_simulation" type="correct_odometry_msg" name="stage_odom_corrector">
+		<remap from="odom_in" to="stage_odom" />
+		<remap from="odom_out" to="/base/base_controller/odometry" />
+	</node>
+
+	<!-- Load robot model -->
+	<param name="robot_description"
+      command="$(find xacro)/xacro '$(find cmeresearch_description)/urdf/$(arg robot)/$(arg robot).urdf.xacro'"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="false"/>
+    <param name="rate" value="50"/>
+</node>
+
+
+	 <!--  ****** Maps *****  -->
+
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen" ns="/base/base_controller">
+     <remap from="cmd_vel_out" to="/base/base_controller/command"/>
+     <rosparam file="$(arg pkg_config)/config/$(arg robot)/twist_mux.yaml"/>
+  </node>
+
+<!--
+    <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
+    <rosparam command="load" file="$(find cmeresearch_bringup)/config/$(arg robot)/logi_teleop.yaml" />
+    <remap from="joy" to="/teleop/joy" />
+    <remap from="cmd_vel" to="/base/base_controller/twist_mux/command_teleop_joy" />
+  </node>
+-->
+   	<node name="map_server" pkg="map_server" type="map_server" args="$(find cmeresearch_environments)/envs/$(arg robot_env)/map.yaml" output="screen">
+ 		<remap from="map" to="/static_map"/>
+ 	</node>
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+   	    <rosparam file="$(find cmeresearch_bringup)/config/$(arg robot)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+ 	 	<rosparam file="$(find cmeresearch_bringup)/config/$(arg robot)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+ 		<rosparam file="$(find cmeresearch_bringup)/config/$(arg robot)/local_costmap_params.yaml" command="load" />
+ 		<rosparam file="$(find cmeresearch_bringup)/config/$(arg robot)/global_costmap_params.yaml" command="load" />
+ 		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+ 		<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+ 	 	<rosparam file="$(find cmeresearch_bringup)/config/$(arg robot)/base_local_planner_params.yaml" command="load" />
+		<remap from="cmd_vel" to="/base/base_controller/twist_mux/command_navigation"/>
+		<remap from="odom" to="/base/base_controller/odometry"/>
+ 	</node>
+
+    <node pkg="slam_toolbox" type="localization_slam_toolbox_node" name="slam_toolbox" output="screen">
+		<rosparam command="load" file="$(find cmeresearch_bringup)/config/$(arg robot)/slam_toolbox_localization.yaml" />
+		<remap from="odometry" to="/base/base_controller/odometry"/>
+		<param name="map_file_name" value="/robot/data/map"/>
+		<!-- <param name="map_start_pose" value="[2.0, 2.0, 0.0]"/> -->
+	</node>
+
+  <node name="mqtt_bridge" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen">
+    <rosparam command="load" file="$(find cmeresearch_bringup)/config/$(arg robot)/mqtt_bridge_params.yaml" />
+  </node>
+
+	<!--  **************** Visualisation ****************  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find cmeresearch_bringup)/config/$(arg robot)/stage_navigation.rviz"/>
+
+</launch>

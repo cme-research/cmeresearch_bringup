@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="robot" value="$(optenv ROBOT !!NO_ROBOT_SET!!)"/>
+    <arg name="robot_env" value="$(optenv ROBOT_ENV !!NO_ROBOT_ENV_SET!!)"/>
+    <arg name="pkg_config" default="$(find unico_bringup)"/>
+    <arg name="map_pose" value="[10.0 10.0 0.0]"/>
+
+
+    <node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
+  		<rosparam command="load" file="$(find unico_bringup)/config/$(arg robot)/slam_toolbox_localization.yaml" />
+  		<remap from="odometry" to="/base/base_controller/odometry"/>
+  		<param name="scan_topic" value="/scan"/>
+      <param name="map_file_name" value="$(find unico_environments)/envs/$(arg robot_env)/map"/>
+      <rosparam param="map_start_pose" subst_value="True">$(arg map_pose)</rosparam>
+      <param name="map_start_at_dock" value="true"/>
+    </node>
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+     	<rosparam file="$(find unico_bringup)/config/$(arg robot)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+   	 	<rosparam file="$(find unico_bringup)/config/$(arg robot)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+   		<rosparam file="$(find unico_bringup)/config/$(arg robot)/local_costmap_params.yaml" command="load" />
+   		<rosparam file="$(find unico_bringup)/config/$(arg robot)/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find unico_bringup)/config/$(arg robot)/move_base_params.yaml" command="load" />
+   		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+   		<param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" />
+      <rosparam file="$(find unico_bringup)/config/$(arg robot)/global_planner_params.yaml" command="load" />
+   	 	<rosparam file="$(find unico_bringup)/config/$(arg robot)/base_local_planner_params.yaml" command="load" />
+  		<remap from="cmd_vel" to="/base/base_controller/twist_mux/command_navigation"/>
+   	</node>
+
+</launch>
