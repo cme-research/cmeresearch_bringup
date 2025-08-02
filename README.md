@@ -94,9 +94,9 @@ There might be multiple packages be required for the build!
 
 1. Create a workspace folder
 
-
+````
     mkdir ros_ws/src/
-
+````
 
 2. Clone the following repositories to the src/ folder:
 
