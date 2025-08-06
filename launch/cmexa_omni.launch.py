@@ -83,7 +83,7 @@ def generate_launch_description():
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmexa_base_mecanum_controller/cmd_vel:=/cmd_vel",
+            "-r /cmexa_base_mecanum_controller/reference:=/cmexa_base_mecanum_controller/cmd_vel",
         ],
     )
 
@@ -157,7 +157,7 @@ def generate_launch_description():
         executable="teleop_node",
         name="teleop_twist_joy_node",
         parameters=[config_filepath, {'publish_stamped_twist': publish_stamped_twist}],
-        remappings={('/cmd_vel', launch.substitutions.LaunchConfiguration('joy_vel'))},
+        remappings={('cmd_vel', launch.substitutions.LaunchConfiguration('joy_vel'))},
     )
 
     tinkerforge_driver_front_left_stepper = Node(
@@ -290,14 +290,19 @@ def generate_launch_description():
              robot_controller_spawner,
              delay_joint_state_broadcaster_after_robot_controller_spawner,
              joy_node,
-             teleop_twist_joy,
-             tinkerforge_driver_front_left_stepper,
-             tinkerforge_driver_front_right_stepper,
-             tinkerforge_driver_rear_left_stepper,
-             tinkerforge_driver_rear_right_stepper
-
+             teleop_twist_joy
             ]
 
-
+    # nodes = [control_node,
+    #          robot_state_pub_node,
+    #          robot_controller_spawner,
+    #          delay_joint_state_broadcaster_after_robot_controller_spawner,
+    #          joy_node,
+    #          teleop_twist_joy,
+    #          tinkerforge_driver_front_left_stepper,
+    #          tinkerforge_driver_front_right_stepper,
+    #          tinkerforge_driver_rear_left_stepper,
+    #          tinkerforge_driver_rear_right_stepper
+    #         ]
 
     return LaunchDescription(declared_arguments + nodes)
