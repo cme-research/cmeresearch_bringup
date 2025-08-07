@@ -20,8 +20,8 @@ cmexa_base_mecanum_controller:
 
 
     wheel_separation_multiplier: 1.0
-    left_wheel_radius_multiplier: 4.0 # TODO find out why the output needs adapted (somehow it is not correct with 1.0
-    right_wheel_radius_multiplier: 4.0
+    left_wheel_radius_multiplier: 9.0 # TODO find out why the output needs adapted (somehow it is not correct with 1.0
+    right_wheel_radius_multiplier: 9.0
 
     publish_rate: 50.0
     odom_frame_id: odom
