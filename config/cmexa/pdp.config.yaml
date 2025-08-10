@@ -16,7 +16,7 @@ teleop_twist_joy_node:
     axis_angular:
       yaw: 2  # Right stick horizontal
     scale_angular:
-      yaw: 1.5  # Maximum angular velocity in rad/s
+      yaw: 8.0  # Maximum angular velocity in rad/s
 
     # Control buttons
     enable_button: 4      # Left 'LB' button - Dead man's switch
