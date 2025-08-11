@@ -3,7 +3,7 @@ FROM ubuntu:noble
 
 LABEL maintainer="Christian Ehrmann"
 LABEL version="0.1"
-LABEL description="Unico Brickd for Tinkerforge Bindings"
+LABEL description="CMEXA Brickd for Tinkerforge Bindings"
 
 # USE BASH
 SHELL ["/bin/bash", "-c"]
@@ -34,7 +34,7 @@ COPY ./unico_bringup/docker/brickd/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
 
 # correct spidev
-COPY ./unico_bringup/docker/brickd/brickd.conf /etc/
+COPY ./cmeresearch_bringup/docker/brickd/brickd.conf /etc/
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
