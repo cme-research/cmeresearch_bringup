@@ -30,7 +30,7 @@ RUN rm -rf /var/lib/apt/lists/*
 # Always source ros_entrypoint.sh when launching bash (e.g. when attaching to container)
 RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
 
-COPY ./unico_bringup/docker/brickd/ros_entrypoint.sh /
+COPY ./cmeresearch_bringup/docker/brickd/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
 
 # correct spidev
