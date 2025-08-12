@@ -56,7 +56,7 @@ install(FILES
  config/cmexa/joy.yaml
  config/cmexa/cmexa_base_mecanum_controllers.yaml
  config/cmexa/pdp.config.yaml
- config/cmexa/logi_teleop.yaml
+ config/cmexa/logi_teleop.config.yaml
  config/cmexa/stage_navigation.rviz
  config/cmexa/mqtt_bridge_params.yaml
  config/cmexa/base_local_planner_params.yaml
