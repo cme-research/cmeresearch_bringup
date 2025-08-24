@@ -101,7 +101,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_config",
-            default_value="logi_teleop",
+            default_value="pdp",
             description="Select configuration file for used joystick.",
         )
     )
