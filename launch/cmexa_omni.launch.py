@@ -301,7 +301,7 @@ def generate_launch_description():
              robot_state_pub_node,
              robot_controller_spawner,
              delay_joint_state_broadcaster_after_robot_controller_spawner,
-             delay_teleop_joy_after_engine_spawner,
+             joy_node,
              teleop_twist_joy,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
