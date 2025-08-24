@@ -1,0 +1,6 @@
+robot ALL=(ALL, root) NOPASSWD: /usr/sbin/cme-start
+robot ALL=(ALL, root) NOPASSWD: /usr/sbin/cme-stop
+robot ALL=(ALL, root) NOPASSWD: /sbin/shutdown
+robot ALL=(ALL, root) NOPASSWD: /sbin/restart
+robot ALL=(ALL, root) NOPASSWD: /home/robot/ros2_ws/src/cmeresearch_bringup/install/bin/cme_shutdown
+

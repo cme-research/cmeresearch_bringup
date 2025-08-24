@@ -54,7 +54,11 @@ COPY ./cmeresearch_description /robot/ros2_ws/src/cmeresearch_description
 RUN mkdir -p /robot/ros2_ws/src/cmeresearch_msgs
 COPY ./cmeresearch_msgs /robot/ros2_ws/src/cmeresearch_msgs
 
-#### ash_base ###
+#### cmeresearch_environments ###
+RUN mkdir -p /robot/ros2_ws/src/cmeresearch_environments
+COPY ./cmeresearch_environments /robot/ros2_ws/src/cmeresearch_environments
+
+#### cmexa_base ###
 RUN mkdir -p /robot/ros2_ws/src/cmexa_base
 COPY ./cmexa_base /robot/ros2_ws/src/cmexa_base
 
@@ -101,6 +105,11 @@ RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
 
 COPY ./cmeresearch_bringup/docker/cmexa/ros2_raspi5_arm64v8/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
+
+# create folder for file sharing with host system for map data
+RUN mkdir /robot/data
+COPY ./cmeresearch_environments/envs/laboriii/ /robot/data/
+
 
 ENV ROBOT=cmexa
 

@@ -1,0 +1,15 @@
+[Unit]
+Description=Start CMERESEARCH CMEXA ROS System
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=robot
+ExecStart=/usr/local/bin/startBackend
+
+[Install]
+WantedBy=multi-user.target
+
