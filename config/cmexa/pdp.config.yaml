@@ -16,7 +16,7 @@ teleop_twist_joy_node:
     scale_linear_turbo.y: 2.0
 
     # Rotation (angular.z)
-    axis_angular.yaw: 3       # Right stick horizontal
+    axis_angular.yaw: 2       # Right stick horizontal (3)
     scale_angular.yaw: 1.5
     scale_angular_turbo.yaw: 3.0
 
