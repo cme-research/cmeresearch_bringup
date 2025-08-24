@@ -290,12 +290,12 @@ def generate_launch_description():
                      }]
     )
 
-    delay_teleop_joy_after_engine_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=robot_controller_spawner,
-            on_exit=[joy_node],
-        )
-    )
+#   delay_teleop_joy_after_engine_spawner = RegisterEventHandler(
+#        event_handler=OnProcessExit(
+#            target_action=robot_controller_spawner,
+#           on_exit=[joy_node],
+#        )
+#    )
 
     nodes = [control_node,
              robot_state_pub_node,

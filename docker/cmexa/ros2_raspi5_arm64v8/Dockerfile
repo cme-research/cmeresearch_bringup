@@ -114,5 +114,5 @@ COPY ./cmeresearch_environments/envs/laboriii/ /robot/data/
 ENV ROBOT=cmexa
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
-CMD ["ros2", "launch", "cmeresearch_bringup", "cmexa_omni.launch.py"]
-#CMD ["bash"]
+#CMD ["ros2", "launch", "cmeresearch_bringup", "cmexa_omni.launch.py"]
+CMD ["bash"]
