@@ -96,6 +96,7 @@ def generate_launch_description():
         )
     )
 
+
     # from teleop_twist_joy.launch.py
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -289,11 +290,18 @@ def generate_launch_description():
                      }]
     )
 
+    delay_teleop_joy_after_engine_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=robot_controller_spawner,
+            on_exit=[joy_node],
+        )
+    )
+
     nodes = [control_node,
              robot_state_pub_node,
              robot_controller_spawner,
              delay_joint_state_broadcaster_after_robot_controller_spawner,
-             joy_node,
+             delay_teleop_joy_after_engine_spawner,
              teleop_twist_joy,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,

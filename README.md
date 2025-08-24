@@ -130,6 +130,11 @@ on raspberry pi you need to create a virtual environment and install it via pip
 vcs import --input src/cmeresearch_bringup/install/cmexa_robot.repos src/
 ````
 
+5. to update the repositories call vcs from root of your workspace:
+
+```
+vcs pull
+```
 
 
 ### Using Docker Simulation for CMEXAIII
