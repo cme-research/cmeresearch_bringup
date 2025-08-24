@@ -65,6 +65,7 @@ install(FILES
  config/cmexa/local_costmap_params.yaml
  config/cmexa/slam_toolbox_localization.yaml
  config/cmexa/slam_toolbox_mapping.yaml
+ config/cmexa/xbox.config.yaml
  DESTINATION share/${PROJECT_NAME}/config/cmexa/
 )
 
@@ -86,7 +87,13 @@ install(FILES
 install(FILES
  install/autostart/env.bash
  DESTINATION share/${PROJECT_NAME}/install
-) 
+)
+
+install(FILES
+ driver/teleop.launch.py
+ DESTINATION share/${PROJECT_NAME}/driver
+)
+
 install(FILES
  launch/robot.launch
  launch/unico_mini.launch
