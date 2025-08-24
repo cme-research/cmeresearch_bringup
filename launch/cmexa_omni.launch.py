@@ -262,7 +262,7 @@ def generate_launch_description():
         package='cmeresearch_stepper_driver',
         namespace='tf_drivers',
         executable='stepper_driver_node',
-        name='cmexa_stepper_driver_left_stepper',
+        name='cmexa_stepper_driver_rear_right_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/rear_right/cmd_vel'),
             ('drive_output', '/cmexa_base/rear_right/feedback')],
@@ -277,7 +277,7 @@ def generate_launch_description():
                      'mirror_direction': False,
                      'gear_ratio': 5,
                      'max_step_vel': 3000,
-                     'wheel_name': 'rear_left_wheel',
+                     'wheel_name': 'rear_right_wheel',
                      'hw_simulation': False,
                      'standstill_current': 200,
                      'motor_run_current': 800,
