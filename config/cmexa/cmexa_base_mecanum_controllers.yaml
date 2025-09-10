@@ -24,6 +24,9 @@ cmexa_base_mecanum_controller:
     left_wheel_radius_multiplier: 1.0
     right_wheel_radius_multiplier: 1.0
 
+    # custom param
+    gear_ratio: 5.0
+
     publish_rate: 50.0
     odom_frame_id: odom
     base_frame_id: base_link
