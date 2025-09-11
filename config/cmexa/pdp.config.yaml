@@ -7,13 +7,13 @@ teleop_twist_joy_node:
 
     # Forward/backward (linear.x)
     axis_linear.x: 1          # Left stick vertical
-    scale_linear.x: 0.2
-    scale_linear_turbo.x: 0.4
+    scale_linear.x: 0.15
+    scale_linear_turbo.x: 0.3
 
     # Strafe left/right (linear.y)
     axis_linear.y: 0          # Left stick horizontal
-    scale_linear.y: 0.2
-    scale_linear_turbo.y: 0.4
+    scale_linear.y: 0.15
+    scale_linear_turbo.y: 0.3
 
     # Rotation (angular.z)
     axis_angular.yaw: 2       # Right stick horizontal (3)
