@@ -185,9 +185,9 @@ def generate_launch_description():
                      'motor_run_current': 800,
                      'standstill_delay_time': 300,
                      'power_down_time': 1000,
-                     'stealth_threshold': 2200,
-                     'coolstep_threshold': 2500,
-                     'classic_threshold': 3000,
+                     'stealth_threshold': 4000,
+                     'coolstep_threshold': 6000,
+                     'classic_threshold': 10000,
                      'high_velocity_chopper_mode': False
                      }]
     )
@@ -216,9 +216,9 @@ def generate_launch_description():
                      'motor_run_current': 800,
                      'standstill_delay_time': 300,
                      'power_down_time': 1000,
-                     'stealth_threshold': 2200,
-                     'coolstep_threshold': 2500,
-                     'classic_threshold': 3000,
+                     'stealth_threshold': 4000,
+                     'coolstep_threshold': 6000,
+                     'classic_threshold': 10000,
                      'high_velocity_chopper_mode': False
                      }]
     )
@@ -248,9 +248,9 @@ def generate_launch_description():
                      'motor_run_current': 800,
                      'standstill_delay_time': 300,
                      'power_down_time': 1000,
-                     'stealth_threshold': 2200,
-                     'coolstep_threshold': 2500,
-                     'classic_threshold': 3000,
+                     'stealth_threshold': 4000,
+                     'coolstep_threshold': 6000,
+                     'classic_threshold': 10000,
                      'high_velocity_chopper_mode': False
                      }]
     )
@@ -279,9 +279,9 @@ def generate_launch_description():
                      'motor_run_current': 800,
                      'standstill_delay_time': 300,
                      'power_down_time': 1000,
-                     'stealth_threshold': 2200,
-                     'coolstep_threshold': 2500,
-                     'classic_threshold': 3000,
+                     'stealth_threshold': 4000,
+                     'coolstep_threshold': 6000,
+                     'classic_threshold': 10000,
                      'high_velocity_chopper_mode': False
                      }]
     )
