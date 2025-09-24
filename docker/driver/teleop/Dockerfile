@@ -71,12 +71,8 @@ RUN rm -rf /var/lib/apt/lists/*
 # Always source ros_entrypoint.sh when launching bash (e.g. when attaching to container)
 RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
 
-COPY ./cmeresearch_bringup/docker/cmexa/ros2_raspi5_arm64v8/ros_entrypoint.sh /
+COPY ./cmeresearch_bringup/docker/driver/teleop/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
-
-# create folder for file sharing with host system for map data
-RUN mkdir /robot/data
-COPY ./cmeresearch_environments/envs/laboriii/ /robot/data/
 
 
 ENV ROBOT=cmexa
