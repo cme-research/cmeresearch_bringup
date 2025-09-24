@@ -19,7 +19,7 @@ def generate_launch_description():
         launch.actions.DeclareLaunchArgument('publish_stamped_twist', default_value='false'),
         launch.actions.DeclareLaunchArgument('config_filepath', default_value=[
             launch.substitutions.TextSubstitution(text=os.path.join(
-                get_package_share_directory('cmeresearch_bringup'), 'config', 'cmexa')),
+                get_package_share_directory('cmeresearch_bringup'), 'config', 'cmexa/')),
             joy_config, launch.substitutions.TextSubstitution(text='.config.yaml')]),
 
         launch_ros.actions.Node(
