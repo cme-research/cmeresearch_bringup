@@ -3,6 +3,9 @@
 docker run -it \
   --rm --name cmexa-robot \
   --network="host" \
-  --privileged \
-  --device /dev/input/js0 \
+  --ipc=host \
+  --user robot \
+  -v /dev/input:/dev/input \
+  --device-cgroup-rule='c 189:* rmw' \
+  --group-add $(getent group input | cut -d: -f3) \
   cmeresearch/cmexa:1.0
