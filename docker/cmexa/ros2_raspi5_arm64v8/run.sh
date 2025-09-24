@@ -4,7 +4,6 @@ docker run -it \
   --rm --name cmexa-robot \
   --network="host" \
   --ipc=host \
-  --user robot \
   -v /dev/input:/dev/input \
   --device-cgroup-rule='c 189:* rmw' \
   --group-add $(getent group input | cut -d: -f3) \
