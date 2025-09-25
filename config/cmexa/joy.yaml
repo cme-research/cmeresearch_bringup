@@ -4,7 +4,7 @@ joy_node:
   ros__parameters:
     # Use a stable device path instead of /dev/input/js0
     # Check available devices via: ls /dev/input/by-id/
-    dev: /dev/input/js0
+    dev: /dev/input/js-f710
 
     # Deadzone for joystick axes (helps with noisy controllers)
     deadzone: 0.05
