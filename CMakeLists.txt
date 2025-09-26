@@ -65,6 +65,7 @@ install(FILES
  config/cmexa/slam_toolbox_localization.yaml
  config/cmexa/slam_toolbox_mapping.yaml
  config/cmexa/xbox.config.yaml
+ config/cmexa/joy2twist_ugv.yaml
  DESTINATION share/${PROJECT_NAME}/config/cmexa/
 )
 
@@ -108,6 +109,8 @@ install(FILES
 
 install(FILES
     driver/teleop_twist_joy.launch.py
+    driver/joy2twist.launch.py
+    driver/teleop_xinput.launch.py
     DESTINATION share/${PROJECT_NAME}/launch
 )
 

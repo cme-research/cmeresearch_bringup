@@ -1,30 +1,50 @@
-import os
-
-from ament_index_python.packages import get_package_share_directory
-
-import launch
-import launch_ros.actions
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import (
+    EnvironmentVariable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-
     joy2twist_cfg_path = PathJoinSubstitution(
-        [FindPackageShare("cmeresearch_bringup"), "config/cmexa/", "joy2twist.yaml"]
+        [FindPackageShare("joy2twist"), "config", "joy2twist.yaml"]
     )
 
     joy2twist_params_file_argument = DeclareLaunchArgument(
         "joy2twist_params_file",
         default_value=joy2twist_cfg_path,
-        description="ROS2 parameters file to use with joy1twist node",
+        description="ROS2 parameters file to use with joy2twist node",
     )
 
-    joy2twist_node = Node(
-        package="joy2twist",
-        executable="joy2twist",
-        parameters=[LaunchConfiguration("joy2twist_params_file")],
+    joy2twist_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                PathJoinSubstitution(
+                    [FindPackageShare("joy2twist"), "launch", "joy2twist.launch.py"]
+                )
+            ]
+        ),
+        launch_arguments={
+            "joy2twist_params_file": LaunchConfiguration("joy2twist_params_file"),
+        }.items(),
+    )
+
+    joy_linux_node = Node(
+        package="joy_linux",
+        executable="joy_linux_node",
         emulate_tty="true",
+        remappings=[("/diagnostics", "diagnostics")],
     )
 
-    actions = [joy2twist_params_file_argument, joy2twist_node]
+    actions = [
+        joy2twist_params_file_argument,
+        joy2twist_launch,
+        joy_linux_node,
+    ]
 
     return LaunchDescription(actions)
