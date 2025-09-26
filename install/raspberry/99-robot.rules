@@ -1,2 +1,2 @@
-SUBSYSTEM=="input", ATTRS{name}=="Logitech Gamepad F710", SYMLINK+="input/js-f710"
-SUBSYSTEM=="input", ATTRS{name}=="Logitech Cordless RumblePad 2", SYMLINK+="input/js-f710"
+SUBSYSTEM=="input", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c21f", SYMLINK+="input/js-f710"
+SUBSYSTEM=="input", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c219", SYMLINK+="input/js-f710"
