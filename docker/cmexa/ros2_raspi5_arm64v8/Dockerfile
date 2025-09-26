@@ -67,6 +67,10 @@ RUN mkdir -p /robot/ros2_ws/src/cmeresearch_stepper_driver
 COPY ./cmeresearch_stepper_driver /robot/ros2_ws/src/cmeresearch_stepper_driver
 
 
+#### joy2twist ###
+RUN mkdir -p /robot/ros2_ws/src/joy2twist
+COPY ./joy2twist /robot/ros2_ws/src/joy2twist
+
 # 3d party non ros specific dependencies
 # - tinkerforge bindings
 RUN wget https://download.tinkerforge.com/apt/$(. /etc/os-release; echo $ID)/tinkerforge.gpg -q -O - | sudo tee /etc/apt/trusted.gpg.d/tinkerforge.gpg > /dev/null \
