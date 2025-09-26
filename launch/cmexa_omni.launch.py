@@ -155,6 +155,7 @@ def generate_launch_description():
         executable="joy2twist",
         parameters=[config_filepath],
         emulate_tty="true",
+        remappings=[("/cmd_vel", "/cmexa_base_mecanum_controller/cmd_vel")],
     )
 
 
