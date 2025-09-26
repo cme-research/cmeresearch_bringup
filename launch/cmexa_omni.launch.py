@@ -1,7 +1,7 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
@@ -139,27 +139,27 @@ def generate_launch_description():
             description="Create filepath to config file",
         )
     )
-    joy_node = Node(
-        package="joy",
-        executable="joy_node",
-        name="joy_node",
-        parameters=[{
-            'device_id': joy_dev,
-            'deadzone': 0.3,
-            'autorepeat_rate': 20.0,
-        }]
+
+    joy2twist_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                PathJoinSubstitution(
+                    [FindPackageShare("cmeresearch_bringup"), "launch", "joy2twist.launch.py"]
+                )
+            ]
+        ),
+        launch_arguments={
+            "joy2twist_params_file": LaunchConfiguration("joy2twist_params_file"),
+        }.items(),
     )
 
-    config_filepath = LaunchConfiguration("config_filepath")
-    publish_stamped_twist = LaunchConfiguration("publish_stamped_twist")
-
-    teleop_twist_joy = Node(
-        package="teleop_twist_joy",
-        executable="teleop_node",
-        name="teleop_twist_joy_node",
-        parameters=[config_filepath, {'publish_stamped_twist': publish_stamped_twist}],
-        remappings={('cmd_vel', launch.substitutions.LaunchConfiguration('joy_vel'))},
+    joy_linux_node = Node(
+        package="joy_linux",
+        executable="joy_linux_node",
+        emulate_tty="true",
+        remappings=[("/diagnostics", "diagnostics")],
     )
+
 
     tinkerforge_driver_front_left_stepper = Node(
         package='cmeresearch_stepper_driver',
@@ -297,8 +297,8 @@ def generate_launch_description():
              robot_state_pub_node,
              robot_controller_spawner,
              delay_joint_state_broadcaster_after_robot_controller_spawner,
-             joy_node,
-             teleop_twist_joy,
+             joy_linux_node,
+             joy2twist_launch,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
              tinkerforge_driver_rear_left_stepper,
