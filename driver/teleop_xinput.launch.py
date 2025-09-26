@@ -12,7 +12,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     joy2twist_cfg_path = PathJoinSubstitution(
-        [FindPackageShare("joy2twist"), "config", "joy2twist.yaml"]
+        [FindPackageShare("cmeresearch_bringup"), "config/cmexa/", "joy2twist_ugv.yaml"]
     )
 
     joy2twist_params_file_argument = DeclareLaunchArgument(
