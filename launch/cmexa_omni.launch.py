@@ -102,7 +102,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_config",
-            default_value="pdp",
+            default_value="joy2twist_ugv",
             description="Select configuration file for used joystick.",
         )
     )
@@ -136,29 +136,25 @@ def generate_launch_description():
             default_value=[
                 launch.substitutions.TextSubstitution(text=os.path.join(
                     get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
-                joy_config, launch.substitutions.TextSubstitution(text='.config.yaml')],
+                joy_config, launch.substitutions.TextSubstitution(text='.yaml')],
             description="Create filepath to config file",
         )
     )
 
-    joy2twist_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [
-                PathJoinSubstitution(
-                    [FindPackageShare("cmeresearch_bringup"), "launch", "joy2twist.launch.py"]
-                )
-            ]
-        ),
-        launch_arguments={
-            "joy2twist_params_file": LaunchConfiguration("joy2twist_params_file"),
-        }.items(),
-    )
+    config_filepath = LaunchConfiguration("config_filepath")
 
     joy_linux_node = Node(
         package="joy_linux",
         executable="joy_linux_node",
         emulate_tty="true",
         remappings=[("/diagnostics", "diagnostics")],
+    )
+
+    joy2twist_node = Node(
+        package="joy2twist",
+        executable="joy2twist",
+        parameters=[config_filepath],
+        emulate_tty="true",
     )
 
 
@@ -299,7 +295,7 @@ def generate_launch_description():
              robot_controller_spawner,
              delay_joint_state_broadcaster_after_robot_controller_spawner,
              joy_linux_node,
-             joy2twist_launch,
+             joy2twist_node,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
              tinkerforge_driver_rear_left_stepper,
