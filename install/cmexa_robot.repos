@@ -23,3 +23,7 @@ repositories:
     type: git
     url: git@bitbucket.org:cme-robotics/cmexa_base.git
     version: rolling_dev
+  joy2twist:
+    type: https
+    url: https://github.com/husarion/joy2twist.git
+    version: ros2

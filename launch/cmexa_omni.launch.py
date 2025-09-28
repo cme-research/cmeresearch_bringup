@@ -167,7 +167,7 @@ def generate_launch_description():
         remappings=[
             ('drive_input', '/cmexa_base/front_left/cmd_vel'),
             ('drive_output', '/cmexa_base/front_left/feedback')],
-        parameters=[{'bricklet_host': '192.168.1.102',
+        parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'a',
                      'step_resolution': 8,
@@ -198,7 +198,7 @@ def generate_launch_description():
         remappings=[
             ('drive_input', '/cmexa_base/front_right/cmd_vel'),
             ('drive_output', '/cmexa_base/front_right/feedback')],
-        parameters=[{'bricklet_host': '192.168.1.102',
+        parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'b',
                      'step_resolution': 8,
@@ -230,7 +230,7 @@ def generate_launch_description():
         remappings=[
             ('drive_input', '/cmexa_base/rear_left/cmd_vel'),
             ('drive_output', '/cmexa_base/rear_left/feedback')],
-        parameters=[{'bricklet_host': '192.168.1.102',
+        parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'c',
                      'step_resolution': 8,
@@ -261,7 +261,7 @@ def generate_launch_description():
         remappings=[
             ('drive_input', '/cmexa_base/rear_right/cmd_vel'),
             ('drive_output', '/cmexa_base/rear_right/feedback')],
-        parameters=[{'bricklet_host': '192.168.1.102',
+        parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'd',
                      'step_resolution': 8,
