@@ -103,7 +103,7 @@ A compact robot platform designed for indoor environments.
 
 ````
 sudo apt update
-sudo apt install python3-vcstool
+sudo apt install python3-vcstools
 ````
 
 on raspberry pi you need to create a virtual environment and install it via pip
