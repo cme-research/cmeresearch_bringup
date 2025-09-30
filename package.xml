@@ -17,9 +17,9 @@
   <exec_depend>rviz2</exec_depend>
   <exec_depend>teleop_twist_joy</exec_depend>
   <exec_depend>web_video_server</exec_depend>
-  <!--
+
   <exec_depend>mqtt_bridge</exec_depend>
-  -->
+
   <exec_depend>twist_mux</exec_depend>
   <!--
   <exec_depend>move_base</exec_depend>
