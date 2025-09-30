@@ -307,7 +307,7 @@ def generate_launch_description():
     mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
 
     mqtt_bridge_node = Node(
-        package="mqtt_bridge",
+        package="mqtt_client",
         executable="mqtt_bridge_node",
         name="mqtt_bridge",
         parameters=[mqtt_bridge_config],
