@@ -5,7 +5,7 @@ mqtt:
     host: localhost
     port: 1883
     keepalive: 60
-  private_path: cmeresearch/cmexa/
+  private_path: cmeresearch/cmexa/amr_control/
 #serializer: json:dumps
 #deserializer: json:loads
 bridge:
@@ -13,8 +13,20 @@ bridge:
   - factory: mqtt_bridge.bridge:RosToMqttBridge
     msg_type: nav_msgs.msg:Odometry
     topic_from: /base_pose_ground_truth
-    topic_to: fake_odom
+    topic_to: sim_odom
   - factory: mqtt_bridge.bridge:MqttToRosBridge
     msg_type: geometry_msgs.msg:Twist
-    topic_from: command
-    topic_to: /base/base_controller/command
+    topic_from: cmd_vel
+    topic_to: /cmexa_base_mecanum_controller/cmd_vel
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: geometry_msgs.msg:Twist
+    topic_from: /cmexa_base_mecanum_controller/cmd_vel
+    topic_to: received_command
+  - factory: mqtt_bridge.bridge:MqttToRosBridge
+    msg_type: geometry_msgs.msg:PoseStamped
+    topic_from: pose_goal
+    topic_to: /move_base_simple/goal
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: geometry_msgs.msg:PoseStamped
+    topic_from: /move_base_simple/goal
+    topic_to: received_simple_goal
