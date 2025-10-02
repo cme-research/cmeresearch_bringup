@@ -5,11 +5,20 @@ ros__parameters:
   bridge:
     ros2mqtt:
       ros_topics:
+        - /base_pose_ground_truth
         - /cmexa_base_mecanum_controller/cmd_vel
+        - /move_base_simple/goal
+      /base_pose_ground_truth:
+        mqtt_topic: cmeresearch/cmexa/sim_odom
       /cmexa_base_mecanum_controller/cmd_vel:
-        mqtt_topic: cmeresearch/cmexa/amr_control/cmd_vel
+        mqtt_topic: cmeresearch/cmexa/received_command
+      /move_base_simple/goal:
+        mqtt_topic: cmeresearch/cmexa/received_simple_goal
     mqtt2ros:
       mqtt_topics:
-        - cmeresearch/cmexa/amr_control/cmd_vel
-      cmeresearch/cmexa/amr_control/cmd_vel:
+        - cmeresearch/cmexa/cmd_vel
+        - cmeresearch/cmexa/pose_goal
+      cmeresearch/cmexa/cmd_vel:
         ros_topic: /cmexa_base_mecanum_controller/cmd_vel
+      cmeresearch/cmexa/pose_goal:
+        ros_topic: /move_base_simple/goal
