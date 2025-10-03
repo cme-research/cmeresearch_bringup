@@ -298,7 +298,7 @@ def generate_launch_description():
                 FindPackageShare("cmeresearch_bringup"),
                 "config",
                 "cmexa",
-                "mqtt_bridge_params.yaml"
+                "mqtt_client_params.yaml"
             ]),
             description="Path to MQTT client configuration file.",
         )

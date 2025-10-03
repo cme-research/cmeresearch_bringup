@@ -1,0 +1,72 @@
+# Example parameters for the ROS 2 mqtt_client node
+# This file demonstrates a commonly used configuration that connects to a
+# local MQTT broker and bridges a few ROS topics <-> MQTT topics.
+#
+# Notes:
+# - Keep this under your package share and pass it to the node via:
+#     ros2 launch <your_pkg> <your_launch>.py mqtt_client_config:=<path_to_this_yaml>
+# - All keys live under `ros__parameters` which ROS 2 uses for node params.
+# - Adjust message types to match your actual topics.
+
+ros__parameters:
+  # MQTT broker connection settings
+  broker:
+    host: localhost     # Broker hostname or IP
+    port: 1883          # 1883 for plain TCP, 8883 for TLS
+    keepalive: 60       # Seconds
+
+  # Optional MQTT client identification and auth
+  client_id: cmexa_mqtt_client
+  clean_session: true
+  username: ""         # Set if your broker requires auth
+  password: ""
+
+  # TLS configuration (only used if you connect to an SSL/TLS port)
+  tls:
+    enable: false
+    ca_cert: ""        # e.g. /etc/ssl/certs/ca-certificates.crt
+    certfile: ""
+    keyfile: ""
+    insecure: false     # true to skip server cert verification (not recommended)
+
+  # Default QoS/retain to use when not overridden per mapping
+  default_qos: 0        # 0, 1, or 2 depending on your needs
+  default_retain: false
+
+  # Topic bridge rules. This is a commonly used schema with many mqtt_client nodes:
+  # - ros2mqtt: publish ROS topic messages to MQTT topics
+  # - mqtt2ros: subscribe to MQTT topics and publish to ROS topics
+  #
+  # Each mapping supports:
+  #   ros_topic: ROS topic name (for ros2mqtt)
+  #   mqtt_topic: MQTT topic string
+  #   type: ROS message type (required so the node can (de)serialize)
+  #   qos: optional override for QoS (0/1/2) per mapping
+  #   retain: optional retain flag for ros2mqtt publishes
+  bridge:
+    ros2mqtt:
+      - ros_topic: /base_pose_ground_truth
+        mqtt_topic: cmeresearch/cmexa/sim_odom
+        type: nav_msgs/msg/Odometry
+        qos: 0
+        retain: false
+      - ros_topic: /cmexa_base_mecanum_controller/cmd_vel
+        mqtt_topic: cmeresearch/cmexa/received_command
+        type: geometry_msgs/msg/Twist
+        qos: 0
+        retain: false
+      - ros_topic: /move_base_simple/goal
+        mqtt_topic: cmeresearch/cmexa/received_simple_goal
+        type: geometry_msgs/msg/PoseStamped
+        qos: 0
+        retain: false
+
+    mqtt2ros:
+      - mqtt_topic: cmeresearch/cmexa/cmd_vel
+        ros_topic: /cmexa_base_mecanum_controller/cmd_vel
+        type: geometry_msgs/msg/Twist
+        qos: 0
+      - mqtt_topic: cmeresearch/cmexa/pose_goal
+        ros_topic: /move_base_simple/goal
+        type: geometry_msgs/msg/PoseStamped
+        qos: 0
