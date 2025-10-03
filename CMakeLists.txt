@@ -58,6 +58,7 @@ install(FILES
  config/cmexa/pdp.config.yaml
  config/cmexa/stage_navigation.rviz
  config/cmexa/mqtt_bridge_params.yaml
+ config/cmexa/mqtt_client_params.yaml
  config/cmexa/base_local_planner_params.yaml
  config/cmexa/costmap_common_params.yaml
  config/cmexa/global_costmap_params.yaml
