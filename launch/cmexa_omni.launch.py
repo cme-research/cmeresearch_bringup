@@ -293,14 +293,25 @@ def generate_launch_description():
 
     declared_arguments.append(
         DeclareLaunchArgument(
+            "config_filepath",
+            default_value=[
+                launch.substitutions.TextSubstitution(text=os.path.join(
+                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+                joy_config, launch.substitutions.TextSubstitution(text='.yaml')],
+            description="Create filepath to config file",
+        )
+    )
+
+    config_filepath = LaunchConfiguration("config_filepath")
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "mqtt_client_config",
-            default_value=PathJoinSubstitution([
-                FindPackageShare("cmeresearch_bringup"),
-                "config",
-                "cmexa",
-                "mqtt_client_params.yaml"
-            ]),
-            description="Path to MQTT client configuration file.",
+            default_value=[
+                launch.substitutions.TextSubstitution(text=os.path.join(
+                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+                'mqtt_client_params', launch.substitutions.TextSubstitution(text='.yaml')],
+            description="Create filepath to config file",
         )
     )
 
