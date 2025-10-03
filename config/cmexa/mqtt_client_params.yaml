@@ -52,7 +52,7 @@ ros__parameters:
         retain: false
       - ros_topic: /cmexa_base_mecanum_controller/cmd_vel
         mqtt_topic: cmeresearch/cmexa/received_command
-        type: geometry_msgs/msg/Twist
+        type: geometry_msgs/msg/TwistStamped
         qos: 0
         retain: false
       - ros_topic: /move_base_simple/goal
@@ -64,7 +64,7 @@ ros__parameters:
     mqtt2ros:
       - mqtt_topic: cmeresearch/cmexa/cmd_vel
         ros_topic: /cmexa_base_mecanum_controller/cmd_vel
-        type: geometry_msgs/msg/Twist
+        type: geometry_msgs/msg/TwistStamped
         qos: 0
       - mqtt_topic: cmeresearch/cmexa/pose_goal
         ros_topic: /move_base_simple/goal
