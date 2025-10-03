@@ -391,6 +391,16 @@ sudo rm -rf /dev/input/js0
 
 replug the joystick dongle.
 
+#### Installation instructions for raspberry pi 5 ####
+
+Remember to either add a ssh-key to the pi for your computer or enable password authentication und
+
+```
+
+/etc/ssh/sshd_config
+
+```
+
 
 
 ## Contact
