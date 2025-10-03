@@ -293,24 +293,24 @@ def generate_launch_description():
 
     declared_arguments.append(
         DeclareLaunchArgument(
-            "mqtt_bridge_config",
+            "mqtt_client_config",
             default_value=PathJoinSubstitution([
                 FindPackageShare("cmeresearch_bringup"),
                 "config",
                 "cmexa",
                 "mqtt_bridge_params.yaml"
             ]),
-            description="Path to MQTT bridge configuration file.",
+            description="Path to MQTT client configuration file.",
         )
     )
 
-    mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
+    mqtt_client_config = LaunchConfiguration("mqtt_client_config")
 
-    mqtt_bridge_node = Node(
+    mqtt_client_node = Node(
         package="mqtt_client",
-        executable="mqtt_bridge_node",
-        name="mqtt_bridge",
-        parameters=[mqtt_bridge_config],
+        executable="mqtt_client_node",
+        name="mqtt_client",
+        parameters=[mqtt_client_config],
         output="both",
     )
 
@@ -320,7 +320,7 @@ def generate_launch_description():
              delay_joint_state_broadcaster_after_robot_controller_spawner,
              joy_linux_node,
              joy2twist_node,
-             mqtt_bridge_node,
+             mqtt_client_node,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
              tinkerforge_driver_rear_left_stepper,
