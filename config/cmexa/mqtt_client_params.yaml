@@ -45,28 +45,28 @@ mqtt_client:
     #   retain: optional retain flag for ros2mqtt publishes
     bridge:
       ros2mqtt:
-        - ros_topic: /base_pose_ground_truth
-          mqtt_topic: cmeresearch/cmexa/sim_odom
-          type: nav_msgs/msg/Odometry
+        - ros_topic: "/base_pose_ground_truth"
+          mqtt_topic: "cmeresearch/cmexa/sim_odom"
+          type: "nav_msgs/msg/Odometry"
           qos: 0
           retain: false
-        - ros_topic: /cmexa_base_mecanum_controller/cmd_vel
-          mqtt_topic: cmeresearch/cmexa/received_command
-          type: geometry_msgs/msg/TwistStamped
+        - ros_topic: "/cmexa_base_mecanum_controller/cmd_vel"
+          mqtt_topic: "cmeresearch/cmexa/received_command"
+          type: "geometry_msgs/msg/TwistStamped"
           qos: 0
           retain: false
-        - ros_topic: /move_base_simple/goal
-          mqtt_topic: cmeresearch/cmexa/received_simple_goal
-          type: geometry_msgs/msg/PoseStamped
+        - ros_topic: "/move_base_simple/goal"
+          mqtt_topic: "cmeresearch/cmexa/received_simple_goal"
+          type: "geometry_msgs/msg/PoseStamped"
           qos: 0
           retain: false
 
       mqtt2ros:
-        - mqtt_topic: cmeresearch/cmexa/cmd_vel
-          ros_topic: /cmexa_base_mecanum_controller/cmd_vel
-          type: geometry_msgs/msg/TwistStamped
+        - mqtt_topic: "cmeresearch/cmexa/cmd_vel"
+          ros_topic: "/cmexa_base_mecanum_controller/cmd_vel"
+          type: "geometry_msgs/msg/TwistStamped"
           qos: 0
-        - mqtt_topic: cmeresearch/cmexa/pose_goal
-          ros_topic: /move_base_simple/goal
-          type: geometry_msgs/msg/PoseStamped
+        - mqtt_topic: "cmeresearch/cmexa/pose_goal"
+          ros_topic: "/move_base_simple/goal"
+          type: "geometry_msgs/msg/PoseStamped"
           qos: 0
