@@ -45,20 +45,15 @@ mqtt_client:
     #   retain: optional retain flag for ros2mqtt publishes
     bridge:
       ros2mqtt:
-        - ros_topic: "/base_pose_ground_truth"
-          mqtt_topic: "cmeresearch/cmexa/sim_odom"
-          type: "nav_msgs/msg/Odometry"
-        - ros_topic: "/cmexa_base_mecanum_controller/cmd_vel"
-          mqtt_topic: "cmeresearch/cmexa/received_command"
-          type: "geometry_msgs/msg/TwistStamped"
-        - ros_topic: "/move_base_simple/goal"
-          mqtt_topic: "cmeresearch/cmexa/received_simple_goal"
-          type: "geometry_msgs/msg/PoseStamped"
-
+        ros_topics:
+          - /cmexa_base_mecanum_controller/cmd_vel
+          - /cmexa_base/front_left/cmd_vel
+        /cmexa_base_mecanum_controller/cmd_vel:
+          mqtt_topic: cmeresearch/cmexa/base/received_command
+        /cmexa_base/front_left/cmd_vel:
+          mqtt_topic: cmeresearch/cmexa/base/left_front/received_command
       mqtt2ros:
-        - mqtt_topic: "cmeresearch/cmexa/cmd_vel"
-          ros_topic: "/cmexa_base_mecanum_controller/cmd_vel"
-          type: "geometry_msgs/msg/TwistStamped"
-        - mqtt_topic: "cmeresearch/cmexa/pose_goal"
-          ros_topic: "/move_base_simple/goal"
-          type: "geometry_msgs/msg/PoseStamped"
+        mqtt_topics:
+          - cmeresearch/cmexa/base/cmd_vel
+        cmeresearch/cmexa/base/cmd_vel:
+          ros_topic: /cmexa_base_mecanum_controller/cmd_vel
