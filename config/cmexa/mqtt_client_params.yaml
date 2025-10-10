@@ -48,15 +48,12 @@ mqtt_client:
         - ros_topic: "/base_pose_ground_truth"
           mqtt_topic: "cmeresearch/cmexa/sim_odom"
           type: "nav_msgs/msg/Odometry"
-          retain: false
         - ros_topic: "/cmexa_base_mecanum_controller/cmd_vel"
           mqtt_topic: "cmeresearch/cmexa/received_command"
           type: "geometry_msgs/msg/TwistStamped"
-          retain: false
         - ros_topic: "/move_base_simple/goal"
           mqtt_topic: "cmeresearch/cmexa/received_simple_goal"
           type: "geometry_msgs/msg/PoseStamped"
-          retain: false
 
       mqtt2ros:
         - mqtt_topic: "cmeresearch/cmexa/cmd_vel"
