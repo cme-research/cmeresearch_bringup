@@ -142,6 +142,11 @@ vcs pull
 
 Important: Predefine Wireless LAN!!
 
+Predefine LAN Adapter for service and commissining to
+
+subnet mask: 255.255.255.0
+ip: 192.168.1.100
+
 Install docker:
 
 # Add Docker's official GPG key:
@@ -401,6 +406,19 @@ Remember to either add a ssh-key to the pi for your computer or enable password 
 
 ```
 
+### Connect to raspberry via ssvnc
+
+
+Via ssh on the raspi make sure that sudo raspi-config vnc is enabled in the settings!
+
+
+````
+
+sudo apt install ssvnc
+
+````
+
+Connect to the raspi via ip address, user and password.
 
 
 ## Contact
