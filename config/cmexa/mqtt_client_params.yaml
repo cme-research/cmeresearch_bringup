@@ -50,10 +50,16 @@ mqtt_client:
           - /cmexa_base/front_left/cmd_vel
         /cmexa_base_mecanum_controller/cmd_vel:
           mqtt_topic: cmeresearch/cmexa/base/received_command
+          primitive: false
+          ros_type: geometry_msgs/msg/TwistStamped
         /cmexa_base/front_left/cmd_vel:
           mqtt_topic: cmeresearch/cmexa/base/left_front/received_command
+          primitive: false
+          ros_type: cmeresearch_msgs/msg/TinkerStepperCommand
       mqtt2ros:
         mqtt_topics:
           - cmeresearch/cmexa/base/cmd_vel
         cmeresearch/cmexa/base/cmd_vel:
           ros_topic: /cmexa_base_mecanum_controller/cmd_vel
+          primitive: false
+          ros_type: geometry_msgs/msg/TwistStamped
