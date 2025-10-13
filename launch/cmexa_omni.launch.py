@@ -325,6 +325,13 @@ def generate_launch_description():
         output="both",
     )
 
+    ros_json_bridge_node = Node(
+        package="cmeresearch_ros_json_bridge",
+        executable="ros_json_bridge",
+        name="ros_json_bridge",
+        output="both",
+    )
+
     nodes = [control_node,
              robot_state_pub_node,
              robot_controller_spawner,
@@ -332,6 +339,7 @@ def generate_launch_description():
              joy_linux_node,
              joy2twist_node,
              mqtt_client_node,
+             ros_json_bridge_node,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
              tinkerforge_driver_rear_left_stepper,
