@@ -52,10 +52,14 @@ mqtt_client:
           mqtt_topic: cmeresearch/cmexa/base/received_command
           primitive: false
           ros_type: geometry_msgs/msg/TwistStamped
+          serialize: false
+          encoding: "json"
         /cmexa_base/front_left/cmd_vel:
           mqtt_topic: cmeresearch/cmexa/base/left_front/received_command
           primitive: false
           ros_type: cmeresearch_msgs/msg/TinkerStepperCommand
+          serialize: false
+          encoding: "json"
       mqtt2ros:
         mqtt_topics:
           - cmeresearch/cmexa/base/cmd_vel
@@ -63,3 +67,5 @@ mqtt_client:
           ros_topic: /cmexa_base_mecanum_controller/cmd_vel
           primitive: false
           ros_type: geometry_msgs/msg/TwistStamped
+          serialize: false
+          encoding: "json"
