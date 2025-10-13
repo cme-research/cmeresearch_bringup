@@ -327,7 +327,7 @@ def generate_launch_description():
 
     ros_json_bridge_node = Node(
         package="cmeresearch_ros_json_bridge",
-        executable="ros_json_bridge",
+        executable="json_bridge_node",
         name="ros_json_bridge",
         output="both",
     )
