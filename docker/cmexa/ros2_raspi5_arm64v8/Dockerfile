@@ -75,7 +75,7 @@ COPY ./cmeresearch_stepper_driver /robot/ros2_ws/src/cmeresearch_stepper_driver
 
 #### mqtt_bridge ###
 RUN mkdir -p /robot/ros2_ws/src/mqtt_bridge
-COPY . /robot/ros2_ws/src/mqtt_bridge
+COPY ./mqtt_bridge /robot/ros2_ws/src/mqtt_bridge
 
 #### joy2twist ###
 RUN mkdir -p /robot/ros2_ws/src/joy2twist
