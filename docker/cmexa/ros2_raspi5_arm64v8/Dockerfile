@@ -39,6 +39,13 @@ RUN apt-get update \
    && apt-get install -y ros-rolling-rmw-cyclonedds-cpp
 
 
+# workaround for missing rosdep definition for mqtt_bridge (external package)
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+RUN apt-get update \
+    && apt-get install -y python3-pip
+
+
+
 # Create local catkin workspace
 ENV CATKIN_WS=/robot/ros2_ws
 
@@ -66,9 +73,9 @@ COPY ./cmexa_base /robot/ros2_ws/src/cmexa_base
 RUN mkdir -p /robot/ros2_ws/src/cmeresearch_stepper_driver
 COPY ./cmeresearch_stepper_driver /robot/ros2_ws/src/cmeresearch_stepper_driver
 
-#### cmeresearch_ros_json_bridge ###
-RUN mkdir -p /robot/ros2_ws/src/cmeresearch_ros_json_bridge
-COPY ./cmeresearch_ros_json_bridge /robot/ros2_ws/src/cmeresearch_ros_json_bridge
+#### mqtt_bridge ###
+RUN mkdir -p /robot/ros2_ws/src/mqtt_bridge
+COPY . /robot/ros2_ws/src/mqtt_bridge
 
 #### joy2twist ###
 RUN mkdir -p /robot/ros2_ws/src/joy2twist

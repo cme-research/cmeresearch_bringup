@@ -291,46 +291,50 @@ def generate_launch_description():
 #        )
 #    )
 
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "config_filepath",
-            default_value=[
-                launch.substitutions.TextSubstitution(text=os.path.join(
-                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
-                joy_config, launch.substitutions.TextSubstitution(text='.yaml')],
-            description="Create filepath to config file",
-        )
-    )
-
-    config_filepath = LaunchConfiguration("config_filepath")
 
     declared_arguments.append(
         DeclareLaunchArgument(
-            "mqtt_client_config",
+            "mqtt_bridge_config",
             default_value=[
                 launch.substitutions.TextSubstitution(text=os.path.join(
                     get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
-                'mqtt_client_params', launch.substitutions.TextSubstitution(text='.yaml')],
+                'mqtt_bridge_params', launch.substitutions.TextSubstitution(text='.yaml')],
             description="Create filepath to config file",
         )
     )
+    mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
 
-    mqtt_client_config = LaunchConfiguration("mqtt_client_config")
-
-    mqtt_client_node = Node(
-        package="mqtt_client",
-        executable="mqtt_client",
-        name="mqtt_client",
-        parameters=[mqtt_client_config],
+    mqtt_bridge_node = Node(
+        package="mqtt_bridge",
+        executable="mqtt_bridge_node",
+        name="mqtt_bridge_node",
+        parameters=[mqtt_bridge_config],
         output="both",
     )
 
-    ros_json_bridge_node = Node(
-        package="cmeresearch_ros_json_bridge",
-        executable="json_bridge_node",
-        name="ros_json_bridge",
-        output="both",
-    )
+
+
+#    declared_arguments.append(
+#        DeclareLaunchArgument(
+#            "mqtt_client_config",
+#            default_value=[
+#               launch.substitutions.TextSubstitution(text=os.path.join(
+#                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+#                'mqtt_client_params', launch.substitutions.TextSubstitution(text='.yaml')],
+#            description="Create filepath to config file",
+#        )
+#    )
+
+#    mqtt_client_config = LaunchConfiguration("mqtt_client_config")
+
+#    mqtt_client_node = Node(
+#        package="mqtt_client",
+#        executable="mqtt_client",
+#        name="mqtt_client",
+#        parameters=[mqtt_client_config],
+#        output="both",
+#    )
+
 
     nodes = [control_node,
              robot_state_pub_node,
@@ -338,8 +342,8 @@ def generate_launch_description():
              delay_joint_state_broadcaster_after_robot_controller_spawner,
              joy_linux_node,
              joy2twist_node,
-             mqtt_client_node,
-             ros_json_bridge_node,
+             mqtt_bridge_node,
+             #mqtt_client_node,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
              tinkerforge_driver_rear_left_stepper,
