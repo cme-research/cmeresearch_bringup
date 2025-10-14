@@ -10,7 +10,7 @@ mqtt_bridge_node:
       private_path: "cmeresearch/cmexa-001"
     serializer: json:dumps
     deserializer: json:loads
-    n_bridges: 6
+    n_bridges: 3
     bridge:
       bridge1: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:TwistStamped","/cmexa_base_mecanum_controller/cmd_vel","base/cmd_vel"]
       bridge2: ["mqtt_bridge.bridge:MqttToRosBridge","geometry_msgs.msg:TwistStamped","base/cmd_vel","/cmexa_base_mecanum_controller/cmd_vel"]
