@@ -12,6 +12,6 @@ mqtt_bridge_node:
     deserializer: json:loads
     n_bridges: 3
     bridge:
-      bridge1: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:TwistStamped","/cmexa_base_mecanum_controller/cmd_vel","base/cmd_vel"]
-      bridge2: ["mqtt_bridge.bridge:MqttToRosBridge","geometry_msgs.msg:TwistStamped","mqtt/cmd_vel","/mqtt/cmd_vel"]
-      bridge3: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperCommand","/cmexa_base/front_left/cmd_vel","base/front_left/cmd_vel"]
+      bridge1: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:TwistStamped","/cmexa_base_mecanum_controller/cmd_vel","~/base/cmd_vel"]
+      bridge2: ["mqtt_bridge.bridge:MqttToRosBridge","geometry_msgs.msg:TwistStamped","~/mqtt/cmd_vel","/mqtt/cmd_vel"]
+      bridge3: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperCommand","/cmexa_base/front_left/cmd_vel","~/base/front_left/cmd_vel"]
