@@ -19,19 +19,11 @@ def generate_launch_description():
     declared_arguments = []
     declared_arguments.append(
         DeclareLaunchArgument(
-            "gui",
-            default_value="true",
-            description="Start RViz2 automatically with this launch file.",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
             "use_mock_hardware",
             default_value="false",
             description="Start robot with mock hardware mirroring command to its states.",
         )
     )
-    gui = LaunchConfiguration("gui")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
 
     robot_description_content = Command(
@@ -155,7 +147,7 @@ def generate_launch_description():
         executable="joy2twist",
         parameters=[config_filepath],
         emulate_tty="true",
-        remappings=[("/cmd_vel", "/cmexa_base_mecanum_controller/cmd_vel")],
+        remappings=[("/cmd_vel", "/teleop/cmd_vel")],
     )
 
 
@@ -335,6 +327,63 @@ def generate_launch_description():
 #        output="both",
 #    )
 
+    default_config_locks = os.path.join(get_package_share_directory('cmeresearch_bringup'),
+                                        'config/cmexa', 'twist_mux_locks.yaml')
+    default_config_topics = os.path.join(get_package_share_directory('cmeresearch_bringup'),
+                                         'config/cmexa', 'twist_mux_topics.yaml')
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "config_locks",
+                default_value=default_config_locks,
+                description="Create filepath to config file",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "config_topics",
+                default_value=default_config_topics,
+                description="Create filepath to config file",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'cmd_vel_out',
+            default_value='/cmexa_base_mecanum_controller/cmd_vel',
+            description='cmd vel output topic'),
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='False',
+            description='Use simulation time'),
+    )
+
+    twist_mux_node = Node(
+        package='twist_mux',
+        executable='twist_mux',
+        output='screen',
+        remappings={('/cmd_vel_out', LaunchConfiguration('cmd_vel_out'))},
+        parameters=[
+            {'use_sim_time': LaunchConfiguration('use_sim_time')},
+            LaunchConfiguration('config_locks'),
+            LaunchConfiguration('config_topics')]
+    ),
+
+    twist_mux_marker_node = Node(
+            package='twist_mux',
+            executable='twist_marker',
+            output='screen',
+            remappings={('/twist', LaunchConfiguration('cmd_vel_out'))},
+            parameters=[{
+                'use_sim_time': LaunchConfiguration('use_sim_time'),
+                'frame_id': 'base_link',
+                'scale': 1.0,
+                'vertical_position': 2.0}]
+    )
 
     nodes = [control_node,
              robot_state_pub_node,
@@ -343,7 +392,8 @@ def generate_launch_description():
              joy_linux_node,
              joy2twist_node,
              mqtt_bridge_node,
-             #mqtt_client_node,
+             twist_mux_node,
+             twist_mux_marker_node,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
              tinkerforge_driver_rear_left_stepper,

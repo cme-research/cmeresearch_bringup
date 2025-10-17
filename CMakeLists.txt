@@ -67,6 +67,8 @@ install(FILES
  config/cmexa/slam_toolbox_mapping.yaml
  config/cmexa/xbox.config.yaml
  config/cmexa/joy2twist_ugv.yaml
+ config/cmexa/twist_mux_topics.yaml
+ config/cmexa/twist_mux_locks.yaml
  DESTINATION share/${PROJECT_NAME}/config/cmexa/
 )
 
@@ -92,6 +94,7 @@ install(FILES
 
 install(FILES
  driver/teleop.launch.py
+ driver/twist_mux.launch.py
  DESTINATION share/${PROJECT_NAME}/driver
 )
 
@@ -99,7 +102,7 @@ install(FILES
  launch/robot.launch
  launch/unico_mini.launch
  launch/cmexa_omni.launch.py
- driver/cam_web_video.launch
+
  simulation/sim_robot_only_mqtt.launch
  simulation/sim_robot_headless_mqtt.launch
  simulation/sim_robot_controller_mqtt.launch
