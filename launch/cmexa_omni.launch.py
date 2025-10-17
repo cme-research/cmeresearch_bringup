@@ -19,11 +19,19 @@ def generate_launch_description():
     declared_arguments = []
     declared_arguments.append(
         DeclareLaunchArgument(
+            "gui",
+            default_value="false",
+            description="Start RViz2 automatically with this launch file.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "use_mock_hardware",
             default_value="false",
             description="Start robot with mock hardware mirroring command to its states.",
         )
     )
+    gui = LaunchConfiguration("gui")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
 
     robot_description_content = Command(
@@ -328,7 +336,7 @@ def generate_launch_description():
 #    )
 
     default_config_locks = os.path.join(get_package_share_directory('cmeresearch_bringup'),
-                                        'config/cmexa', 'twist_mux_locks.yaml')
+                                         'config/cmexa', 'twist_mux_locks.yaml')
     default_config_topics = os.path.join(get_package_share_directory('cmeresearch_bringup'),
                                          'config/cmexa', 'twist_mux_topics.yaml')
 
@@ -366,18 +374,18 @@ def generate_launch_description():
         package='twist_mux',
         executable='twist_mux',
         output='screen',
-        remappings={('/cmd_vel_out', LaunchConfiguration('cmd_vel_out'))},
+        remappings=[('/cmd_vel_out', LaunchConfiguration('cmd_vel_out'))],
         parameters=[
             {'use_sim_time': LaunchConfiguration('use_sim_time')},
             LaunchConfiguration('config_locks'),
             LaunchConfiguration('config_topics')]
-    ),
+    )
 
     twist_mux_marker_node = Node(
             package='twist_mux',
             executable='twist_marker',
             output='screen',
-            remappings={('/twist', LaunchConfiguration('cmd_vel_out'))},
+            remappings=[('/twist', LaunchConfiguration('cmd_vel_out'))],
             parameters=[{
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
                 'frame_id': 'base_link',
