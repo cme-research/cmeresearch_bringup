@@ -42,7 +42,7 @@ RUN apt-get update \
 # workaround for missing rosdep definition for mqtt_bridge (external package)
 RUN apt-get update \
     && apt-get install -y python3-pip
-#ENV PIP_BREAK_SYSTEM_PACKAGES=1
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 
 # Create local catkin workspace
