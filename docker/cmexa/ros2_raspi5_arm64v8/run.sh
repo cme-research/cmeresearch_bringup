@@ -1,7 +1,8 @@
 # ros2 raspi5 cmexa Dockerfile
 
 docker run -it \
-  --rm --name cmexa-robot \
+  --name cmexa-robot \
+  --restart=always \
   --network="host" \
   --privileged \
   --ipc=host \
