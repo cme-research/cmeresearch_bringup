@@ -292,25 +292,25 @@ def generate_launch_description():
 #    )
 
 
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "mqtt_bridge_config",
-            default_value=[
-                launch.substitutions.TextSubstitution(text=os.path.join(
-                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
-                'mqtt_bridge_params', launch.substitutions.TextSubstitution(text='.yaml')],
-            description="Create filepath to config file",
-        )
-    )
-    mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
+#    declared_arguments.append(
+#        DeclareLaunchArgument(
+#            "mqtt_bridge_config",
+#            default_value=[
+#                launch.substitutions.TextSubstitution(text=os.path.join(
+#                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+#                'mqtt_bridge_params', launch.substitutions.TextSubstitution(text='.yaml')],
+#            description="Create filepath to config file",
+#        )
+#    )
+#    mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
 
-    mqtt_bridge_node = Node(
-        package="mqtt_bridge",
-        executable="mqtt_bridge_node",
-        name="mqtt_bridge_node",
-        parameters=[mqtt_bridge_config],
-        output="both",
-    )
+#    mqtt_bridge_node = Node(
+#        package="mqtt_bridge",
+#        executable="mqtt_bridge_node",
+#        name="mqtt_bridge_node",
+#        parameters=[mqtt_bridge_config],
+#        output="both",
+#    )
 
 
 
@@ -399,7 +399,7 @@ def generate_launch_description():
              delay_joint_state_broadcaster_after_robot_controller_spawner,
              joy_linux_node,
              joy2twist_node,
-             mqtt_bridge_node,
+#             mqtt_bridge_node,
              twist_mux_node,
              twist_mux_marker_node,
              tinkerforge_driver_front_left_stepper,

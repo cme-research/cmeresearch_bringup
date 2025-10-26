@@ -40,9 +40,9 @@ RUN apt-get update \
 
 
 # workaround for missing rosdep definition for mqtt_bridge (external package)
-RUN apt-get update \
-    && apt-get install -y python3-pip
-ENV PIP_BREAK_SYSTEM_PACKAGES=1
+#RUN apt-get update \
+#    && apt-get install -y python3-pip
+#ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 
 # Create local catkin workspace
@@ -73,8 +73,8 @@ RUN mkdir -p /robot/ros2_ws/src/cmeresearch_stepper_driver
 COPY ./cmeresearch_stepper_driver /robot/ros2_ws/src/cmeresearch_stepper_driver
 
 #### mqtt_bridge ###
-RUN mkdir -p /robot/ros2_ws/src/mqtt_bridge
-COPY ./mqtt_bridge /robot/ros2_ws/src/mqtt_bridge
+#RUN mkdir -p /robot/ros2_ws/src/mqtt_bridge
+#COPY ./mqtt_bridge /robot/ros2_ws/src/mqtt_bridge
 
 #### joy2twist ###
 RUN mkdir -p /robot/ros2_ws/src/joy2twist
@@ -95,6 +95,7 @@ RUN apt-get update \
 RUN source /opt/ros/rolling/setup.bash \
     && cd /robot/ros2_ws/  \
 #    && rosdep init \
+    && apt-get update \
     && rosdep update \
     && rosdep fix-permissions \
     && rosdep install -y -r --from-paths src --ignore-src --rosdistro=rolling -y
