@@ -73,6 +73,29 @@ install(FILES
 )
 
 install(FILES
+ config/cmexb/twist_mux.yaml
+ config/cmexb/joy.yaml
+ config/cmexb/cmexb_base_diff_controllers.yaml
+ config/cmexb/pdp.config.yaml
+ config/cmexb/stage_navigation.rviz
+ config/cmexb/mqtt_bridge_params.yaml
+ config/cmexb/mqtt_client_params.yaml
+ config/cmexb/base_local_planner_params.yaml
+ config/cmexb/costmap_common_params.yaml
+ config/cmexb/global_costmap_params.yaml
+ config/cmexb/local_costmap_params.yaml
+ config/cmexb/slam_toolbox_localization.yaml
+ config/cmexb/slam_toolbox_mapping.yaml
+ config/cmexb/xbox.config.yaml
+ config/cmexb/joy2twist_ugv.yaml
+ config/cmexb/twist_mux_topics.yaml
+ config/cmexb/twist_mux_locks.yaml
+ DESTINATION share/${PROJECT_NAME}/config/cmexb/
+)
+
+
+
+install(FILES
  config/cmexaiii/twist_mux.yaml
  config/cmexaiii/joy.yaml
  config/cmexaiii/logi_teleop.yaml
@@ -102,6 +125,7 @@ install(FILES
  launch/robot.launch
  launch/unico_mini.launch
  launch/cmexa_omni.launch.py
+ launch/cmexb_diff.launch.py
 
  simulation/sim_robot_only_mqtt.launch
  simulation/sim_robot_headless_mqtt.launch

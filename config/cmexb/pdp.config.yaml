@@ -1,0 +1,27 @@
+# Configuration for PDP joystick controllers. See # Configuration for PDP joystick controllers
+teleop_twist_joy_node:
+  ros__parameters:
+    # ---------------------------------------------------------
+    # Axis mappings
+    # ---------------------------------------------------------
+
+    # Forward/backward (linear.x)
+    axis_linear.x: 1          # Left stick vertical
+    scale_linear.x: 0.15
+    scale_linear_turbo.x: 0.3
+
+    # Strafe left/right (linear.y)
+    axis_linear.y: 0          # Left stick horizontal
+    scale_linear.y: 0
+    scale_linear_turbo.y: 0.3
+
+    # Rotation (angular.z)
+    axis_angular.yaw: 2       # Right stick horizontal (3)
+    scale_angular.yaw: 0.5
+    scale_angular_turbo.yaw: 1.0
+
+    # Control buttons
+    enable_button: 4      # Left 'LB' button - Dead man's switch
+    enable_turbo_button: 5  # Right 'RB' button - Turbo mode
+    # Deadzone for twist command activation
+    require_enable_button: true
