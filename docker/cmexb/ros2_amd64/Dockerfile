@@ -62,6 +62,9 @@ COPY ./cmexa_base /robot/ros2_ws/src/cmexa_base
 RUN mkdir -p /robot/ros2_ws/src/cmeresearch_stepper_driver
 COPY ./cmeresearch_stepper_driver /robot/ros2_ws/src/cmeresearch_stepper_driver
 
+#### joy2twist ###
+RUN mkdir -p /robot/ros2_ws/src/joy2twist
+COPY ./joy2twist /robot/ros2_ws/src/joy2twist
 
 # 3d party non ros specific dependencies
 # - tinkerforge bindings
@@ -95,10 +98,10 @@ RUN rm -rf /var/lib/apt/lists/*
 # Always source ros_entrypoint.sh when launching bash (e.g. when attaching to container)
 RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
 
-COPY ./cmeresearch_bringup/docker/cmexa/ros2_amd64/ros_entrypoint.sh /
+COPY ./cmeresearch_bringup/docker/cmexb/ros2_amd64/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
 
-ENV ROBOT=cmexa
+ENV ROBOT=cmexb
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["ros2", "launch", "cmeresearch_bringup", "cmexb_diff.launch.py"]

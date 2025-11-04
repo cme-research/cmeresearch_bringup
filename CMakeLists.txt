@@ -78,8 +78,6 @@ install(FILES
  config/cmexb/cmexb_base_diff_controllers.yaml
  config/cmexb/pdp.config.yaml
  config/cmexb/stage_navigation.rviz
- config/cmexb/mqtt_bridge_params.yaml
- config/cmexb/mqtt_client_params.yaml
  config/cmexb/base_local_planner_params.yaml
  config/cmexb/costmap_common_params.yaml
  config/cmexb/global_costmap_params.yaml
