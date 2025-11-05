@@ -83,7 +83,6 @@ def generate_launch_description():
             "cmexb_base_controller",
             "--param-file",
             robot_controllers,
-            "--controller-ros-args",
         ],
     )
 
