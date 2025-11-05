@@ -107,7 +107,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_vel",
-            default_value="/cmexb_base_controller/cmd_vel",
+            default_value="/xxx/cmd_vel",
             description="Topic to publish cmd_vel from joystick.",
         )
     )
@@ -272,6 +272,7 @@ def generate_launch_description():
             remappings=[('/twist', LaunchConfiguration('cmd_vel_out'))],
             parameters=[{
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
+                'use_stamped': True,
                 'frame_id': 'base_link',
                 'scale': 1.0,
                 'vertical_position': 2.0}]
