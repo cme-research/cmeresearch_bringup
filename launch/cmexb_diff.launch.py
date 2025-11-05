@@ -84,7 +84,6 @@ def generate_launch_description():
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmexb_base_diff_controller/reference:=/cmexb_base_diff_controller/cmd_vel",
         ],
     )
 
@@ -109,7 +108,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_vel",
-            default_value="/cmexb_base_diff_controller/cmd_vel",
+            default_value="/cmexb_base_controller/cmd_vel",
             description="Topic to publish cmd_vel from joystick.",
         )
     )
@@ -245,7 +244,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexb_base_diff_controller/cmd_vel',
+            default_value='/cmexb_base_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
