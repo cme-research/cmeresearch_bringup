@@ -25,5 +25,13 @@ repositories:
     version: rolling_dev
   joy2twist:
     type: https
-    url: https://github.com/husarion/joy2twist.git
-    version: ros2
+    url: https://cme-research@bitbucket.org/cme-robotics/joy2twist.git
+    version: rolling_dev
+  ldlidar_stl_ros2:
+    type: https
+    url: https://cme-research@bitbucket.org/cme-robotics/ldlidar_stl_ros2.git
+    version: rolling_dev
+  mqtt_bridge:
+    type: https
+    url: https://cme-research@bitbucket.org/cme-robotics/mqtt_bridge.git
+    version: rolling_dev
