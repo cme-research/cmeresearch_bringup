@@ -80,7 +80,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "cmexb_base_controller",
+            "robot_base_controller",
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
