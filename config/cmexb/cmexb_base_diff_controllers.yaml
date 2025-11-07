@@ -5,7 +5,7 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-cmexb_base_controller:
+cmexb_base_diff_controller:
   ros__parameters:
     type: diff_drive_controller/DiffDriveController
 
