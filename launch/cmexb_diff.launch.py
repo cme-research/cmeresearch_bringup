@@ -83,6 +83,8 @@ def generate_launch_description():
             "cmexb_base_diff_controller",
             "--param-file",
             robot_controllers,
+            "--controller-ros-args",
+            "-r /cmd_vel_stamped:=/cmexa_base_diff_controller/cmd_vel",
         ],
     )
 
