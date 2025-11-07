@@ -96,7 +96,7 @@ def generate_launch_description():
             on_exit=[joint_state_broadcaster_spawner],
         )
     )
-
+    #comment
 
     # from teleop_twist_joy.launch.py
     declared_arguments.append(
