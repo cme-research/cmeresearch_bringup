@@ -245,7 +245,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexb_base_controller/cmd_vel',
+            default_value='/cmexa_base_mecanum_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
