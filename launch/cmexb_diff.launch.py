@@ -53,7 +53,7 @@ def generate_launch_description():
         [
             FindPackageShare("cmeresearch_bringup"),
             "config",
-            "cmexb/cmexb_base_diff_controllers.yaml",
+            "cmexb/cmexa_base_mecanum_controllers.yaml",
         ]
     )
 
@@ -80,11 +80,11 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "cmexb_base_controller",
+            "cmexa_base_controller",
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmd_vel:=/cmd_vel",
+            "-r /cmexa_base_mecanum_controller/reference:=/cmexa_base_mecanum_controller/cmd_vel",
         ],
     )
 
