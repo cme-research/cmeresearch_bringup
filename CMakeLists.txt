@@ -76,7 +76,6 @@ install(FILES
  config/cmexb/twist_mux.yaml
  config/cmexb/joy.yaml
  config/cmexb/cmexb_base_mecanum_controllers.yaml
- config/cmexb/cmexb_base_diff_controllers.yaml
  config/cmexb/pdp.config.yaml
  config/cmexb/stage_navigation.rviz
  config/cmexb/base_local_planner_params.yaml
