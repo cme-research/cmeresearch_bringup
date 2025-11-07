@@ -84,7 +84,7 @@ def generate_launch_description():
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmd_vel_stamped:=/cmexa_base_diff_controller/cmd_vel_stamped",
+            "-r ~/cmd_vel_:=/cmexb_base_diff_controller/cmd_vel",
         ],
     )
 
@@ -245,7 +245,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexb_base_diff_controller/cmd_vel_stamped',
+            default_value='/cmexb_base_diff_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
