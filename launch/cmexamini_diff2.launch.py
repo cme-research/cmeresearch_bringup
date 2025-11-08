@@ -135,7 +135,7 @@ def generate_launch_description():
             "config_filepath",
             default_value=[
                 launch.substitutions.TextSubstitution(text=os.path.join(
-                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexamini/', '')),
                 joy_config, launch.substitutions.TextSubstitution(text='.yaml')],
             description="Create filepath to config file",
         )
@@ -159,36 +159,6 @@ def generate_launch_description():
     )
 
 
-    tinkerforge_driver_front_left_stepper = Node(
-        package='cmeresearch_stepper_driver',
-        namespace='tf_drivers',
-        executable='stepper_driver_node',
-        name='cmexa_stepper_driver_left_stepper',
-        remappings=[
-            ('drive_input', '/cmexa_base/front_left/cmd_vel'),
-            ('drive_output', '/cmexa_base/front_left/feedback')],
-        parameters=[{'bricklet_host': 'localhost',
-                     'bricklet_port': 4223,
-                     'brick_position': 'a',
-                     'step_resolution': 8,
-                     'interpolation': True,
-                     'acceleration': 10000,
-                     'deceleration': 10000,
-                     'steps_per_revolution': 200,
-                     'mirror_direction': False,
-                     'max_step_vel': 3000,
-                     'wheel_name': 'front_left_wheel',
-                     'hw_simulation': False,
-                     'standstill_current': 200,
-                     'motor_run_current': 800,
-                     'standstill_delay_time': 300,
-                     'power_down_time': 1000,
-                     'stealth_threshold': 4000,
-                     'coolstep_threshold': 6000,
-                     'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
-                     }]
-    )
 
     tinkerforge_driver_front_right_stepper = Node(
         package='cmeresearch_stepper_driver',
@@ -200,7 +170,7 @@ def generate_launch_description():
             ('drive_output', '/cmexa_base/front_right/feedback')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
-                     'brick_position': 'b',
+                     'brick_position': 'a',
                      'step_resolution': 8,
                      'interpolation': True,
                      'acceleration': 10000,
@@ -232,7 +202,7 @@ def generate_launch_description():
             ('drive_output', '/cmexa_base/rear_left/feedback')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
-                     'brick_position': 'c',
+                     'brick_position': 'b',
                      'step_resolution': 8,
                      'interpolation': True,
                      'acceleration': 10000,
@@ -253,36 +223,6 @@ def generate_launch_description():
                      }]
     )
 
-    tinkerforge_driver_rear_right_stepper = Node(
-        package='cmeresearch_stepper_driver',
-        namespace='tf_drivers',
-        executable='stepper_driver_node',
-        name='cmexa_stepper_driver_rear_right_stepper',
-        remappings=[
-            ('drive_input', '/cmexa_base/rear_right/cmd_vel'),
-            ('drive_output', '/cmexa_base/rear_right/feedback')],
-        parameters=[{'bricklet_host': 'localhost',
-                     'bricklet_port': 4223,
-                     'brick_position': 'd',
-                     'step_resolution': 8,
-                     'interpolation': True,
-                     'acceleration': 10000,
-                     'deceleration': 10000,
-                     'steps_per_revolution': 200,
-                     'mirror_direction': True,
-                     'max_step_vel': 3000,
-                     'wheel_name': 'rear_right_wheel',
-                     'hw_simulation': False,
-                     'standstill_current': 200,
-                     'motor_run_current': 800,
-                     'standstill_delay_time': 300,
-                     'power_down_time': 1000,
-                     'stealth_threshold': 4000,
-                     'coolstep_threshold': 6000,
-                     'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
-                     }]
-    )
 
 #   delay_teleop_joy_after_engine_spawner = RegisterEventHandler(
 #        event_handler=OnProcessExit(
@@ -336,9 +276,9 @@ def generate_launch_description():
 #    )
 
     default_config_locks = os.path.join(get_package_share_directory('cmeresearch_bringup'),
-                                         'config/cmexa', 'twist_mux_locks.yaml')
+                                         'config/cmexamini', 'twist_mux_locks.yaml')
     default_config_topics = os.path.join(get_package_share_directory('cmeresearch_bringup'),
-                                         'config/cmexa', 'twist_mux_topics.yaml')
+                                         'config/cmexamini', 'twist_mux_topics.yaml')
 
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -359,7 +299,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexa_base_mecanum_controller/cmd_vel',
+            default_value='/cmexa_base_diff_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
@@ -402,10 +342,8 @@ def generate_launch_description():
 #             mqtt_bridge_node,
              twist_mux_node,
              twist_mux_marker_node,
-             tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
              tinkerforge_driver_rear_left_stepper,
-             tinkerforge_driver_rear_right_stepper
             ]
 
     return LaunchDescription(declared_arguments + nodes)
