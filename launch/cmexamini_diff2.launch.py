@@ -329,6 +329,7 @@ def generate_launch_description():
             parameters=[{
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
                 'frame_id': 'base_link',
+                'use_stamped: true'
                 'scale': 1.0,
                 'vertical_position': 2.0}]
     )
