@@ -17,6 +17,7 @@ cmexa_base_diff_controller:
     wheel_separation: 0.105
     #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
     wheel_radius: 0.035
+    gear_ratio: 1.0
 
     wheel_separation_multiplier: 1.0
     left_wheel_radius_multiplier: 1.0
@@ -28,7 +29,9 @@ cmexa_base_diff_controller:
     pose_covariance_diagonal : [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
     twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
 
-    open_loop: false # calculate odometry from feedback if false
+    #open_loop: false # calculate odometry from feedback if false
+    open_loop: true
+
     position_feedback: true
     enable_odom_tf: true
 
