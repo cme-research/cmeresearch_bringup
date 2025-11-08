@@ -39,7 +39,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("cmeresearch_description"), "urdf", "cmexb/cmexb.urdf.xacro"]
+                [FindPackageShare("cmeresearch_description"), "urdf", "cmexamini/cmexamini.urdf.xacro"]
             ),
             " ",
             "use_mock_hardware:=",
@@ -53,7 +53,7 @@ def generate_launch_description():
         [
             FindPackageShare("cmeresearch_bringup"),
             "config",
-            "cmexb/cmexb_base_diff_controllers.yaml",
+            "cmexamini/cmexamini_base_diff_controllers.yaml",
         ]
     )
 
@@ -80,11 +80,11 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "cmexb_base_diff_controller",
+            "cmexa_base_diff_controller",
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmexb_base_diff_controller/cmd_vel:=/cmexb_base_diff_controller/cmd_vel",
+            "-r /cmexa_base_diff_controller/cmd_vel:=/cmexa_base_diff_controller/cmd_vel",
         ],
     )
 
@@ -96,7 +96,7 @@ def generate_launch_description():
             on_exit=[joint_state_broadcaster_spawner],
         )
     )
-    #comment
+
 
     # from teleop_twist_joy.launch.py
     declared_arguments.append(
@@ -109,7 +109,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_vel",
-            default_value="/xxx/cmd_vel",
+            default_value="/cmexa_base_diff_controller/cmd_vel",
             description="Topic to publish cmd_vel from joystick.",
         )
     )
@@ -135,7 +135,7 @@ def generate_launch_description():
             "config_filepath",
             default_value=[
                 launch.substitutions.TextSubstitution(text=os.path.join(
-                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexb/', '')),
+                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
                 joy_config, launch.substitutions.TextSubstitution(text='.yaml')],
             description="Create filepath to config file",
         )
@@ -159,17 +159,48 @@ def generate_launch_description():
     )
 
 
+    tinkerforge_driver_front_left_stepper = Node(
+        package='cmeresearch_stepper_driver',
+        namespace='tf_drivers',
+        executable='stepper_driver_node',
+        name='cmexa_stepper_driver_left_stepper',
+        remappings=[
+            ('drive_input', '/cmexa_base/front_left/cmd_vel'),
+            ('drive_output', '/cmexa_base/front_left/feedback')],
+        parameters=[{'bricklet_host': 'localhost',
+                     'bricklet_port': 4223,
+                     'brick_position': 'a',
+                     'step_resolution': 8,
+                     'interpolation': True,
+                     'acceleration': 10000,
+                     'deceleration': 10000,
+                     'steps_per_revolution': 200,
+                     'mirror_direction': False,
+                     'max_step_vel': 3000,
+                     'wheel_name': 'front_left_wheel',
+                     'hw_simulation': False,
+                     'standstill_current': 200,
+                     'motor_run_current': 800,
+                     'standstill_delay_time': 300,
+                     'power_down_time': 1000,
+                     'stealth_threshold': 4000,
+                     'coolstep_threshold': 6000,
+                     'classic_threshold': 10000,
+                     'high_velocity_chopper_mode': False
+                     }]
+    )
+
     tinkerforge_driver_front_right_stepper = Node(
         package='cmeresearch_stepper_driver',
         namespace='tf_drivers',
         executable='stepper_driver_node',
-        name='cmexb_stepper_driver_right_stepper',
+        name='cmexa_stepper_driver_right_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/front_right/cmd_vel'),
             ('drive_output', '/cmexa_base/front_right/feedback')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
-                     'brick_position': 'a',
+                     'brick_position': 'b',
                      'step_resolution': 8,
                      'interpolation': True,
                      'acceleration': 10000,
@@ -190,17 +221,18 @@ def generate_launch_description():
                      }]
     )
 
+
     tinkerforge_driver_rear_left_stepper = Node(
         package='cmeresearch_stepper_driver',
         namespace='tf_drivers',
         executable='stepper_driver_node',
-        name='cmexb_stepper_driver_rear_left_stepper',
+        name='cmexa_stepper_driver_rear_left_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/rear_left/cmd_vel'),
             ('drive_output', '/cmexa_base/rear_left/feedback')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
-                     'brick_position': 'b',
+                     'brick_position': 'c',
                      'step_resolution': 8,
                      'interpolation': True,
                      'acceleration': 10000,
@@ -221,10 +253,92 @@ def generate_launch_description():
                      }]
     )
 
+    tinkerforge_driver_rear_right_stepper = Node(
+        package='cmeresearch_stepper_driver',
+        namespace='tf_drivers',
+        executable='stepper_driver_node',
+        name='cmexa_stepper_driver_rear_right_stepper',
+        remappings=[
+            ('drive_input', '/cmexa_base/rear_right/cmd_vel'),
+            ('drive_output', '/cmexa_base/rear_right/feedback')],
+        parameters=[{'bricklet_host': 'localhost',
+                     'bricklet_port': 4223,
+                     'brick_position': 'd',
+                     'step_resolution': 8,
+                     'interpolation': True,
+                     'acceleration': 10000,
+                     'deceleration': 10000,
+                     'steps_per_revolution': 200,
+                     'mirror_direction': True,
+                     'max_step_vel': 3000,
+                     'wheel_name': 'rear_right_wheel',
+                     'hw_simulation': False,
+                     'standstill_current': 200,
+                     'motor_run_current': 800,
+                     'standstill_delay_time': 300,
+                     'power_down_time': 1000,
+                     'stealth_threshold': 4000,
+                     'coolstep_threshold': 6000,
+                     'classic_threshold': 10000,
+                     'high_velocity_chopper_mode': False
+                     }]
+    )
+
+#   delay_teleop_joy_after_engine_spawner = RegisterEventHandler(
+#        event_handler=OnProcessExit(
+#            target_action=robot_controller_spawner,
+#           on_exit=[joy_node],
+#        )
+#    )
+
+
+#    declared_arguments.append(
+#        DeclareLaunchArgument(
+#            "mqtt_bridge_config",
+#            default_value=[
+#                launch.substitutions.TextSubstitution(text=os.path.join(
+#                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+#                'mqtt_bridge_params', launch.substitutions.TextSubstitution(text='.yaml')],
+#            description="Create filepath to config file",
+#        )
+#    )
+#    mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
+
+#    mqtt_bridge_node = Node(
+#        package="mqtt_bridge",
+#        executable="mqtt_bridge_node",
+#        name="mqtt_bridge_node",
+#        parameters=[mqtt_bridge_config],
+#        output="both",
+#    )
+
+
+
+#    declared_arguments.append(
+#        DeclareLaunchArgument(
+#            "mqtt_client_config",
+#            default_value=[
+#               launch.substitutions.TextSubstitution(text=os.path.join(
+#                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+#                'mqtt_client_params', launch.substitutions.TextSubstitution(text='.yaml')],
+#            description="Create filepath to config file",
+#        )
+#    )
+
+#    mqtt_client_config = LaunchConfiguration("mqtt_client_config")
+
+#    mqtt_client_node = Node(
+#        package="mqtt_client",
+#        executable="mqtt_client",
+#        name="mqtt_client",
+#        parameters=[mqtt_client_config],
+#        output="both",
+#    )
+
     default_config_locks = os.path.join(get_package_share_directory('cmeresearch_bringup'),
-                                         'config/cmexb', 'twist_mux_locks.yaml')
+                                         'config/cmexa', 'twist_mux_locks.yaml')
     default_config_topics = os.path.join(get_package_share_directory('cmeresearch_bringup'),
-                                         'config/cmexb', 'twist_mux_topics.yaml')
+                                         'config/cmexa', 'twist_mux_topics.yaml')
 
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -245,7 +359,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexb_base_diff_controller/cmd_vel',
+            default_value='/cmexa_base_mecanum_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
@@ -274,7 +388,6 @@ def generate_launch_description():
             remappings=[('/twist', LaunchConfiguration('cmd_vel_out'))],
             parameters=[{
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
-                'use_stamped': True,
                 'frame_id': 'base_link',
                 'scale': 1.0,
                 'vertical_position': 2.0}]
@@ -286,10 +399,13 @@ def generate_launch_description():
              delay_joint_state_broadcaster_after_robot_controller_spawner,
              joy_linux_node,
              joy2twist_node,
+#             mqtt_bridge_node,
              twist_mux_node,
              twist_mux_marker_node,
+             tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
-             tinkerforge_driver_rear_left_stepper
+             tinkerforge_driver_rear_left_stepper,
+             tinkerforge_driver_rear_right_stepper
             ]
 
     return LaunchDescription(declared_arguments + nodes)

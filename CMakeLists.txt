@@ -73,22 +73,22 @@ install(FILES
 )
 
 install(FILES
- config/cmexb/twist_mux.yaml
- config/cmexb/joy.yaml
- config/cmexb/cmexb_base_mecanum_controllers.yaml
- config/cmexb/pdp.config.yaml
- config/cmexb/stage_navigation.rviz
- config/cmexb/base_local_planner_params.yaml
- config/cmexb/costmap_common_params.yaml
- config/cmexb/global_costmap_params.yaml
- config/cmexb/local_costmap_params.yaml
- config/cmexb/slam_toolbox_localization.yaml
- config/cmexb/slam_toolbox_mapping.yaml
- config/cmexb/xbox.config.yaml
- config/cmexb/joy2twist_ugv.yaml
- config/cmexb/twist_mux_topics.yaml
- config/cmexb/twist_mux_locks.yaml
- DESTINATION share/${PROJECT_NAME}/config/cmexb/
+ config/cmexamini/twist_mux.yaml
+ config/cmexamini/joy.yaml
+ config/cmexamini/cmexamini_base_diff_controllers.yaml
+ config/cmexamini/pdp.config.yaml
+ config/cmexamini/stage_navigation.rviz
+ config/cmexamini/base_local_planner_params.yaml
+ config/cmexamini/costmap_common_params.yaml
+ config/cmexamini/global_costmap_params.yaml
+ config/cmexamini/local_costmap_params.yaml
+ config/cmexamini/slam_toolbox_localization.yaml
+ config/cmexamini/slam_toolbox_mapping.yaml
+ config/cmexamini/xbox.config.yaml
+ config/cmexamini/joy2twist_ugv.yaml
+ config/cmexamini/twist_mux_topics.yaml
+ config/cmexamini/twist_mux_locks.yaml
+ DESTINATION share/${PROJECT_NAME}/config/cmexamini/
 )
 
 
@@ -123,7 +123,8 @@ install(FILES
  launch/robot.launch
  launch/unico_mini.launch
  launch/cmexa_omni.launch.py
- launch/cmexb_diff.launch.py
+ launch/cmexamini_diff.launch.py
+ launch/cmexamini_diff2.launch.py
 
  simulation/sim_robot_only_mqtt.launch
  simulation/sim_robot_headless_mqtt.launch
