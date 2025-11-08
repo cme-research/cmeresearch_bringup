@@ -98,10 +98,11 @@ RUN rm -rf /var/lib/apt/lists/*
 # Always source ros_entrypoint.sh when launching bash (e.g. when attaching to container)
 RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
 
-COPY ./cmeresearch_bringup/docker/cmexb/ros2_amd64/ros_entrypoint.sh /
+COPY ./cmeresearch_bringup/docker/cmexamini/ros2_amd64/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
 
 ENV ROBOT=cmexb
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
-CMD ["ros2", "launch", "cmeresearch_bringup", "cmexb_diff.launch.py"]
+#CMD ["ros2", "launch", "cmeresearch_bringup", "cmexb_diff.launch.py"]
+CMD ["bash"]

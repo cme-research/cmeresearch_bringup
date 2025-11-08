@@ -39,7 +39,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("cmeresearch_description"), "urdf", "cmexamini/cmexamini.urdf.xacro"]
+                [FindPackageShare("cmeresearch_description"), "urdf/cmexamini/", "cmexamini.urdf.xacro"]
             ),
             " ",
             "use_mock_hardware:=",
@@ -52,8 +52,8 @@ def generate_launch_description():
     robot_controllers = PathJoinSubstitution(
         [
             FindPackageShare("cmeresearch_bringup"),
-            "config",
-            "cmexamini/cmexamini_base_diff_controllers.yaml",
+            "config/cmexamini/",
+            "cmexamini_base_diff_controllers.yaml",
         ]
     )
 
