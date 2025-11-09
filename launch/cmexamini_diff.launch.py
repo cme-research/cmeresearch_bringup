@@ -1,26 +1,18 @@
-# Copyright 2020 ros2_control Development Team
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch_ros.actions import Node
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
+from ament_index_python.packages import get_package_share_directory
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-
+import launch_ros.actions
+import launch
+import os
 
 def generate_launch_description():
     # Declare arguments
@@ -28,7 +20,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "gui",
-            default_value="true",
+            default_value="false",
             description="Start RViz2 automatically with this launch file.",
         )
     )
@@ -39,35 +31,30 @@ def generate_launch_description():
             description="Start robot with mock hardware mirroring command to its states.",
         )
     )
-
-    # Initialize Arguments
     gui = LaunchConfiguration("gui")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
 
-    # Get URDF via xacro
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("cmeresearch_description"), "urdf", "cmexamini.urdf.xacro"]
+                [FindPackageShare("cmeresearch_description"), "urdf", "cmexamini/cmexamini.urdf.xacro"]
             ),
             " ",
             "use_mock_hardware:=",
             use_mock_hardware,
         ]
     )
+
     robot_description = {"robot_description": robot_description_content}
 
     robot_controllers = PathJoinSubstitution(
         [
-            FindPackageShare("cmeresearch_description"),
+            FindPackageShare("cmeresearch_bringup"),
             "config",
-            "cmexamini_base_diff_controllers.yaml",
+            "cmexamini/cmexamini_base_diff_controllers.yaml",
         ]
-    )
-    rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare("cmeresearch_description"), "diffbot/rviz", "diffbot.rviz"]
     )
 
     control_node = Node(
@@ -81,14 +68,6 @@ def generate_launch_description():
         executable="robot_state_publisher",
         output="both",
         parameters=[robot_description],
-    )
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="log",
-        arguments=["-d", rviz_config_file],
-        condition=IfCondition(gui),
     )
 
     joint_state_broadcaster_spawner = Node(
@@ -105,16 +84,8 @@ def generate_launch_description():
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmexa_base_diff_controller/cmd_vel:=/cmd_vel",
+            "-r /cmexa_base_diff_controller/cmd_vel:=/cmexa_base_diff_controller/cmd_vel",
         ],
-    )
-
-    # Delay rviz start after `joint_state_broadcaster`
-    delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster_spawner,
-            on_exit=[rviz_node],
-        )
     )
 
     # Delay start of joint_state_broadcaster after `robot_controller`
@@ -126,12 +97,254 @@ def generate_launch_description():
         )
     )
 
-    nodes = [
-        control_node,
-        robot_state_pub_node,
-        robot_controller_spawner,
-        delay_rviz_after_joint_state_broadcaster_spawner,
-        delay_joint_state_broadcaster_after_robot_controller_spawner,
-    ]
+
+    # from teleop_twist_joy.launch.py
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "joy_config",
+            default_value="joy2twist_ugv",
+            description="Select configuration file for used joystick.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "joy_vel",
+            default_value="/cmexa_base_diff_controller/cmd_vel",
+            description="Topic to publish cmd_vel from joystick.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "joy_dev",
+            default_value="0",
+            description="Param to specify joystick device id.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "publish_stamped_twist",
+            default_value="true",
+            description="Publish stamped twist instead of raw",
+        )
+    )
+    joy_config = LaunchConfiguration("joy_config")
+    joy_dev = LaunchConfiguration("joy_dev")
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "config_filepath",
+            default_value=[
+                launch.substitutions.TextSubstitution(text=os.path.join(
+                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexamini/', '')),
+                joy_config, launch.substitutions.TextSubstitution(text='.yaml')],
+            description="Create filepath to config file",
+        )
+    )
+
+    config_filepath = LaunchConfiguration("config_filepath")
+
+    joy_linux_node = Node(
+        package="joy_linux",
+        executable="joy_linux_node",
+        emulate_tty="true",
+        remappings=[("/diagnostics", "diagnostics")],
+    )
+
+    joy2twist_node = Node(
+        package="joy2twist",
+        executable="joy2twist",
+        parameters=[config_filepath],
+        emulate_tty="true",
+        remappings=[("/cmd_vel", "/teleop/cmd_vel")],
+    )
+
+
+
+    tinkerforge_driver_front_right_stepper = Node(
+        package='cmeresearch_stepper_driver',
+        namespace='tf_drivers',
+        executable='stepper_driver_node',
+        name='cmexa_stepper_driver_right_stepper',
+        remappings=[
+            ('drive_input', '/cmexa_base/front_right/cmd_vel'),
+            ('drive_output', '/cmexa_base/front_right/feedback')],
+        parameters=[{'bricklet_host': 'localhost',
+                     'bricklet_port': 4223,
+                     'brick_position': 'a',
+                     'step_resolution': 8,
+                     'interpolation': True,
+                     'acceleration': 10000,
+                     'deceleration': 10000,
+                     'steps_per_revolution': 200,
+                     'mirror_direction': True,
+                     'max_step_vel': 3000,
+                     'wheel_name': 'front_right_wheel',
+                     'hw_simulation': False,
+                     'standstill_current': 200,
+                     'motor_run_current': 800,
+                     'standstill_delay_time': 300,
+                     'power_down_time': 1000,
+                     'stealth_threshold': 4000,
+                     'coolstep_threshold': 6000,
+                     'classic_threshold': 10000,
+                     'high_velocity_chopper_mode': False
+                     }]
+    )
+
+
+    tinkerforge_driver_rear_left_stepper = Node(
+        package='cmeresearch_stepper_driver',
+        namespace='tf_drivers',
+        executable='stepper_driver_node',
+        name='cmexa_stepper_driver_rear_left_stepper',
+        remappings=[
+            ('drive_input', '/cmexa_base/rear_left/cmd_vel'),
+            ('drive_output', '/cmexa_base/rear_left/feedback')],
+        parameters=[{'bricklet_host': 'localhost',
+                     'bricklet_port': 4223,
+                     'brick_position': 'b',
+                     'step_resolution': 8,
+                     'interpolation': True,
+                     'acceleration': 10000,
+                     'deceleration': 10000,
+                     'steps_per_revolution': 200,
+                     'mirror_direction': False,
+                     'max_step_vel': 3000,
+                     'wheel_name': 'rear_left_wheel',
+                     'hw_simulation': False,
+                     'standstill_current': 200,
+                     'motor_run_current': 800,
+                     'standstill_delay_time': 300,
+                     'power_down_time': 1000,
+                     'stealth_threshold': 4000,
+                     'coolstep_threshold': 6000,
+                     'classic_threshold': 10000,
+                     'high_velocity_chopper_mode': False
+                     }]
+    )
+
+
+#   delay_teleop_joy_after_engine_spawner = RegisterEventHandler(
+#        event_handler=OnProcessExit(
+#            target_action=robot_controller_spawner,
+#           on_exit=[joy_node],
+#        )
+#    )
+
+
+#    declared_arguments.append(
+#        DeclareLaunchArgument(
+#            "mqtt_bridge_config",
+#            default_value=[
+#                launch.substitutions.TextSubstitution(text=os.path.join(
+#                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+#                'mqtt_bridge_params', launch.substitutions.TextSubstitution(text='.yaml')],
+#            description="Create filepath to config file",
+#        )
+#    )
+#    mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
+
+#    mqtt_bridge_node = Node(
+#        package="mqtt_bridge",
+#        executable="mqtt_bridge_node",
+#        name="mqtt_bridge_node",
+#        parameters=[mqtt_bridge_config],
+#        output="both",
+#    )
+
+
+
+#    declared_arguments.append(
+#        DeclareLaunchArgument(
+#            "mqtt_client_config",
+#            default_value=[
+#               launch.substitutions.TextSubstitution(text=os.path.join(
+#                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+#                'mqtt_client_params', launch.substitutions.TextSubstitution(text='.yaml')],
+#            description="Create filepath to config file",
+#        )
+#    )
+
+#    mqtt_client_config = LaunchConfiguration("mqtt_client_config")
+
+#    mqtt_client_node = Node(
+#        package="mqtt_client",
+#        executable="mqtt_client",
+#        name="mqtt_client",
+#        parameters=[mqtt_client_config],
+#        output="both",
+#    )
+
+    default_config_locks = os.path.join(get_package_share_directory('cmeresearch_bringup'),
+                                         'config/cmexamini', 'twist_mux_locks.yaml')
+    default_config_topics = os.path.join(get_package_share_directory('cmeresearch_bringup'),
+                                         'config/cmexamini', 'twist_mux_topics.yaml')
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "config_locks",
+                default_value=default_config_locks,
+                description="Create filepath to config file",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "config_topics",
+                default_value=default_config_topics,
+                description="Create filepath to config file",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'cmd_vel_out',
+            default_value='/cmexa_base_diff_controller/cmd_vel',
+            description='cmd vel output topic'),
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='False',
+            description='Use simulation time'),
+    )
+
+    twist_mux_node = Node(
+        package='twist_mux',
+        executable='twist_mux',
+        output='screen',
+        remappings=[('/cmd_vel_out', LaunchConfiguration('cmd_vel_out'))],
+        parameters=[
+            {'use_sim_time': LaunchConfiguration('use_sim_time')},
+            LaunchConfiguration('config_locks'),
+            LaunchConfiguration('config_topics')]
+    )
+
+    twist_mux_marker_node = Node(
+            package='twist_mux',
+            executable='twist_marker',
+            output='screen',
+            remappings=[('/twist', LaunchConfiguration('cmd_vel_out'))],
+            parameters=[{
+                'use_sim_time': LaunchConfiguration('use_sim_time'),
+                'frame_id': 'base_link',
+                'use_stamped: true'
+                'scale': 1.0,
+                'vertical_position': 2.0}]
+    )
+
+    nodes = [control_node,
+             robot_state_pub_node,
+             robot_controller_spawner,
+             delay_joint_state_broadcaster_after_robot_controller_spawner,
+             joy_linux_node,
+             joy2twist_node,
+#             mqtt_bridge_node,
+             twist_mux_node,
+#             twist_mux_marker_node,
+             tinkerforge_driver_front_right_stepper,
+             tinkerforge_driver_rear_left_stepper,
+            ]
 
     return LaunchDescription(declared_arguments + nodes)

@@ -125,7 +125,6 @@ install(FILES
  launch/unico_mini.launch
  launch/cmexa_omni.launch.py
  launch/cmexamini_diff.launch.py
- launch/cmexamini_diff2.launch.py
 
  simulation/sim_robot_only_mqtt.launch
  simulation/sim_robot_headless_mqtt.launch
