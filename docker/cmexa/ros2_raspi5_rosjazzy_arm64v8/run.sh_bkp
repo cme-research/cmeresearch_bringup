@@ -1,0 +1,10 @@
+# ros2 raspi5 cmexa Dockerfile
+
+docker run -it \
+  --rm --name cmexa-robot \
+  --network="host" \
+  --ipc=host \
+  --user robot \
+  --device-cgroup-rule='c 189:* rmw' \
+  --group-add $(getent group input | cut -d: -f3) \
+  cmeresearch/cmexa:1.0

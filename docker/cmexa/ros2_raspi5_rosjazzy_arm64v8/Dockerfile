@@ -1,4 +1,4 @@
-FROM arm64v8/ros:jazzy-ros-base-noble
+FROM arm64v8/ros:rolling-ros-base-noble
 
 LABEL maintainer="Christian Ehrmann"
 LABEL version="0.1"
@@ -36,7 +36,7 @@ RUN apt-get update \
 # workaround for ros2 not running on raspi aarch64 --> use other dds layer
 # make sure to add export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp to sourceing file (or bashrc)
 RUN apt-get update \
-   && apt-get install -y ros-jazzy-rmw-cyclonedds-cpp
+   && apt-get install -y ros-rolling-rmw-cyclonedds-cpp
 
 
 # workaround for missing rosdep definition for mqtt_bridge (external package)
@@ -92,17 +92,17 @@ RUN apt-get update \
     && apt-get install brickd -y
 
 # add package specific ros dependencies to workspace
-RUN source /opt/ros/jazzy/setup.bash \
+RUN source /opt/ros/rolling/setup.bash \
     && cd /robot/ros2_ws/  \
 #    && rosdep init \
     && apt-get update \
     && rosdep update \
     && rosdep fix-permissions \
-    && rosdep install -y -r --from-paths src --ignore-src --rosdistro=jazzy -y
+    && rosdep install -y -r --from-paths src --ignore-src --rosdistro=rolling -y
 
 
 RUN apt-get update
-RUN source /opt/ros/jazzy/setup.bash \
+RUN source /opt/ros/rolling/setup.bash \
     && cd /robot/ros2_ws \
     && colcon build
 

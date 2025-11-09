@@ -401,7 +401,7 @@ def generate_launch_description():
              joy2twist_node,
 #             mqtt_bridge_node,
              twist_mux_node,
-             twist_mux_marker_node,
+#             twist_mux_marker_node,
              tinkerforge_driver_front_left_stepper,
              tinkerforge_driver_front_right_stepper,
              tinkerforge_driver_rear_left_stepper,

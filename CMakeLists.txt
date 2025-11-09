@@ -76,6 +76,7 @@ install(FILES
  config/cmexamini/twist_mux.yaml
  config/cmexamini/joy.yaml
  config/cmexamini/cmexamini_base_diff_controllers.yaml
+ config/cmexamini/diffbot_controllers.yaml
  config/cmexamini/pdp.config.yaml
  config/cmexamini/stage_navigation.rviz
  config/cmexamini/base_local_planner_params.yaml

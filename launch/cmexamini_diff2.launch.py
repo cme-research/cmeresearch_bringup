@@ -39,7 +39,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("cmeresearch_description"), "urdf/cmexamini/", "cmexamini.urdf.xacro"]
+                [FindPackageShare("cmeresearch_description"), "urdf", "diffbot/diffbot.urdf.xacro"]
             ),
             " ",
             "use_mock_hardware:=",
@@ -52,8 +52,8 @@ def generate_launch_description():
     robot_controllers = PathJoinSubstitution(
         [
             FindPackageShare("cmeresearch_bringup"),
-            "config/cmexamini/",
-            "cmexamini_base_diff_controllers.yaml",
+            "config",
+            "cmexamini/diffbot_controllers.yaml",
         ]
     )
 
@@ -80,11 +80,11 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "cmexa_base_diff_controller",
+            "diffbot_base_controller",
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmexa_base_diff_controller/cmd_vel:=/cmexa_base_diff_controller/cmd_vel",
+            "-r /diffbot_base_controller/cmd_vel:=/diffbot_base_controller/cmd_vel",
         ],
     )
 
@@ -109,7 +109,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_vel",
-            default_value="/cmexa_base_diff_controller/cmd_vel",
+            default_value="/diffbot_base_controller/cmd_vel",
             description="Topic to publish cmd_vel from joystick.",
         )
     )
@@ -299,7 +299,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexa_base_diff_controller/cmd_vel',
+            default_value='/diffbot_base_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
