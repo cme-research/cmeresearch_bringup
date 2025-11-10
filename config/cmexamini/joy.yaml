@@ -1,6 +1,4 @@
-# deadzone of joystick axes
-deadzone: 0.12
-joy_node:
+joy_linux_node:
   ros__parameters:
     # Use a stable device path instead of /dev/input/js0
     # Check available devices via: ls /dev/input/by-id/

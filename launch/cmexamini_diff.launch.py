@@ -60,7 +60,7 @@ def generate_launch_description():
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[robot_controllers],
+        parameters=[robot_description, robot_controllers],
         output="both",
     )
     robot_state_pub_node = Node(
@@ -81,12 +81,26 @@ def generate_launch_description():
         executable="spawner",
         arguments=[
             "cmexa_base_diff_controller",
+            "--controller-manager",
+            "/controller_manager",
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
             "-r /cmexa_base_diff_controller/cmd_vel:=/cmexa_base_diff_controller/cmd_vel",
         ],
     )
+
+#    robot_controller_spawner = Node(
+#        package="controller_manager",
+#        executable="spawner",
+ #       arguments=[
+#            "cmexa_base_diff_controller",
+#            "--param-file",
+#            robot_controllers,
+#            "--controller-ros-args",
+#            "-r /cmexa_base_diff_controller/cmd_vel:=/cmexa_base_diff_controller/cmd_vel",
+#        ],
+#    )
 
     # Delay start of joint_state_broadcaster after `robot_controller`
     # TODO(anyone): This is a workaround for flaky tests. Remove when fixed.
@@ -143,9 +157,24 @@ def generate_launch_description():
 
     config_filepath = LaunchConfiguration("config_filepath")
 
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "joy_param_file",
+            default_value=[
+                launch.substitutions.TextSubstitution(text=os.path.join(
+                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexamini/', '')),
+                "joy", launch.substitutions.TextSubstitution(text='.yaml')],
+            description="Create filepath to config file",
+        )
+    )
+
+    joy_param_filepath = LaunchConfiguration("joy_param_file")
+
     joy_linux_node = Node(
         package="joy_linux",
         executable="joy_linux_node",
+        name="joy_linux_node",
+        parameters=[joy_param_filepath],
         emulate_tty="true",
         remappings=[("/diagnostics", "diagnostics")],
     )
