@@ -20,7 +20,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
 # install helpers and requirements
-RUN apt-get update && apt-get -y install curl software-properties-common vim wget
+RUN apt-get update && apt-get -y install curl software-properties-common vim wget joystick
 RUN add-apt-repository universe
 #RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 #RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
@@ -54,7 +54,11 @@ COPY ./cmeresearch_description /robot/ros2_ws/src/cmeresearch_description
 RUN mkdir -p /robot/ros2_ws/src/cmeresearch_msgs
 COPY ./cmeresearch_msgs /robot/ros2_ws/src/cmeresearch_msgs
 
-#### ash_base ###
+#### cmeresearch_environments ###
+RUN mkdir -p /robot/ros2_ws/src/cmeresearch_environments
+COPY ./cmeresearch_environments /robot/ros2_ws/src/cmeresearch_environments
+
+#### cmexa_base ###
 RUN mkdir -p /robot/ros2_ws/src/cmexa_base
 COPY ./cmexa_base /robot/ros2_ws/src/cmexa_base
 
@@ -77,6 +81,7 @@ RUN wget https://download.tinkerforge.com/apt/$(. /etc/os-release; echo $ID)/tin
 RUN source /opt/ros/jazzy/setup.bash \
     && cd /robot/ros2_ws/  \
 #    && rosdep init \
+    && apt-get update \
     && rosdep update \
     && rosdep fix-permissions \
     && rosdep install -y -r --from-paths src --ignore-src --rosdistro=jazzy -y
