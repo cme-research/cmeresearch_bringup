@@ -1,4 +1,4 @@
-FROM amd64/ros:rolling-ros-base-noble
+FROM amd64/ros:jazzy-ros-base-noble
 
 LABEL maintainer="Christian Ehrmann"
 LABEL version="0.1"
@@ -36,7 +36,7 @@ RUN apt-get update \
 # workaround for ros2 not running on raspi aarch64 --> use other dds layer
 # make sure to add export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp to sourceing file (or bashrc)
 RUN apt-get update \
-   && apt-get install -y ros-rolling-rmw-cyclonedds-cpp
+   && apt-get install -y ros-jazzy-rmw-cyclonedds-cpp
 
 
 # Create local catkin workspace
@@ -74,16 +74,16 @@ RUN wget https://download.tinkerforge.com/apt/$(. /etc/os-release; echo $ID)/tin
     && apt-get install python3-tinkerforge -y
 
 # add package specific ros dependencies to workspace
-RUN source /opt/ros/rolling/setup.bash \
+RUN source /opt/ros/jazzy/setup.bash \
     && cd /robot/ros2_ws/  \
 #    && rosdep init \
     && rosdep update \
     && rosdep fix-permissions \
-    && rosdep install -y -r --from-paths src --ignore-src --rosdistro=rolling -y
+    && rosdep install -y -r --from-paths src --ignore-src --rosdistro=jazzy -y
 
 
 RUN apt-get update
-RUN source /opt/ros/rolling/setup.bash \
+RUN source /opt/ros/jazzy/setup.bash \
     && cd /robot/ros2_ws \
     && colcon build
 
@@ -98,11 +98,11 @@ RUN rm -rf /var/lib/apt/lists/*
 # Always source ros_entrypoint.sh when launching bash (e.g. when attaching to container)
 RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
 
-COPY ./cmeresearch_bringup/docker/cmexamini/ros2_amd64/ros_entrypoint.sh /
+COPY ./cmeresearch_bringup/docker/cmexamini/ros2_jazzy_amd64/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
 
-ENV ROBOT=cmexb
+ENV ROBOT=cmexamini
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
-#CMD ["ros2", "launch", "cmeresearch_bringup", "cmexb_diff.launch.py"]
-CMD ["bash"]
+CMD ["ros2", "launch", "cmeresearch_bringup", "cmexamini_diff.launch.py"]
+#CMD ["bash"]
