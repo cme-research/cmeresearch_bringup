@@ -77,7 +77,6 @@ install(FILES
  config/cmexamini/joy.yaml
  config/cmexamini/cmexamini_base_diff_controllers.yaml
  config/cmexamini/diffbot_controllers.yaml
- config/cmexamini/pdp.config.yaml
  config/cmexamini/stage_navigation.rviz
  config/cmexamini/base_local_planner_params.yaml
  config/cmexamini/costmap_common_params.yaml
@@ -85,7 +84,6 @@ install(FILES
  config/cmexamini/local_costmap_params.yaml
  config/cmexamini/slam_toolbox_localization.yaml
  config/cmexamini/slam_toolbox_mapping.yaml
- config/cmexamini/xbox.config.yaml
  config/cmexamini/joy2twist_ugv.yaml
  config/cmexamini/twist_mux_topics.yaml
  config/cmexamini/twist_mux_locks.yaml
