@@ -16,9 +16,9 @@ cmexa_base_diff_controller:
 
     use_stamped_vel: true # gibts nicht?
     #command_interface_required: true gibtsn icht
-    wheel_separation: 1.0 #0.105
+    wheel_separation: 0.105 #0.105
     #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
-    wheel_radius: 0.5 #0.035
+    wheel_radius: 0.035 #0.035
     gear_ratio: 1.0
 
     wheel_separation_multiplier: 1.0
@@ -46,9 +46,9 @@ cmexa_base_diff_controller:
     linear.x.has_velocity_limits: true
     linear.x.has_acceleration_limits: true
     linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 0.3
-    linear.x.min_velocity: -0.3
-    linear.x.max_acceleration: 0.3
+    linear.x.max_velocity: 1.0
+    linear.x.min_velocity: -1.0
+    linear.x.max_acceleration: 1.0
     linear.x.max_jerk: 0.0
     linear.x.min_jerk: 0.0
 
