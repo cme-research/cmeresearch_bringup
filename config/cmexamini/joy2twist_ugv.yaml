@@ -9,9 +9,9 @@
       slow: 0.1
 
     angular_velocity_factor:
-      fast: 0.2
-      regular: 0.1
-      slow: 0.05
+      fast: 1.5
+      regular: 1.0
+      slow: 0.5
 
     e_stop:
       present: true
