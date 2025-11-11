@@ -9,7 +9,7 @@
       slow: 0.2
 
     angular_velocity_factor:
-      fast: 3
+      fast: 3.0
       regular: 2.0
       slow: 1.0
 
