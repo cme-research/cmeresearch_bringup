@@ -100,9 +100,10 @@ RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
 
 # create folder for file sharing with host system for map data
 RUN mkdir /robot/data
-COPY ./cmeresearch_environments/envs/laboriii/ /robot/data/
+COPY ./cmeresearch_environments/envs/laboriii /robot/data/
 
 COPY ./cmeresearch_bringup/docker/stage/ros_entrypoint.sh /
+COPY ./cmeresearch_bringup/docker/stage/ros_entrypoint.sh /robot/data/
 RUN chmod +x /ros_entrypoint.sh
 
 ENV ROBOT=cmexaiii
