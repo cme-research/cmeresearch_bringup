@@ -18,6 +18,11 @@
 		<remap from="odom_out" to="/base/base_controller/odometry" />
 	</node>
 
+    <node pkg="cmeresearch_simulation" type="twist_to_twiststamped" name="twist_to_twiststamped">
+		<remap from="cmd_vel" to="/base/base_controller/command" />
+		<remap from="cmd_vel_stamped" to="/base/base_controller/command_stamped" />
+	</node>
+
 	<!-- Load robot model -->
 	<param name="robot_description"
       command="$(find xacro)/xacro '$(find cmeresearch_description)/urdf/$(arg robot)/$(arg robot).urdf.xacro'"/>
