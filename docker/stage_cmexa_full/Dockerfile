@@ -50,6 +50,25 @@ ENV ROS_DISTRO=melodic
 # Setup the environment variables to fix QT bug
 ENV QT_X11_NO_MITSHM=1
 
+# Source the ROS environment setup script
+RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
+
+# Always source ros_entrypoint.sh when launching bash (e.g. when attaching to container)
+RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
+
+# create folder for file sharing with host system for map data
+RUN mkdir -p /robot/data
+COPY ./cmeresearch_environments/envs/laboriii/ /robot/data/
+
+COPY ./cmeresearch_bringup/config/cmexaiii/mosquitto.conf /etc/mosquitto/conf.d/
+COPY ./cmeresearch_bringup/docker/stage/ros_entrypoint.sh /
+COPY ./cmeresearch_bringup/docker/stage/ros_entrypoint.sh /robot/data/
+RUN chmod +x /ros_entrypoint.sh
+
+ENV ROBOT=cmexaiii
+ENV ROBOT_ENV=laboriii
+ENV ROS_HOSTNAME=localhost
+
 # Create local catkin workspace
 ENV CATKIN_WS=/robot/catkin_ws
 
@@ -92,23 +111,7 @@ RUN cd /robot/catkin_ws/ \
 
 RUN rm -rf /var/lib/apt/lists/*
 
-# Source the ROS environment setup script
-RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
 
-# Always source ros_entrypoint.sh when launching bash (e.g. when attaching to container)
-RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
-
-# create folder for file sharing with host system for map data
-RUN mkdir /robot/data
-COPY ./cmeresearch_environments/envs/laboriii /robot/data/
-
-COPY ./cmeresearch_bringup/docker/stage/ros_entrypoint.sh /
-COPY ./cmeresearch_bringup/docker/stage/ros_entrypoint.sh /robot/data/
-RUN chmod +x /ros_entrypoint.sh
-
-ENV ROBOT=cmexaiii
-ENV ROBOT_ENV=laboriii
-ENV ROS_HOSTNAME=localhost
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["roslaunch", "cmeresearch_bringup", "sim_cmexa_full_localization.launch"]
