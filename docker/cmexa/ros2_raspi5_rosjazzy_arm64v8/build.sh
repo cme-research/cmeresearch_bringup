@@ -1,3 +1,3 @@
 # Docker
 
-docker build . --tag cmeresearch/cmexa:1.0 -f cmeresearch_bringup/docker/cmexa/ros2_raspi5_arm64v8/Dockerfile
+docker build . --tag cmeresearch/cmexa:1.0 -f cmeresearch_bringup/docker/cmexa/ros2_raspi5_rosjazzy_arm64v8/Dockerfile
