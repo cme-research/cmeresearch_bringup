@@ -400,7 +400,7 @@ def generate_launch_description():
         output='screen',
         parameters=[
             {'product_name': 'LDLiDAR_LD19'},
-            {'topic_name': 'scan'},
+            {'topic_name': 'scan_front_left'},
             {'frame_id': 'base_laser_front_left'},
             {'port_name': '/dev/ttyUSB0'},
             {'port_baudrate': 230400},
@@ -411,12 +411,38 @@ def generate_launch_description():
         ]
     )
 
-    # base_link to base_laser tf node
-    base_link_to_laser_tf_node = Node(
+    ldlidar_node_rear_right = Node(
+        package='ldlidar_stl_ros2',
+        executable='ldlidar_stl_ros2_node',
+        name='LD19_rear_right',
+        output='screen',
+        parameters=[
+            {'product_name': 'LDLiDAR_LD19'},
+            {'topic_name': 'scan_rear_right'},
+            {'frame_id': 'base_laser_rear_right'},
+            {'port_name': '/dev/ttyUSB1'},
+            {'port_baudrate': 230400},
+            {'laser_scan_dir': True},
+            {'enable_angle_crop_func': False},
+            {'angle_crop_min': 135.0},
+            {'angle_crop_max': 225.0}
+        ]
+    )
+
+    # base_link to base_laser_front_left tf node
+    base_link_to_laser_tf_node_front_left = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
         name='base_link_to_base_laser_ld19_front_left',
-        arguments=['0', '0', '0.18', '0', '0', '0', 'base_link', 'base_laser_front_left']
+        arguments=['0.460', '0.257', '0.18', '0', '0', '0', 'base_link', 'base_laser_front_left']
+    )
+
+    # base_link to base_laser_rear_right tf node
+    base_link_to_laser_tf_node_rear_right = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_link_to_base_laser_ld19_rear_right',
+        arguments=['-0.460', '-0.257', '0.18', '0', '0', '0', 'base_link', 'base_laser_rear_right']
     )
 
     nodes = [control_node,
@@ -433,7 +459,9 @@ def generate_launch_description():
              tinkerforge_driver_rear_left_stepper,
              tinkerforge_driver_rear_right_stepper,
              ldlidar_node_front_left,
-             base_link_to_laser_tf_node
+             ldlidar_node_rear_right,
+             base_link_to_laser_tf_node_front_left,
+             base_link_to_laser_tf_node_rear_right
             ]
 
     return LaunchDescription(declared_arguments + nodes)
