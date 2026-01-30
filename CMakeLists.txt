@@ -69,6 +69,7 @@ install(FILES
  config/cmexa/joy2twist_ugv.yaml
  config/cmexa/twist_mux_topics.yaml
  config/cmexa/twist_mux_locks.yaml
+ config/cmexa/nav_params.yaml
  DESTINATION share/${PROJECT_NAME}/config/cmexa/
 )
 

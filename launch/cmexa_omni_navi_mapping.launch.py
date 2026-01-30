@@ -445,6 +445,42 @@ def generate_launch_description():
         arguments=['-0.460', '-0.257', '0.18', '0', '0', '0', 'base_link', 'base_laser_rear_right']
     )
 
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "nav_config_filepath",
+            default_value=[
+                launch.substitutions.TextSubstitution(text=os.path.join(
+                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
+                "nav_params", launch.substitutions.TextSubstitution(text='.yaml')],
+            description="Create filepath to config file",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "nav_map_filepath",
+            default_value=[
+                launch.substitutions.TextSubstitution(text=os.path.join(
+                    get_package_share_directory('cmeresearch_environments'), 'envs/house/', '')),
+                "map", launch.substitutions.TextSubstitution(text='.yaml')],
+            description="Create filepath to config file",
+        )
+    )
+
+    nav_config_filepath = LaunchConfiguration("nav_config_filepath")
+    nav_map_filepath = LaunchConfiguration("nav_map_filepath")
+    nav_use_sim_time = LaunchConfiguration("use_sim_time")
+
+    nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
+
+    IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
+        launch_arguments={
+            'map': nav_map_filepath,
+            'use_sim_time': nav_use_sim_time,
+            'params_file': nav_config_filepath}.items(),
+    ),
+
     nodes = [control_node,
              robot_state_pub_node,
              robot_controller_spawner,
