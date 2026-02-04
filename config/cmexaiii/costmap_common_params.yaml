@@ -5,7 +5,7 @@
 #footprint: [[x0, y0], [x1, y1], ... [xn, yn]]
 #footprint: [[-1.15, -0.7], [1.15, -0.7], [1.15, 0.7], [-1.15, 0.7]] # base shape of apollon
 # add the minimal distance of 0.5 to the robot footprint for safety
-footprint: [[-0.7, -0.4], [0.7, -0.4], [0.7, 0.4], [-0.7, 0.4]] # base shape of apollon
+footprint: [[-0.25, -0.2], [0.25, -0.2], [0.25, 0.2], [-0.25, 0.2]] # base shape of apollon
 inflation_radius: 0.8 #0.55 #1.75# inflation_radius should be bigger thant the indiscribed circumscribed radii
 cost_scaling_factor: 5.0 #2.5
 #robot_radius: 0.2

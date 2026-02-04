@@ -96,15 +96,22 @@ install(FILES
 install(FILES
  config/cmexaiii/twist_mux.yaml
  config/cmexaiii/joy.yaml
- config/cmexaiii/logi_teleop.yaml
+ config/cmexaiii/cmexa_base_mecanum_controllers.yaml
+ config/cmexaiii/pdp.config.yaml
  config/cmexaiii/stage_navigation.rviz
  config/cmexaiii/mqtt_bridge_params.yaml
+ config/cmexaiii/mqtt_client_params.yaml
  config/cmexaiii/base_local_planner_params.yaml
  config/cmexaiii/costmap_common_params.yaml
  config/cmexaiii/global_costmap_params.yaml
  config/cmexaiii/local_costmap_params.yaml
  config/cmexaiii/slam_toolbox_localization.yaml
  config/cmexaiii/slam_toolbox_mapping.yaml
+ config/cmexaiii/xbox.config.yaml
+ config/cmexaiii/joy2twist_ugv.yaml
+ config/cmexaiii/twist_mux_topics.yaml
+ config/cmexaiii/twist_mux_locks.yaml
+ config/cmexaiii/nav_params.yaml
  DESTINATION share/${PROJECT_NAME}/config/cmexaiii/
 )
 
@@ -125,6 +132,7 @@ install(FILES
  launch/cmexa_omni.launch.py
  launch/cmexamini_diff.launch.py
  launch/cmexa_omni_navi_mapping.launch.py
+ launch/cmexaiii_omni_navi_mapping.launch.py
 
  simulation/sim_robot_only_mqtt.launch
  simulation/sim_robot_headless_mqtt.launch

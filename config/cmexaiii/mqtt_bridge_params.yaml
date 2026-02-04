@@ -1,32 +1,17 @@
-mqtt:
-  client:
-    protocol: 4      # MQTTv311
-  connection:
-    host: localhost
-    port: 1883
-    keepalive: 60
-  private_path: cmeresearch/cmexaiii/
-#serializer: json:dumps
-#deserializer: json:loads
-bridge:
-  # ping pong
-  - factory: mqtt_bridge.bridge:RosToMqttBridge
-    msg_type: nav_msgs.msg:Odometry
-    topic_from: /base_pose_ground_truth
-    topic_to: sim_odom
-  - factory: mqtt_bridge.bridge:MqttToRosBridge
-    msg_type: geometry_msgs.msg:Twist
-    topic_from: vel_command
-    topic_to: /base/base_controller/command
-  - factory: mqtt_bridge.bridge:RosToMqttBridge
-    msg_type: geometry_msgs.msg:Twist
-    topic_from: /base/base_controller/command
-    topic_to: received_command
-  - factory: mqtt_bridge.bridge:MqttToRosBridge
-    msg_type: geometry_msgs.msg:PoseStamped
-    topic_from: pose_goal
-    topic_to: /move_base_simple/goal
-  - factory: mqtt_bridge.bridge:RosToMqttBridge
-    msg_type: geometry_msgs.msg:PoseStamped
-    topic_from: /move_base_simple/goal
-    topic_to: received_simple_goal
+mqtt_bridge_node:
+  ros__parameters:
+    mqtt:
+      client:
+        protocol: 4      # MQTTv311
+      connection:
+        host: "localhost"
+        port: 1883
+        keepalive: 60
+      private_path: "cmeresearch/cmexa-001"
+    serializer: json:dumps
+    deserializer: json:loads
+    n_bridges: 3
+    bridge:
+      bridge1: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:TwistStamped","/cmexa_base_mecanum_controller/cmd_vel","~/base/cmd_vel"]
+      bridge2: ["mqtt_bridge.bridge:MqttToRosBridge","geometry_msgs.msg:TwistStamped","~/mqtt/cmd_vel","/mqtt/cmd_vel"]
+      bridge3: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperCommand","/cmexa_base/front_left/cmd_vel","~/base/front_left/cmd_vel"]
