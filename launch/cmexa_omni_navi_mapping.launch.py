@@ -429,21 +429,21 @@ def generate_launch_description():
         ]
     )
 
-    # base_link to base_laser_front_left tf node
-    base_link_to_laser_tf_node_front_left = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='base_link_to_base_laser_ld19_front_left',
-        arguments=['0.460', '0.257', '0.18', '0', '0', '0', 'base_link', 'base_laser_front_left']
-    )
+#    # base_link to base_laser_front_left tf node
+#    base_link_to_laser_tf_node_front_left = Node(
+#        package='tf2_ros',
+#        executable='static_transform_publisher',
+#        name='base_link_to_base_laser_ld19_front_left',
+#        arguments=['0.460', '0.257', '0.18', '0', '0', '0', 'base_link', 'base_laser_front_left']
+#    )
 
-    # base_link to base_laser_rear_right tf node
-    base_link_to_laser_tf_node_rear_right = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='base_link_to_base_laser_ld19_rear_right',
-        arguments=['-0.460', '-0.257', '0.18', '0', '0', '0', 'base_link', 'base_laser_rear_right']
-    )
+#    # base_link to base_laser_rear_right tf node
+#    base_link_to_laser_tf_node_rear_right = Node(
+#        package='tf2_ros',
+#        executable='static_transform_publisher',
+#        name='base_link_to_base_laser_ld19_rear_right',
+#        arguments=['-0.460', '-0.257', '0.18', '0', '0', '0', 'base_link', 'base_laser_rear_right']
+#    )
 
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -496,8 +496,8 @@ def generate_launch_description():
              tinkerforge_driver_rear_right_stepper,
              ldlidar_node_front_left,
              ldlidar_node_rear_right,
-             base_link_to_laser_tf_node_front_left,
-             base_link_to_laser_tf_node_rear_right
+#             base_link_to_laser_tf_node_front_left,
+#            base_link_to_laser_tf_node_rear_right
             ]
 
     return LaunchDescription(declared_arguments + nodes)
