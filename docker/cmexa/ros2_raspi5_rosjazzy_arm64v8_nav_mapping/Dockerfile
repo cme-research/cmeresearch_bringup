@@ -124,6 +124,10 @@ RUN echo "source /ros_entrypoint.sh" >> /root/.bashrc
 COPY ./cmeresearch_bringup/docker/cmexa/ros2_raspi5_rosjazzy_arm64v8_nav_mapping/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
 
+# cyclonedds for multi machine communication
+COPY ./cmeresearch_bringup/docker/cmexa/ros2_raspi5_rosjazzy_arm64v8_nav_mapping/cyclonedds.xml /
+RUN chmod +x /cyclonedds.xml
+
 # create folder for file sharing with host system for map data
 RUN mkdir /robot/data
 COPY ./cmeresearch_environments/envs/laboriii/ /robot/data/
