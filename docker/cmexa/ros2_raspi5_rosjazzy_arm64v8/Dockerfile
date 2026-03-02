@@ -1,4 +1,4 @@
-FROM arm64v8/ros:rolling-ros-base-noble
+FROM arm64v8/ros:jazzy-ros-base-noble
 
 LABEL maintainer="Christian Ehrmann"
 LABEL version="0.1"
@@ -92,7 +92,7 @@ RUN apt-get update \
     && apt-get install brickd -y
 
 # add package specific ros dependencies to workspace
-RUN source /opt/ros/rolling/setup.bash \
+RUN source /opt/ros/jazzy/setup.bash \
     && cd /robot/ros2_ws/  \
 #    && rosdep init \
     && apt-get update \
