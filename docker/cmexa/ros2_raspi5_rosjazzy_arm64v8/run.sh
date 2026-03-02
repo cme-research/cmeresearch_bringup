@@ -2,7 +2,6 @@
 
 docker run -it \
   --name cmexa-robot \
-  --restart=always \
   --network="host" \
   --privileged \
   --ipc=host \
