@@ -53,7 +53,7 @@ def generate_launch_description():
         [
             FindPackageShare("cmeresearch_bringup"),
             "config",
-            "cmexaiii/cmexa_base_mecanum_controllers.yaml",
+            "cmexaiii/base_mecanum_controllers.yaml",
         ]
     )
 
@@ -80,11 +80,12 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "cmexa_base_mecanum_controller",
+            "cmexaiii_base_mecanum_controller",
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmexa_base_mecanum_controller/reference:=/cmexa_base_mecanum_controller/cmd_vel",
+            "-r /cmexaiii_base_mecanum_controller/reference:=/cmexaiii_base_mecanum_controller/cmd_vel",
+            "--activate"
         ],
     )
 
@@ -359,7 +360,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexa_base_mecanum_controller/cmd_vel',
+            default_value='/cmexaiii_base_mecanum_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
