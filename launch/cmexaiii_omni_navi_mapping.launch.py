@@ -5,10 +5,11 @@ from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeL
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration, EnvironmentVariable
 from ament_index_python.packages import get_package_share_directory
 
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 import launch_ros.actions
 import launch
@@ -31,15 +32,23 @@ def generate_launch_description():
             description="Start robot with mock hardware mirroring command to its states.",
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "robot",
+            default_value=EnvironmentVariable("ROBOT", default_value="cmexa"),
+            description="Name of the robot.",
+        )
+    )
     gui = LaunchConfiguration("gui")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
+    robot = LaunchConfiguration("robot")
 
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("cmeresearch_description"), "urdf", "cmexaiii/cmexaiii.urdf.xacro"]
+                [FindPackageShare("cmeresearch_description"), "urdf", robot, [robot, ".urdf.xacro"]]
             ),
             " ",
             "use_mock_hardware:=",
@@ -47,13 +56,14 @@ def generate_launch_description():
         ]
     )
 
-    robot_description = {"robot_description": robot_description_content}
+    robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str)}
 
     robot_controllers = PathJoinSubstitution(
         [
-            FindPackageShare("cmeresearch_bringup"),
+            FindPackageShare("cmeresearch_description"),
             "config",
-            "cmexaiii/base_mecanum_controllers.yaml",
+            robot,
+            "base_mecanum_controllers.yaml",
         ]
     )
 

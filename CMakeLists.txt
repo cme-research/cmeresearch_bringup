@@ -96,7 +96,7 @@ install(FILES
 install(FILES
  config/cmexaiii/twist_mux.yaml
  config/cmexaiii/joy.yaml
- config/cmexaiii/cmexa_base_mecanum_controllers.yaml
+ config/cmexaiii/base_mecanum_controllers.yaml
  config/cmexaiii/pdp.config.yaml
  config/cmexaiii/stage_navigation.rviz
  config/cmexaiii/mqtt_bridge_params.yaml
