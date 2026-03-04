@@ -120,7 +120,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_vel",
-            default_value="/cmexa_base_mecanum_controller/cmd_vel",
+            default_value="/cmexaiii_base_mecanum_controller/cmd_vel",
             description="Topic to publish cmd_vel from joystick.",
         )
     )
