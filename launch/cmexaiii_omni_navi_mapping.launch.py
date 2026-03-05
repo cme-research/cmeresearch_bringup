@@ -1,14 +1,12 @@
 from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription, GroupAction
+from launch_ros.actions import Node, PushRosNamespace
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration, EnvironmentVariable
 from ament_index_python.packages import get_package_share_directory
 
-from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 import launch_ros.actions
@@ -48,7 +46,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("cmeresearch_description"), "urdf", robot, [robot, ".urdf.xacro"]]
+                [FindPackageShare("cmeresearch_description"), "urdf", robot, ["robot.urdf.xacro"]]
             ),
             " ",
             "use_mock_hardware:=",
@@ -77,7 +75,9 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="both",
-        parameters=[robot_description],
+        parameters=[
+            robot_description,
+        ],
     )
 
     joint_state_broadcaster_spawner = Node(
@@ -89,12 +89,13 @@ def generate_launch_description():
     robot_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
+        namespace="cmexa_base",
         arguments=[
-            "cmexaiii_base_mecanum_controller",
+            "base_mecanum_controller",
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r /cmexaiii_base_mecanum_controller/reference:=/cmexaiii_base_mecanum_controller/cmd_vel",
+            "-r cmd_vel:=/cmexa_base/base_mecanum_controller/cmd_vel"
             "--activate"
         ],
     )
@@ -120,7 +121,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_vel",
-            default_value="/cmexaiii_base_mecanum_controller/cmd_vel",
+            default_value="/cmexa_base/base_mecanum_controller/cmd_vel",
             description="Topic to publish cmd_vel from joystick.",
         )
     )
@@ -172,9 +173,8 @@ def generate_launch_description():
 
     tinkerforge_driver_front_left_stepper = Node(
         package='cmeresearch_stepper_driver',
-        namespace='tf_drivers',
         executable='stepper_driver_node',
-        name='cmexa_stepper_driver_left_stepper',
+        name='stepper_driver_left_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/front_left/cmd_vel'),
             ('drive_output', '/cmexa_base/front_left/feedback')],
@@ -203,7 +203,6 @@ def generate_launch_description():
 
     tinkerforge_driver_front_right_stepper = Node(
         package='cmeresearch_stepper_driver',
-        namespace='tf_drivers',
         executable='stepper_driver_node',
         name='cmexa_stepper_driver_right_stepper',
         remappings=[
@@ -235,9 +234,8 @@ def generate_launch_description():
 
     tinkerforge_driver_rear_left_stepper = Node(
         package='cmeresearch_stepper_driver',
-        namespace='tf_drivers',
         executable='stepper_driver_node',
-        name='cmexa_stepper_driver_rear_left_stepper',
+        name='stepper_driver_rear_left_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/rear_left/cmd_vel'),
             ('drive_output', '/cmexa_base/rear_left/feedback')],
@@ -266,9 +264,8 @@ def generate_launch_description():
 
     tinkerforge_driver_rear_right_stepper = Node(
         package='cmeresearch_stepper_driver',
-        namespace='tf_drivers',
         executable='stepper_driver_node',
-        name='cmexa_stepper_driver_rear_right_stepper',
+        name='stepper_driver_rear_right_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/rear_right/cmd_vel'),
             ('drive_output', '/cmexa_base/rear_right/feedback')],
@@ -370,7 +367,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexaiii_base_mecanum_controller/cmd_vel',
+            default_value='/cmexa_base/base_mecanum_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
@@ -407,7 +404,7 @@ def generate_launch_description():
     ldlidar_node_front_left = Node(
         package='ldlidar_stl_ros2',
         executable='ldlidar_stl_ros2_node',
-        name='LD19_front_left',
+        name='laser_front_left',
         output='screen',
         parameters=[
             {'product_name': 'LDLiDAR_LD19'},
@@ -425,7 +422,7 @@ def generate_launch_description():
     ldlidar_node_rear_right = Node(
         package='ldlidar_stl_ros2',
         executable='ldlidar_stl_ros2_node',
-        name='LD19_rear_right',
+        name='laser_rear_right',
         output='screen',
         parameters=[
             {'product_name': 'LDLiDAR_LD19'},
@@ -484,13 +481,14 @@ def generate_launch_description():
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
-    IncludeLaunchDescription(
+    nav2_bringup = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
         launch_arguments={
+            'use_namespace': 'False',
             'map': nav_map_filepath,
             'use_sim_time': nav_use_sim_time,
             'params_file': nav_config_filepath}.items(),
-    ),
+    )
 
     nodes = [control_node,
              robot_state_pub_node,
