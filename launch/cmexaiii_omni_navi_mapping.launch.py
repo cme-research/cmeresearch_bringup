@@ -89,13 +89,12 @@ def generate_launch_description():
     robot_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        namespace="cmexa_base",
         arguments=[
-            "base_mecanum_controller",
+            ["base_mecanum_controller"],
             "--param-file",
             robot_controllers,
             "--controller-ros-args",
-            "-r cmd_vel:=/cmexa_base/base_mecanum_controller/cmd_vel"
+            "-r /base_mecanum_controller/reference:=/base_mecanum_controller/cmd_vel",
             "--activate"
         ],
     )
@@ -121,7 +120,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "joy_vel",
-            default_value="/cmexa_base/base_mecanum_controller/cmd_vel",
+            default_value="/base_mecanum_controller/cmd_vel",
             description="Topic to publish cmd_vel from joystick.",
         )
     )
@@ -204,7 +203,7 @@ def generate_launch_description():
     tinkerforge_driver_front_right_stepper = Node(
         package='cmeresearch_stepper_driver',
         executable='stepper_driver_node',
-        name='cmexa_stepper_driver_right_stepper',
+        name='stepper_driver_right_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/front_right/cmd_vel'),
             ('drive_output', '/cmexa_base/front_right/feedback')],
@@ -367,7 +366,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'cmd_vel_out',
-            default_value='/cmexa_base/base_mecanum_controller/cmd_vel',
+            default_value='/base_mecanum_controller/cmd_vel',
             description='cmd vel output topic'),
     )
 
