@@ -1,5 +1,5 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription, GroupAction
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription, GroupAction, TimerAction
 from launch_ros.actions import Node, PushRosNamespace
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition
@@ -524,6 +524,11 @@ def generate_launch_description():
         output='screen',
     )
 
+    delayed_slam_after_laser_merger = TimerAction(
+        period=10.0,  # seconds
+        actions=[slam_toolbox]
+    )
+
     nodes = [control_node,
              robot_state_pub_node,
              robot_controller_spawner,
@@ -539,9 +544,10 @@ def generate_launch_description():
              tinkerforge_driver_rear_right_stepper,
              ldlidar_node_front_left,
              ldlidar_node_rear_right,
+             laser_merger_node,
              nav2_bringup,
-             slam_toolbox,
-             laser_merger_node
+             delayed_slam_after_laser_merger,
+
             ]
 
     return LaunchDescription(declared_arguments + nodes)
