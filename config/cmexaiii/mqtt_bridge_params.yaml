@@ -7,7 +7,7 @@ mqtt_bridge_node:
         host: "localhost"
         port: 1883
         keepalive: 60
-      private_path: "cmeresearch/cmexa-001"
+      private_path: "cmeresearch/cmexaiii-001"
     serializer: json:dumps
     deserializer: json:loads
     n_bridges: 3

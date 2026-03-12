@@ -299,25 +299,26 @@ def generate_launch_description():
 #    )
 
 
-#    declared_arguments.append(
-#        DeclareLaunchArgument(
-#            "mqtt_bridge_config",
-#            default_value=[
-#                launch.substitutions.TextSubstitution(text=os.path.join(
-#                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexa/', '')),
-#                'mqtt_bridge_params', launch.substitutions.TextSubstitution(text='.yaml')],
-#            description="Create filepath to config file",
-#        )
-#    )
-#    mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "mqtt_bridge_config",
+            default_value=[
+                launch.substitutions.TextSubstitution(text=os.path.join(
+                    get_package_share_directory('cmeresearch_bringup'), 'config/cmexaiii/', '')),
+                'mqtt_bridge_params', launch.substitutions.TextSubstitution(text='.yaml')],
+            description="Create filepath to config file",
+        )
+    )
 
-#    mqtt_bridge_node = Node(
-#        package="mqtt_bridge",
-#        executable="mqtt_bridge_node",
-#        name="mqtt_bridge_node",
-#        parameters=[mqtt_bridge_config],
-#        output="both",
-#    )
+    mqtt_bridge_config = LaunchConfiguration("mqtt_bridge_config")
+
+    mqtt_bridge_node = Node(
+        package="mqtt_bridge",
+        executable="mqtt_bridge_node",
+        name="mqtt_bridge_node",
+        parameters=[mqtt_bridge_config],
+        output="both",
+    )
 
 
 
@@ -489,13 +490,47 @@ def generate_launch_description():
             'params_file': nav_config_filepath}.items(),
     )
 
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "slam_config_filepath",
+            default_value=launch.substitutions.TextSubstitution(text=os.path.join(
+                get_package_share_directory('cmeresearch_bringup'), 'config/cmexaiii/slam_params.yaml')),
+            description="Path to slam_toolbox config file",
+        )
+    )
+
+    slam_config_filepath = LaunchConfiguration("slam_config_filepath")
+
+    slam_toolbox_launch_dir = os.path.join(get_package_share_directory('slam_toolbox'), 'launch')
+
+    slam_toolbox = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([slam_toolbox_launch_dir, '/online_async_launch.py']),
+        launch_arguments={
+            'use_sim_time': nav_use_sim_time,
+            'slam_params_file': slam_config_filepath,
+        }.items(),
+    )
+
+    laser_merger_node = Node(
+        package='laser_merger',
+        executable='laser_merger',
+        name='laser_merger',
+        parameters=[{
+            'use_sim_time': nav_use_sim_time,
+            'laser_frame': 'base_link',  # frame the merged scan is published in
+            'scan_destination_topic': '/scan_combined',  # this is what slam_toolbox will subscribe to
+            'lasers_topics': '/scan_front_left /scan_rear_right',  # <-- update these
+        }],
+        output='screen',
+    )
+
     nodes = [control_node,
              robot_state_pub_node,
              robot_controller_spawner,
              delay_joint_state_broadcaster_after_robot_controller_spawner,
              joy_linux_node,
              joy2twist_node,
-#             mqtt_bridge_node,
+             mqtt_bridge_node,
              twist_mux_node,
 #             twist_mux_marker_node,
              tinkerforge_driver_front_left_stepper,
@@ -504,8 +539,9 @@ def generate_launch_description():
              tinkerforge_driver_rear_right_stepper,
              ldlidar_node_front_left,
              ldlidar_node_rear_right,
-#             base_link_to_laser_tf_node_front_left,
-#            base_link_to_laser_tf_node_rear_right
+             nav2_bringup,
+             slam_toolbox,
+             laser_merger_node
             ]
 
     return LaunchDescription(declared_arguments + nodes)
