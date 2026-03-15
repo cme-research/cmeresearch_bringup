@@ -84,6 +84,10 @@ COPY ./joy2twist /robot/ros2_ws/src/joy2twist
 RUN mkdir -p /robot/ros2_ws/src/ldlidar_stl_ros2
 COPY ./ldlidar_stl_ros2 /robot/ros2_ws/src/ldlidar_stl_ros2
 
+#### dual_laser_merger ###
+RUN mkdir -p /robot/ros2_ws/src/dual_laser_merger
+COPY ./dual_laser_merger /robot/ros2_ws/src/dual_laser_merger
+
 # 3d party non ros specific dependencies
 # - tinkerforge bindings
 RUN wget https://download.tinkerforge.com/apt/$(. /etc/os-release; echo $ID)/tinkerforge.gpg -q -O - | sudo tee /etc/apt/trusted.gpg.d/tinkerforge.gpg > /dev/null \

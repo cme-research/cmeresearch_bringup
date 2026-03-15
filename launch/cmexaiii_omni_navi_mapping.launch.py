@@ -6,6 +6,8 @@ from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration, EnvironmentVariable
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import ComposableNodeContainer, Node
+from launch_ros.descriptions import ComposableNode
 
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
@@ -511,17 +513,45 @@ def generate_launch_description():
         }.items(),
     )
 
-    laser_merger_node = Node(
-        package='dual_laser_merger',
-        executable='dual_laser_merger',
-        name='dual_laser_merger',
-        parameters=[{
-            'use_sim_time': nav_use_sim_time,
-            'destination_frame': 'base_link',
-            'scan_destination_topic': '/scan',
-            'laser1_topic': '/scan_front_left',
-            'laser2_topic': '/scan_rear_right',
-        }],
+    dual_laser_merger_node = ComposableNodeContainer(
+        name='demo_container',
+        namespace='',
+        package='rclcpp_components',
+        executable='component_container',
+        composable_node_descriptions=[
+            ComposableNode(
+                package='dual_laser_merger',
+                plugin='merger_node::MergerNode',
+                name='dual_laser_merger',
+                parameters=[
+                    {'laser_1_topic': '/scan_front_left'},
+                    {'laser_2_topic': '/scan_rear_right'},
+                    {'merged_scan_topic': '/scan_comined'},
+                    {'target_frame': 'base_link'},
+                    {'laser_1_x_offset': 0.0},
+                    {'laser_1_y_offset': 0.0},
+                    {'laser_1_yaw_offset': 0.0},
+                    {'laser_2_x_offset': 0.0},
+                    {'laser_2_y_offset': 0.0},
+                    {'laser_2_yaw_offset': 0.0},
+                    {'tolerance': 0.01},
+                    {'queue_size': 5},
+                    {'angle_increment': 0.001},
+                    {'scan_time': 0.067},
+                    {'range_min': 0.01},
+                    {'range_max': 25.0},
+                    {'min_height': -1.0},
+                    {'max_height': 1.0},
+                    {'angle_min': -3.141592654},
+                    {'angle_max': 3.141592654},
+                    {'inf_epsilon': 1.0},
+                    {'use_inf': True},
+                    {'allowed_radius': 0.45},
+                    {'enable_shadow_filter': True},
+                    {'enable_average_filter': True},
+                    ],
+            )
+        ],
         output='screen',
     )
 
@@ -545,7 +575,7 @@ def generate_launch_description():
              tinkerforge_driver_rear_right_stepper,
              ldlidar_node_front_left,
              ldlidar_node_rear_right,
-             laser_merger_node,
+             dual_laser_merger_node,
              nav2_bringup,
              delayed_slam_after_laser_merger,
 
