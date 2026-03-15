@@ -18,8 +18,10 @@
   <exec_depend>teleop_twist_joy</exec_depend>
   <exec_depend>web_video_server</exec_depend>
   <exec_depend>nav2_bringup</exec_depend>
+  <exec_depend>laser_merger</exec_depend>
+  <exec_depend>slam_toolbox</exec_depend>
 
-  <exec_depend>mqtt_client</exec_depend>
+  <!--<exec_depend>mqtt_client</exec_depend>-->
 
   <exec_depend>twist_mux</exec_depend>
   <!--
@@ -34,6 +36,7 @@
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>joy</exec_depend>
   <exec_depend>joy_linux</exec_depend>
+
   <!--
   <exec_depend>navfn</exec_depend>
   -->
