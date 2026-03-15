@@ -512,14 +512,15 @@ def generate_launch_description():
     )
 
     laser_merger_node = Node(
-        package='laser_merger',
-        executable='laser_merger',
-        name='laser_merger',
+        package='dual_laser_merger',
+        executable='dual_laser_merger',
+        name='dual_laser_merger',
         parameters=[{
             'use_sim_time': nav_use_sim_time,
-            'laser_frame': 'base_link',  # frame the merged scan is published in
-            'scan_destination_topic': '/scan_combined',  # this is what slam_toolbox will subscribe to
-            'lasers_topics': '/scan_front_left /scan_rear_right',  # <-- update these
+            'destination_frame': 'base_link',
+            'scan_destination_topic': '/scan',
+            'laser1_topic': '/scan_front_left',
+            'laser2_topic': '/scan_rear_right',
         }],
         output='screen',
     )

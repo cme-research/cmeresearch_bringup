@@ -18,7 +18,6 @@
   <exec_depend>teleop_twist_joy</exec_depend>
   <exec_depend>web_video_server</exec_depend>
   <exec_depend>nav2_bringup</exec_depend>
-  <exec_depend>laser_merger</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
 
   <!--<exec_depend>mqtt_client</exec_depend>-->
