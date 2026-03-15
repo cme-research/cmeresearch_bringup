@@ -526,7 +526,7 @@ def generate_launch_description():
                 parameters=[
                     {'laser_1_topic': '/scan_front_left'},
                     {'laser_2_topic': '/scan_rear_right'},
-                    {'merged_scan_topic': '/scan_comined'},
+                    {'merged_scan_topic': '/scan_combined'},
                     {'target_frame': 'base_link'},
                     {'laser_1_x_offset': 0.0},
                     {'laser_1_y_offset': 0.0},

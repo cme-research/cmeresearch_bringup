@@ -134,6 +134,7 @@ install(FILES
  launch/cmexa_omni_navi_mapping.launch.py
  launch/cmexaiii_omni_navi_mapping.launch.py
 
+
  simulation/sim_robot_only_mqtt.launch
  simulation/sim_robot_headless_mqtt.launch
  simulation/sim_robot_controller_mqtt.launch
@@ -146,6 +147,7 @@ install(FILES
     driver/teleop_twist_joy.launch.py
     driver/joy2twist.launch.py
     driver/teleop_xinput.launch.py
+    driver/dual_laser_merger.launch.py
     DESTINATION share/${PROJECT_NAME}/launch
 )
 
