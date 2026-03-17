@@ -35,7 +35,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot",
-            default_value=EnvironmentVariable("ROBOT", default_value="cmexa"),
+            default_value=EnvironmentVariable("ROBOT", default_value="cmexaiii"),
             description="Name of the robot.",
         )
     )
@@ -99,6 +99,17 @@ def generate_launch_description():
             "-r /base_mecanum_controller/reference:=/base_mecanum_controller/cmd_vel",
             "--activate"
         ],
+    )
+
+    tf_odom_relay = Node(
+        package='topic_tools',
+        executable='relay',
+        name='odom_tf_relay',
+        parameters=[{
+            'input_topic': '/base_mecanum_controller/tf_odometry',
+            'output_topic': '/tf',
+        }],
+        output='screen',
     )
 
     # Delay start of joint_state_broadcaster after `robot_controller`
@@ -570,7 +581,7 @@ def generate_launch_description():
              laser_merger_node,
              nav2_bringup,
              delayed_slam_after_laser_merger,
-
+             tf_odom_relay
             ]
 
     return LaunchDescription(declared_arguments + nodes)
