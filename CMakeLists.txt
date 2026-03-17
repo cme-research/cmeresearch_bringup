@@ -105,6 +105,7 @@ install(FILES
  config/cmexaiii/costmap_common_params.yaml
  config/cmexaiii/global_costmap_params.yaml
  config/cmexaiii/local_costmap_params.yaml
+ config/cmexaiii/slam_params.yaml
  config/cmexaiii/slam_toolbox_localization.yaml
  config/cmexaiii/slam_toolbox_mapping.yaml
  config/cmexaiii/xbox.config.yaml
