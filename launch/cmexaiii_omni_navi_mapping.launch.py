@@ -188,8 +188,8 @@ def generate_launch_description():
         executable='stepper_driver_node',
         name='stepper_driver_left_stepper',
         remappings=[
-            ('drive_input', '/cmexa_base/front_left/cmd_vel'),
-            ('drive_output', '/cmexa_base/front_left/feedback')],
+            ('drive_input', '/cmexaiii/front_left/cmd_vel'),
+            ('drive_output', '/cmexaiii/front_left/feedback')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'a',
@@ -218,8 +218,8 @@ def generate_launch_description():
         executable='stepper_driver_node',
         name='stepper_driver_right_stepper',
         remappings=[
-            ('drive_input', '/cmexa_base/front_right/cmd_vel'),
-            ('drive_output', '/cmexa_base/front_right/feedback')],
+            ('drive_input', '/cmexaiii/front_right/cmd_vel'),
+            ('drive_output', '/cmexaiii/front_right/feedback')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'b',
@@ -249,8 +249,8 @@ def generate_launch_description():
         executable='stepper_driver_node',
         name='stepper_driver_rear_left_stepper',
         remappings=[
-            ('drive_input', '/cmexa_base/rear_left/cmd_vel'),
-            ('drive_output', '/cmexa_base/rear_left/feedback')],
+            ('drive_input', '/cmexaiii/rear_left/cmd_vel'),
+            ('drive_output', '/cmexaiii/rear_left/feedback')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'c',
@@ -279,8 +279,8 @@ def generate_launch_description():
         executable='stepper_driver_node',
         name='stepper_driver_rear_right_stepper',
         remappings=[
-            ('drive_input', '/cmexa_base/rear_right/cmd_vel'),
-            ('drive_output', '/cmexa_base/rear_right/feedback')],
+            ('drive_input', '/cmexaiii/rear_right/cmd_vel'),
+            ('drive_output', '/cmexaiii/rear_right/feedback')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'd',
