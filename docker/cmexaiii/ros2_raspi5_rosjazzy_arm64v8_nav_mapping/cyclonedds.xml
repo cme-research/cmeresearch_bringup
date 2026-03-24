@@ -8,10 +8,10 @@
     <Discovery>
       <Peers>
         <!-- Docker host -->
-        <Peer address="192.168.1.202"/>
+        <Peer address="192.168.0.202"/>
 
         <!-- Other machine running ROS 2 -->
-        <Peer address="192.168.1.78"/>
+        <Peer address="192.168.0.77"/>
       </Peers>
     </Discovery>
 
