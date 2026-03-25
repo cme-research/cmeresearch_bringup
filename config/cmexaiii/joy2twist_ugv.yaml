@@ -4,12 +4,12 @@
     cmd_vel_stamped: true
 
     linear_velocity_factor:
-      fast: 0.2
-      regular: 0.1
+      fast: 0.3
+      regular: 0.15
       slow: 0.05
 
     angular_velocity_factor:
-      fast: 0.2
+      fast: 0.25
       regular: 0.1
       slow: 0.05
 
