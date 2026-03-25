@@ -189,7 +189,8 @@ def generate_launch_description():
         name='stepper_driver_left_stepper',
         remappings=[
             ('drive_input', '/cmexaiii/front_left/cmd_vel'),
-            ('drive_output', '/cmexaiii/front_left/feedback')],
+            ('drive_output', '/cmexaiii/front_left/feedback'),
+            ('state', '/cmexaiii/front_left/state')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'a',
@@ -219,7 +220,8 @@ def generate_launch_description():
         name='stepper_driver_right_stepper',
         remappings=[
             ('drive_input', '/cmexaiii/front_right/cmd_vel'),
-            ('drive_output', '/cmexaiii/front_right/feedback')],
+            ('drive_output', '/cmexaiii/front_right/feedback'),
+            ('state', '/cmexaiii/front_right/state')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'b',
@@ -250,7 +252,8 @@ def generate_launch_description():
         name='stepper_driver_rear_left_stepper',
         remappings=[
             ('drive_input', '/cmexaiii/rear_left/cmd_vel'),
-            ('drive_output', '/cmexaiii/rear_left/feedback')],
+            ('drive_output', '/cmexaiii/rear_left/feedback'),
+            ('state', '/cmexaiii/rear_left/state')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'c',
@@ -280,7 +283,8 @@ def generate_launch_description():
         name='stepper_driver_rear_right_stepper',
         remappings=[
             ('drive_input', '/cmexaiii/rear_right/cmd_vel'),
-            ('drive_output', '/cmexaiii/rear_right/feedback')],
+            ('drive_output', '/cmexaiii/rear_right/feedback'),
+            ('state', '/cmexaiii/rear_right/state')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'd',
