@@ -11,7 +11,7 @@
 
 # Example usage on Windows (PowerShell):
 # $env:DISPLAY="192.168.1.100:0.0"
-# docker run -it --rm -e DISPLAY=$env:DISPLAY unico/stage_windows:1.0
+# docker run -it --rm -e DISPLAY=$env:DISPLAY cmeresearch/stage_windows:1.0
 
 # For Windows WSL2:
 echo "Running Stage simulation with RViz for Windows"
@@ -29,4 +29,4 @@ echo ""
 docker run -it --rm \
   -e DISPLAY=host.docker.internal:0.0 \
   --network="host" \
-  unico/stage_windows:1.0
+  cmeresearch/stage_windows:1.0

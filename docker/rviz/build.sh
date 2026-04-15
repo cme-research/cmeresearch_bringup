@@ -1,3 +1,3 @@
 # Docker
 
-docker build . --tag unico/ldlidar-rviz:1.0
+docker build . --tag cmeresearch/ldlidar-rviz:1.0

@@ -16,7 +16,7 @@ fi
 
 # Build the Docker image
 echo "Building Docker image..."
-docker build . -f cmeresearch_bringup/docker/stage_windows/Dockerfile --tag unico/stage_windows:1.0
+docker build . -f cmeresearch_bringup/docker/stage_windows/Dockerfile --tag cmeresearch/stage_windows:1.0
 
 echo ""
 echo "Build complete. To run the container on Windows:"

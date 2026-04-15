@@ -61,14 +61,14 @@ This Docker configuration allows you to run the Unico Stage simulation with RViz
 2. Set the DISPLAY environment variable and run the container:
    ```powershell
    $env:DISPLAY="YOUR_IP_ADDRESS:0.0"
-   docker run -it --rm -e DISPLAY=$env:DISPLAY --network="host" unico/stage_windows:1.0
+   docker run -it --rm -e DISPLAY=$env:DISPLAY --network="host" cmeresearch/stage_windows:1.0
    ```
 
 #### Option 3: For WSL2 users
 
 ```bash
 export DISPLAY=$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0.0
-docker run -it --rm -e DISPLAY=$DISPLAY --network="host" unico/stage_windows:1.0
+docker run -it --rm -e DISPLAY=$DISPLAY --network="host" cmeresearch/stage_windows:1.0
 ```
 
 ## Controlling the Robot

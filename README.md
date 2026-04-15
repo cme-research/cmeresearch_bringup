@@ -364,11 +364,11 @@ Creating another docker file for brickd runnning with ubuntu24.
 
 To access the hardware the docker container has to be run with privileged attribute for HAT Brick
 
-    docker run -it --network="host"  --privileged --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb unico/brickd:1.0
+    docker run -it --network="host"  --privileged --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb cmeresearch/brickd:1.0
 
 and without (but with usb device sharing) for normal bricks
 
-    docker run -it --network="host" --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb unico/any:1.0
+    docker run -it --network="host" --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb cmeresearch/any:1.0
 
 
 To install the autostart scripts:
