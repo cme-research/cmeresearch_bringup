@@ -167,7 +167,8 @@ def generate_launch_description():
         name='cmexa_stepper_driver_left_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/front_left/cmd_vel'),
-            ('drive_output', '/cmexa_base/front_left/feedback')],
+            ('drive_output', '/cmexa_base/front_left/feedback'),
+            ('state', '/cmexa_base/front_left/state')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'a',
@@ -198,7 +199,8 @@ def generate_launch_description():
         name='cmexa_stepper_driver_right_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/front_right/cmd_vel'),
-            ('drive_output', '/cmexa_base/front_right/feedback')],
+            ('drive_output', '/cmexa_base/front_right/feedback'),
+            ('state', '/cmexa_base/front_right/state')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'b',
@@ -230,7 +232,8 @@ def generate_launch_description():
         name='cmexa_stepper_driver_rear_left_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/rear_left/cmd_vel'),
-            ('drive_output', '/cmexa_base/rear_left/feedback')],
+            ('drive_output', '/cmexa_base/rear_left/feedback'),
+            ('state', '/cmexa_base/rear_left/state')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'c',
@@ -261,7 +264,8 @@ def generate_launch_description():
         name='cmexa_stepper_driver_rear_right_stepper',
         remappings=[
             ('drive_input', '/cmexa_base/rear_right/cmd_vel'),
-            ('drive_output', '/cmexa_base/rear_right/feedback')],
+            ('drive_output', '/cmexa_base/rear_right/feedback'),
+            ('state', '/cmexa_base/rear_right/state')],
         parameters=[{'bricklet_host': 'localhost',
                      'bricklet_port': 4223,
                      'brick_position': 'd',
