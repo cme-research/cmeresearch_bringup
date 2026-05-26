@@ -134,7 +134,9 @@ install(FILES
  launch/cmexamini_diff.launch.py
  launch/cmexa_omni_navi_mapping.launch.py
  launch/cmexaiii_omni_navi_mapping.launch.py
-
+ launch/cmexaiii_hardware.launch.py
+ launch/cmexaiii_nav_mapping.launch.py
+ launch/cmexaiii_nav_localization.launch.py
 
  simulation/sim_robot_only_mqtt.launch
  simulation/sim_robot_headless_mqtt.launch
