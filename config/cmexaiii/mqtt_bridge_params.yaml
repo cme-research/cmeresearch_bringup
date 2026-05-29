@@ -10,10 +10,24 @@ mqtt_bridge_node:
       private_path: "cmeresearch/cmexaiii-001"
     serializer: json:dumps
     deserializer: json:loads
-    n_bridges: 5
+    n_bridges: 12
     bridge:
+      # --- Commands ---
       bridge1: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:TwistStamped","/base_mecanum_controller/cmd_vel","~/base/cmd_vel"]
-      bridge2: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperCommand","/cmexaiii/front_left/cmd_vel","~/base/front_left/cmd_vel"]
+      bridge2: ["mqtt_bridge.bridge:MqttToRosBridge","std_msgs.msg:String","~/robot_cmd","/robot_cmd"]
+      # --- Odometry & Pose ---
       bridge3: ["mqtt_bridge.bridge:RosToMqttBridge","nav_msgs.msg:Odometry","/base_mecanum_controller/odometry","~/base/odometry"]
-      bridge4: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:RobotState","/robot_state","~/robot_state"]
-      bridge5: ["mqtt_bridge.bridge:MqttToRosBridge","std_msgs.msg:String","~/robot_cmd","/robot_cmd"]
+      bridge4: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:PoseWithCovarianceStamped","/amcl_pose","~/base/pose"]
+      # --- State machine ---
+      bridge5: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:RobotState","/robot_state","~/robot_state"]
+      # --- Navigation status ---
+      bridge6: ["mqtt_bridge.bridge:RosToMqttBridge","std_msgs.msg:String","/nav_status","~/navigation/status"]
+      # --- Motor feedback (velocity, position, input_voltage per wheel) ---
+      bridge7: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/front_left/feedback","~/base/front_left/feedback"]
+      bridge8: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/front_right/feedback","~/base/front_right/feedback"]
+      bridge9: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/rear_left/feedback","~/base/rear_left/feedback"]
+      bridge10: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/rear_right/feedback","~/base/rear_right/feedback"]
+      # --- System diagnostics ---
+      bridge11: ["mqtt_bridge.bridge:RosToMqttBridge","diagnostic_msgs.msg:DiagnosticArray","/diagnostics","~/diagnostics"]
+      # --- System stats (CPU / memory / temperature) ---
+      bridge12: ["mqtt_bridge.bridge:RosToMqttBridge","std_msgs.msg:String","/system_stats","~/system/stats"]
