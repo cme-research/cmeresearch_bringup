@@ -10,11 +10,21 @@ mqtt_bridge_node:
       private_path: "cmeresearch/cmexaiii-001"
     serializer: json:dumps
     deserializer: json:loads
-    n_bridges: 12
+    n_bridges: 13
     bridge:
       # --- Commands ---
-      bridge1: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:TwistStamped","/base_mecanum_controller/cmd_vel","~/base/cmd_vel"]
+      # Webapp publishes JSON-encoded TwistStamped on
+      #   cmeresearch/cmexaiii-001/mqtt/cmd_vel
+      # This bridge re-publishes it on ROS /mqtt/cmd_vel; twist_mux's `mqtt`
+      # input (priority 80, see config/cmexaiii/twist_mux_topics.yaml) then
+      # forwards it to /base_mecanum_controller/cmd_vel, which the spawner in
+      # launch/cmexaiii_hardware.launch.py remaps to the controller's
+      # ~/reference. Without this bridge the webapp's movement buttons
+      # publish into the void on the real robot.
+      bridge1: ["mqtt_bridge.bridge:MqttToRosBridge","geometry_msgs.msg:TwistStamped","~/mqtt/cmd_vel","/mqtt/cmd_vel"]
       bridge2: ["mqtt_bridge.bridge:MqttToRosBridge","std_msgs.msg:String","~/robot_cmd","/robot_cmd"]
+      # Observability — also publish the actual cmd_vel reaching the controller
+      bridge13: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:TwistStamped","/base_mecanum_controller/cmd_vel","~/base/cmd_vel"]
       # --- Odometry & Pose ---
       bridge3: ["mqtt_bridge.bridge:RosToMqttBridge","nav_msgs.msg:Odometry","/base_mecanum_controller/odometry","~/base/odometry"]
       bridge4: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:PoseWithCovarianceStamped","/amcl_pose","~/base/pose"]
