@@ -39,5 +39,5 @@ mqtt_bridge_node:
       bridge10: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/rear_right/feedback","~/base/rear_right/feedback"]
       # --- System diagnostics ---
       bridge11: ["mqtt_bridge.bridge:RosToMqttBridge","diagnostic_msgs.msg:DiagnosticArray","/diagnostics","~/diagnostics"]
-      # --- System stats (CPU / memory / temperature) ---
-      bridge12: ["mqtt_bridge.bridge:RosToMqttBridge","std_msgs.msg:String","/system_stats","~/system/stats"]
+      # --- System stats (CPU / memory / temperature / RPi throttle) ---
+      bridge12: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:SystemStats","/system_stats","~/system/stats"]
