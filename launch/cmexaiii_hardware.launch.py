@@ -401,6 +401,40 @@ def generate_launch_description():
                      'high_velocity_chopper_mode': False}]
     )
 
+    # Robot state machine + telemetry (sm_robot, nav_status, system_stats).
+    # `driver_topics` is overridden from the package default
+    # (/cmexa_base/<wheel>/state) because the cmexaiii stepper drivers above
+    # publish their state on /cmexaiii/<wheel>/state. Without this override,
+    # sm_robot would never see drivers and would force a 30s timeout
+    # transition into Idle on every boot.
+    sm_robot_node = Node(
+        package='cmeresearch_robot_state',
+        executable='sm_robot_node',
+        name='sm_robot',
+        output='screen',
+        parameters=[{
+            'driver_topics': [
+                '/cmexaiii/front_left/state',
+                '/cmexaiii/front_right/state',
+                '/cmexaiii/rear_left/state',
+                '/cmexaiii/rear_right/state',
+            ],
+            'init_timeout_sec': 30.0,
+        }],
+    )
+    nav_status_node = Node(
+        package='cmeresearch_robot_state',
+        executable='nav_status_node',
+        name='nav_status',
+        output='screen',
+    )
+    system_stats_node = Node(
+        package='cmeresearch_robot_state',
+        executable='system_stats_node',
+        name='system_stats',
+        output='screen',
+    )
+
     # Dual laser merger
     laser_merger_node = Node(
         package='dual_laser_merger',
@@ -453,6 +487,9 @@ def generate_launch_description():
         ldlidar_node_rear_right,
         laser_merger_node,
         tf_odom_relay,
+        sm_robot_node,
+        nav_status_node,
+        system_stats_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes)
