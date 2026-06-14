@@ -1,6 +1,10 @@
 controller_manager:
   ros__parameters:
-    update_rate: 10  # Hz
+    # 50 Hz matches publish_rate below and the ~20 Hz cmd_vel produced by
+    # joy2twist / the webapp joystick. At the previous 10 Hz every second
+    # incoming cmd_vel was dropped and the 100 ms loop period was visible
+    # as ruckelig teleop motion once 90bc2ed restored real gear_ratio.
+    update_rate: 50  # Hz
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
