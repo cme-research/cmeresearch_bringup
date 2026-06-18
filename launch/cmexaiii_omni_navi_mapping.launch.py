@@ -60,7 +60,7 @@ def generate_launch_description():
 
     robot_controllers = PathJoinSubstitution(
         [
-            FindPackageShare("cmeresearch_description"),
+            FindPackageShare("cmeresearch_bringup"),
             "config",
             robot,
             "base_mecanum_controllers.yaml",
