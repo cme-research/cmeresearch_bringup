@@ -39,7 +39,16 @@ base_mecanum_controller:
     position_feedback: true
     enable_odom_tf: true
 
-    cmd_vel_timeout: 0.5
+    # The upstream parameter is `reference_timeout`, NOT `cmd_vel_timeout` —
+    # the latter is a diff_drive_controller param name and is silently ignored
+    # by mecanum_drive_controller, which then keeps `ref_timeout_` at its
+    # default of 0.0. With ref_timeout=0 every reference is stale on the next
+    # update() tick, so between ~20 Hz cmd_vel arrivals the controller writes
+    # 0 into the velocity command_interfaces. cmexa_base::write() faithfully
+    # republishes that, which surfaces as per-wheel cmd_vel alternating
+    # between 0 and real values at 50 Hz — visible on
+    # /cmexaiii/<wheel>/cmd_vel and audible/visible as ruckelig motion.
+    reference_timeout: 0.5
     #publish_limited_velocity: true
     #velocity_rolling_window_size: 10
 
