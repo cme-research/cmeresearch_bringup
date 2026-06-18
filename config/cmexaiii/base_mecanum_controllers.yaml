@@ -46,9 +46,14 @@ base_mecanum_controller:
     # update() tick, so between ~20 Hz cmd_vel arrivals the controller writes
     # 0 into the velocity command_interfaces. cmexa_base::write() faithfully
     # republishes that, which surfaces as per-wheel cmd_vel alternating
-    # between 0 and real values at 50 Hz — visible on
-    # /cmexaiii/<wheel>/cmd_vel and audible/visible as ruckelig motion.
-    reference_timeout: 0.5
+    # between 0 and real values at the controller_manager rate — visible on
+    # /cmexaiii/<wheel>/cmd_vel and felt as ruckelig motion.
+    #
+    # 1.0 s gives the controller a generous window to tolerate WiFi jitter on
+    # the webapp MQTT path and short joypad autorepeat gaps. The safety
+    # backstop is twist_mux upstream (0.5 s per-input timeout) plus the
+    # `pause_all` lock, not this reference_timeout.
+    reference_timeout: 1.0
     #publish_limited_velocity: true
     #velocity_rolling_window_size: 10
 
