@@ -60,25 +60,27 @@ base_mecanum_controller:
     # Velocity and acceleration limits
     # Whenever a min_* is unspecified, default to -max_*
     #
-    # Linear max_velocity is capped at 0.4 m/s to match the mechanical
-    # ceiling: the stepper driver clamps each wheel at max_step_vel=10200
+    # Linear max_velocity is capped at 0.31 m/s to match the mechanical
+    # ceiling: the stepper driver clamps each wheel at max_step_vel=8000
     # microsteps/s, which with step_resolution=8, gear_ratio=5.0 and r=0.05 m
-    # works out to 0.4 m/s wheel surface speed. For pure x or pure y motion
-    # each wheel runs at the body velocity, so commanding >0.4 m/s only got
-    # silently clamped downstream at the bricklet — distorting odometry
-    # feedforward. Capping here keeps the controller's commanded twist within
-    # what the hardware can actually deliver.
+    # works out to ~0.314 m/s wheel surface speed
+    # (8000 / (200*8) = 5.0 rev/s shaft / 5.0 gear = 1.0 rev/s wheel
+    #  * 2*pi * 0.05 m = 0.314 m/s). For pure x or pure y motion each wheel
+    # runs at the body velocity, so commanding >0.31 m/s only got silently
+    # clamped downstream at the bricklet — distorting odometry feedforward.
+    # Capping here keeps the controller's commanded twist within what the
+    # hardware can actually deliver.
     #
     # NOTE: this does NOT replace the stepper cap. On a mecanum base the
     # per-wheel demand is |lin_x| + |lin_y| + |ang_z|*L, so combined
-    # translation+rotation can still exceed 0.4 m/s/wheel and rely on the
+    # translation+rotation can still exceed 0.31 m/s/wheel and rely on the
     # max_step_vel clamp. angular.z stays at 1.5 rad/s: pure rotation yields
     # only 1.5 * 0.1635 = 0.245 m/s/wheel, already under the cap.
     linear.x.has_velocity_limits: true
     linear.x.has_acceleration_limits: true
     linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 0.4
-    linear.x.min_velocity: -0.4
+    linear.x.max_velocity: 0.31
+    linear.x.min_velocity: -0.31
     linear.x.max_acceleration: 1.0
     linear.x.max_jerk: 0.0
     linear.x.min_jerk: 0.0
@@ -86,8 +88,8 @@ base_mecanum_controller:
     linear.y.has_velocity_limits: true
     linear.y.has_acceleration_limits: true
     linear.y.has_jerk_limits: false
-    linear.y.max_velocity: 0.4
-    linear.y.min_velocity: -0.4
+    linear.y.max_velocity: 0.31
+    linear.y.min_velocity: -0.31
     linear.y.max_acceleration: 1.0
     linear.y.max_jerk: 0.0
     linear.y.min_jerk: 0.0
