@@ -210,7 +210,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
+                     'high_velocity_chopper_mode': False,
+                     # Freewheel at standstill (pairs with standstill_current=0;
+                     # freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1
                      }]
     )
 
@@ -241,7 +244,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
+                     'high_velocity_chopper_mode': False,
+                     # Freewheel at standstill (pairs with standstill_current=0;
+                     # freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1
                      }]
     )
 
@@ -273,7 +279,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
+                     'high_velocity_chopper_mode': False,
+                     # Freewheel at standstill (pairs with standstill_current=0;
+                     # freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1
                      }]
     )
 
@@ -304,7 +313,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
+                     'high_velocity_chopper_mode': False,
+                     # Freewheel at standstill (pairs with standstill_current=0;
+                     # freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1
                      }]
     )
 
@@ -498,10 +510,17 @@ def generate_launch_description():
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
+    # use_localization:=False skips nav2's localization_launch (amcl +
+    # map_server) AND nav2's own slam_launch, leaving only navigation_launch
+    # (planner/controller/bt/smoother/collision_monitor). The map->odom
+    # transform is provided by the explicit slam_toolbox node below
+    # (mode: mapping). Without this, bringup_launch would start amcl on top of
+    # slam_toolbox and both would fight over publishing map->odom.
     nav2_bringup = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
         launch_arguments={
             'use_namespace': 'False',
+            'use_localization': 'False',
             'map': nav_map_filepath,
             'use_sim_time': nav_use_sim_time,
             'params_file': nav_config_filepath}.items(),
