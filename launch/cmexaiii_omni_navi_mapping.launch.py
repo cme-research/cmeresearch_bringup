@@ -210,7 +210,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
+                     'high_velocity_chopper_mode': False,
+                     # Freewheel at standstill (pairs with standstill_current=0;
+                     # freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1
                      }]
     )
 
@@ -241,7 +244,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
+                     'high_velocity_chopper_mode': False,
+                     # Freewheel at standstill (pairs with standstill_current=0;
+                     # freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1
                      }]
     )
 
@@ -273,7 +279,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
+                     'high_velocity_chopper_mode': False,
+                     # Freewheel at standstill (pairs with standstill_current=0;
+                     # freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1
                      }]
     )
 
@@ -304,7 +313,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False
+                     'high_velocity_chopper_mode': False,
+                     # Freewheel at standstill (pairs with standstill_current=0;
+                     # freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1
                      }]
     )
 

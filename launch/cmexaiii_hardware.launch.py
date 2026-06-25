@@ -305,7 +305,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False}]
+                     'high_velocity_chopper_mode': False,
+                     # Let the wheel freewheel at standstill (standstill_current=0
+                     # only takes effect with freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1}]
     )
 
     tinkerforge_driver_front_right_stepper = Node(
@@ -336,7 +339,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False}]
+                     'high_velocity_chopper_mode': False,
+                     # Let the wheel freewheel at standstill (standstill_current=0
+                     # only takes effect with freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1}]
     )
 
     tinkerforge_driver_rear_left_stepper = Node(
@@ -367,7 +373,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False}]
+                     'high_velocity_chopper_mode': False,
+                     # Let the wheel freewheel at standstill (standstill_current=0
+                     # only takes effect with freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1}]
     )
 
     tinkerforge_driver_rear_right_stepper = Node(
@@ -398,7 +407,10 @@ def generate_launch_description():
                      'stealth_threshold': 4000,
                      'coolstep_threshold': 6000,
                      'classic_threshold': 10000,
-                     'high_velocity_chopper_mode': False}]
+                     'high_velocity_chopper_mode': False,
+                     # Let the wheel freewheel at standstill (standstill_current=0
+                     # only takes effect with freewheel_mode=1 on the SilentStepper V2).
+                     'freewheel_mode': 1}]
     )
 
     # Robot state machine + telemetry (sm_robot, nav_status, system_stats).
