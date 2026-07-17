@@ -586,6 +586,23 @@ def generate_launch_description():
         actions=[slam_toolbox]
     )
 
+    # rosbridge WebSocket server for the web dashboard's live SLAM viewer.
+    # Locked down: topics_glob allows a read-only /map subscription only, and
+    # services_glob is empty, so a web client can view the map but cannot
+    # publish commands (e.g. cmd_vel) or call any service.
+    rosbridge_websocket = Node(
+        package='rosbridge_server',
+        executable='rosbridge_websocket',
+        name='rosbridge_websocket',
+        output='screen',
+        parameters=[{
+            'port': 9090,
+            'topics_glob': '[/map]',
+            'services_glob': '[]',
+            'params_glob': '[]',
+        }],
+    )
+
     nodes = [control_node,
              robot_state_pub_node,
              robot_controller_spawner,
@@ -604,7 +621,8 @@ def generate_launch_description():
              laser_merger_node,
              nav2_bringup,
              delayed_slam_after_laser_merger,
-             tf_odom_relay
+             tf_odom_relay,
+             rosbridge_websocket
             ]
 
     return LaunchDescription(declared_arguments + nodes)
