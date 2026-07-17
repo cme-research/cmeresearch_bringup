@@ -446,6 +446,15 @@ def generate_launch_description():
         name='system_stats',
         output='screen',
     )
+    # Republishes the map->base_link TF as /robot_pose (PoseStamped) so the web
+    # dashboard can show the robot's true map-frame pose. Works in mapping
+    # (slam_toolbox) and localization (AMCL) modes.
+    map_pose_node = Node(
+        package='cmeresearch_robot_state',
+        executable='map_pose_node',
+        name='map_pose',
+        output='screen',
+    )
 
     # Dual laser merger
     laser_merger_node = Node(
@@ -502,6 +511,7 @@ def generate_launch_description():
         sm_robot_node,
         nav_status_node,
         system_stats_node,
+        map_pose_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes)
