@@ -7,7 +7,7 @@ slam_toolbox:
     ceres_preconditioner: SCHUR_JACOBI
     ceres_trust_strategy: LEVENBERG_MARQUARDT
     ceres_dogleg_type: TRADITIONAL_DOGLEG
-    ceres_loss_function: None
+    ceres_loss_function: HuberLoss       # robust to outliers (moving people, bad loop closures) in a dynamic indoor space
 
     # ROS Parameters
     odom_frame: odom
@@ -40,9 +40,9 @@ slam_toolbox:
     use_scan_matching: true
     use_scan_barycenter: true
     minimum_travel_distance: 0.3         # meters; move this far before adding a new node
-    minimum_travel_heading: 0.261799     # radians (~15 deg); rotate this far before adding a new node
+    minimum_travel_heading: 0.174533     # radians (~10 deg); rotate this far before a new node. Lowered: mecanum wheel odom drifts most in pure rotation, so scan-match sooner.
     scan_buffer_size: 10
-    scan_buffer_maximum_scan_distance: 10.0
+    scan_buffer_maximum_scan_distance: 12.0   # match LD19 range / max_laser_range; keep long-range points in the matching buffer
     link_match_minimum_response_fine: 0.1
     link_scan_maximum_distance: 1.5
     loop_search_maximum_distance: 3.0
