@@ -465,10 +465,10 @@ def generate_launch_description():
             'laser_2_yaw_offset': 0.0,
             'tolerance': 0.01,
             'queue_size': 5,
-            'angle_increment': 0.001,
+            'angle_increment': 0.008,  # ~0.46 deg; finer than native LD19 (~0.72 deg), ~785 beams
             'scan_time': 0.067,
             'range_min': 0.01,
-            'range_max': 25.0,
+            'range_max': 12.0,  # LD19 physical max (~12 m); beyond spec is noise
             'min_height': -1.0,
             'max_height': 1.0,
             'angle_min': -3.141592654,
