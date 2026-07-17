@@ -30,8 +30,8 @@ mqtt_bridge_node:
       bridge4: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:PoseWithCovarianceStamped","/amcl_pose","~/base/pose"]
       # --- State machine ---
       bridge5: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:RobotState","/robot_state","~/robot_state"]
-      # --- Navigation status ---
-      bridge6: ["mqtt_bridge.bridge:RosToMqttBridge","std_msgs.msg:String","/nav_status","~/navigation/status"]
+      # --- Navigation status (state + live NavigateToPose feedback) ---
+      bridge6: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:NavStatus","/nav_status","~/navigation/status"]
       # --- Motor feedback (velocity, position, input_voltage per wheel) ---
       bridge7: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/front_left/feedback","~/base/front_left/feedback"]
       bridge8: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/front_right/feedback","~/base/front_right/feedback"]
