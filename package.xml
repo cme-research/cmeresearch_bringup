@@ -19,6 +19,8 @@
   <exec_depend>web_video_server</exec_depend>
   <exec_depend>nav2_bringup</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
+  <!-- rosbridge WebSocket server: streams /map (and future topics) to the web dashboard's live SLAM viewer -->
+  <exec_depend>rosbridge_suite</exec_depend>
 
   <!--<exec_depend>mqtt_client</exec_depend>-->
 

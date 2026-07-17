@@ -106,8 +106,6 @@ install(FILES
  config/cmexaiii/global_costmap_params.yaml
  config/cmexaiii/local_costmap_params.yaml
  config/cmexaiii/slam_params.yaml
- config/cmexaiii/slam_toolbox_localization.yaml
- config/cmexaiii/slam_toolbox_mapping.yaml
  config/cmexaiii/xbox.config.yaml
  config/cmexaiii/joy2twist_ugv.yaml
  config/cmexaiii/twist_mux_topics.yaml

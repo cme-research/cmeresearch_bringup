@@ -564,10 +564,10 @@ def generate_launch_description():
             'laser_2_yaw_offset': 0.0,
             'tolerance': 0.01,
             'queue_size': 5,
-            'angle_increment': 0.001,
+            'angle_increment': 0.008,  # ~0.46 deg; finer than native LD19 (~0.72 deg), ~785 beams
             'scan_time': 0.067,
             'range_min': 0.01,
-            'range_max': 25.0,
+            'range_max': 12.0,  # LD19 physical max (~12 m); beyond spec is noise
             'min_height': -1.0,
             'max_height': 1.0,
             'angle_min': -3.141592654,
@@ -584,6 +584,23 @@ def generate_launch_description():
     delayed_slam_after_laser_merger = TimerAction(
         period=10.0,  # seconds
         actions=[slam_toolbox]
+    )
+
+    # rosbridge WebSocket server for the web dashboard's live SLAM viewer.
+    # Locked down: topics_glob allows a read-only /map subscription only, and
+    # services_glob is empty, so a web client can view the map but cannot
+    # publish commands (e.g. cmd_vel) or call any service.
+    rosbridge_websocket = Node(
+        package='rosbridge_server',
+        executable='rosbridge_websocket',
+        name='rosbridge_websocket',
+        output='screen',
+        parameters=[{
+            'port': 9090,
+            'topics_glob': '[/map]',
+            'services_glob': '[]',
+            'params_glob': '[]',
+        }],
     )
 
     nodes = [control_node,
@@ -604,7 +621,8 @@ def generate_launch_description():
              laser_merger_node,
              nav2_bringup,
              delayed_slam_after_laser_merger,
-             tf_odom_relay
+             tf_odom_relay,
+             rosbridge_websocket
             ]
 
     return LaunchDescription(declared_arguments + nodes)

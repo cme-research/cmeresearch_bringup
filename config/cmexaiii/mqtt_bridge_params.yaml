@@ -10,7 +10,7 @@ mqtt_bridge_node:
       private_path: "cmeresearch/cmexaiii-001"
     serializer: json:dumps
     deserializer: json:loads
-    n_bridges: 13
+    n_bridges: 14
     bridge:
       # --- Commands ---
       # Webapp publishes JSON-encoded TwistStamped on
@@ -28,10 +28,14 @@ mqtt_bridge_node:
       # --- Odometry & Pose ---
       bridge3: ["mqtt_bridge.bridge:RosToMqttBridge","nav_msgs.msg:Odometry","/base_mecanum_controller/odometry","~/base/odometry"]
       bridge4: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:PoseWithCovarianceStamped","/amcl_pose","~/base/pose"]
+      # Robot pose in the map frame (map->base_link), published by
+      # cmeresearch_robot_state/map_pose_node. Works in mapping and
+      # localization modes; feeds the dashboard's Position tile.
+      bridge14: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:PoseStamped","/robot_pose","~/base/robot_pose"]
       # --- State machine ---
       bridge5: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:RobotState","/robot_state","~/robot_state"]
-      # --- Navigation status ---
-      bridge6: ["mqtt_bridge.bridge:RosToMqttBridge","std_msgs.msg:String","/nav_status","~/navigation/status"]
+      # --- Navigation status (state + live NavigateToPose feedback) ---
+      bridge6: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:NavStatus","/nav_status","~/navigation/status"]
       # --- Motor feedback (velocity, position, input_voltage per wheel) ---
       bridge7: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/front_left/feedback","~/base/front_left/feedback"]
       bridge8: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexaiii/front_right/feedback","~/base/front_right/feedback"]
