@@ -85,6 +85,10 @@ install(FILES
  config/cmexamini/local_costmap_params.yaml
  config/cmexamini/slam_toolbox_localization.yaml
  config/cmexamini/slam_toolbox_mapping.yaml
+ config/cmexamini/mqtt_bridge_params.yaml
+ config/cmexamini/nav_params.yaml
+ config/cmexamini/slam_params.yaml
+ config/cmexamini/slam_params_localization.yaml
  config/cmexamini/joy2twist_ugv.yaml
  config/cmexamini/twist_mux_topics.yaml
  config/cmexamini/twist_mux_locks.yaml
@@ -130,6 +134,9 @@ install(FILES
  launch/unico_mini.launch
  launch/cmexa_omni.launch.py
  launch/cmexamini_diff.launch.py
+ launch/cmexamini_hardware.launch.py
+ launch/cmexamini_nav_mapping.launch.py
+ launch/cmexamini_nav_localization.launch.py
  launch/cmexa_omni_navi_mapping.launch.py
  launch/cmexaiii_omni_navi_mapping.launch.py
  launch/cmexaiii_hardware.launch.py

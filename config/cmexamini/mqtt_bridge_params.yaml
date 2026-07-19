@@ -1,0 +1,47 @@
+mqtt_bridge_node:
+  ros__parameters:
+    mqtt:
+      client:
+        protocol: 4      # MQTTv311
+      connection:
+        host: "localhost"
+        port: 1883
+        keepalive: 60
+      # Instance-scoped topic root. The webapp's app_config.json must use the
+      # SAME prefix (cmeresearch/cmexamini-001/...). This is the mini's identity.
+      private_path: "cmeresearch/cmexamini-001"
+    serializer: json:dumps
+    deserializer: json:loads
+    n_bridges: 12
+    bridge:
+      # --- Commands ---
+      # Webapp publishes JSON-encoded TwistStamped on
+      #   cmeresearch/cmexamini-001/mqtt/cmd_vel
+      # Re-published on ROS /mqtt/cmd_vel; twist_mux's `mqtt` input (priority 80,
+      # see config/cmexamini/twist_mux_topics.yaml) forwards it to
+      # /cmexa_base_diff_controller/cmd_vel. Without this bridge the webapp's
+      # movement buttons publish into the void on the real robot.
+      bridge1: ["mqtt_bridge.bridge:MqttToRosBridge","geometry_msgs.msg:TwistStamped","~/mqtt/cmd_vel","/mqtt/cmd_vel"]
+      bridge2: ["mqtt_bridge.bridge:MqttToRosBridge","std_msgs.msg:String","~/robot_cmd","/robot_cmd"]
+      # Observability — also publish the actual cmd_vel reaching the controller
+      bridge3: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:TwistStamped","/cmexa_base_diff_controller/cmd_vel","~/base/cmd_vel"]
+      # --- Odometry & Pose ---
+      # diff_drive_controller publishes wheel-odometry on ~/odom
+      # (=/cmexa_base_diff_controller/odom). Verify this topic name on the robot
+      # (`ros2 topic list | grep diff_controller`) if the Position tile is empty.
+      bridge4: ["mqtt_bridge.bridge:RosToMqttBridge","nav_msgs.msg:Odometry","/cmexa_base_diff_controller/odom","~/base/odometry"]
+      bridge5: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:PoseWithCovarianceStamped","/amcl_pose","~/base/pose"]
+      # Robot pose in the map frame (map->base_link), published by
+      # cmeresearch_robot_state/map_pose_node. Feeds the dashboard Position tile.
+      bridge6: ["mqtt_bridge.bridge:RosToMqttBridge","geometry_msgs.msg:PoseStamped","/robot_pose","~/base/robot_pose"]
+      # --- State machine ---
+      bridge7: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:RobotState","/robot_state","~/robot_state"]
+      # --- Navigation status (state + live NavigateToPose feedback) ---
+      bridge8: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:NavStatus","/nav_status","~/navigation/status"]
+      # --- Motor feedback (2 driven wheels: front_right + rear_left) ---
+      bridge9: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexa_base/front_right/feedback","~/base/front_right/feedback"]
+      bridge10: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:TinkerStepperFeedback","/cmexa_base/rear_left/feedback","~/base/rear_left/feedback"]
+      # --- System diagnostics ---
+      bridge11: ["mqtt_bridge.bridge:RosToMqttBridge","diagnostic_msgs.msg:DiagnosticArray","/diagnostics","~/diagnostics"]
+      # --- System stats (CPU / memory / temperature / RPi throttle) ---
+      bridge12: ["mqtt_bridge.bridge:RosToMqttBridge","cmeresearch_msgs.msg:SystemStats","/system_stats","~/system/stats"]
