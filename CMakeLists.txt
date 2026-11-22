@@ -21,6 +21,10 @@ if(BUILD_TESTING)
     # a copyright and license is added to all source files
     set(ament_cmake_cpplint_FOUND TRUE)
     ament_lint_auto_find_test_dependencies()
+
+    # Static consistency checks of launch files and configs (no other packages needed).
+    find_package(ament_cmake_pytest REQUIRED)
+    ament_add_pytest_test(test_bringup_config test/test_bringup_config.py TIMEOUT 120)
 endif()
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
@@ -110,6 +114,7 @@ install(FILES
  config/cmexaiii/global_costmap_params.yaml
  config/cmexaiii/local_costmap_params.yaml
  config/cmexaiii/slam_params.yaml
+ config/cmexaiii/slam_params_localization.yaml
  config/cmexaiii/xbox.config.yaml
  config/cmexaiii/joy2twist_ugv.yaml
  config/cmexaiii/twist_mux_topics.yaml
