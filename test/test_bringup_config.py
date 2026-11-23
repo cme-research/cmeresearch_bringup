@@ -266,6 +266,20 @@ def test_stepper_node_parameters(path):
 
 
 @pytest.mark.parametrize('path', STEPPER_LAUNCH, ids=rel)
+def test_stepper_nodes_respawn(path):
+    """A dead wheel driver must come back on its own (nothing else restarts it)."""
+    for node in ast.walk(parse(path)):
+        if not (isinstance(node, ast.Call) and call_name(node) == 'Node'):
+            continue
+        exe = kwarg(node, 'executable')
+        if not (isinstance(exe, ast.Constant) and exe.value == 'stepper_driver_node'):
+            continue
+        respawn = kwarg(node, 'respawn')
+        assert isinstance(respawn, ast.Constant) and respawn.value is True, (
+            f'{rel(path)}:{node.lineno}: stepper_driver_node without respawn=True')
+
+
+@pytest.mark.parametrize('path', STEPPER_LAUNCH, ids=rel)
 def test_stepper_nodes_share_drive_geometry(path):
     """All wheels of one robot should use the same step/gear configuration."""
     keys = ('step_resolution', 'steps_per_revolution', 'gear_ratio', 'max_step_vel')

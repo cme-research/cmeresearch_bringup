@@ -186,6 +186,9 @@ def generate_launch_description():
     tinkerforge_driver_front_left_stepper = Node(
         package='cmeresearch_stepper_driver',
         executable='stepper_driver_node',
+        # Restart the wheel driver if it ever dies (crash, brickd USB loss).
+        respawn=True,
+        respawn_delay=2.0,
         name='stepper_driver_left_stepper',
         remappings=[
             ('drive_input', '/cmexaiii/front_left/cmd_vel'),
@@ -220,6 +223,9 @@ def generate_launch_description():
     tinkerforge_driver_front_right_stepper = Node(
         package='cmeresearch_stepper_driver',
         executable='stepper_driver_node',
+        # Restart the wheel driver if it ever dies (crash, brickd USB loss).
+        respawn=True,
+        respawn_delay=2.0,
         name='stepper_driver_right_stepper',
         remappings=[
             ('drive_input', '/cmexaiii/front_right/cmd_vel'),
@@ -255,6 +261,9 @@ def generate_launch_description():
     tinkerforge_driver_rear_left_stepper = Node(
         package='cmeresearch_stepper_driver',
         executable='stepper_driver_node',
+        # Restart the wheel driver if it ever dies (crash, brickd USB loss).
+        respawn=True,
+        respawn_delay=2.0,
         name='stepper_driver_rear_left_stepper',
         remappings=[
             ('drive_input', '/cmexaiii/rear_left/cmd_vel'),
@@ -289,6 +298,9 @@ def generate_launch_description():
     tinkerforge_driver_rear_right_stepper = Node(
         package='cmeresearch_stepper_driver',
         executable='stepper_driver_node',
+        # Restart the wheel driver if it ever dies (crash, brickd USB loss).
+        respawn=True,
+        respawn_delay=2.0,
         name='stepper_driver_rear_right_stepper',
         remappings=[
             ('drive_input', '/cmexaiii/rear_right/cmd_vel'),

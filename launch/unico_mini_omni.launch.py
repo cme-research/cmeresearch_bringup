@@ -167,6 +167,9 @@ def generate_launch_description():
         package='unico_tinkerforge_drivers',
         namespace='tf_drivers',
         executable='stepper_driver_node',
+        # Restart the wheel driver if it ever dies (crash, brickd USB loss).
+        respawn=True,
+        respawn_delay=2.0,
         name='unico_stepper_driver_right_stepper',
         remappings=[
             ('drive_input', '/unicomini_base/front_right/cmd_vel'),
@@ -198,6 +201,9 @@ def generate_launch_description():
         package='unico_tinkerforge_drivers',
         namespace='tf_drivers',
         executable='stepper_driver_node',
+        # Restart the wheel driver if it ever dies (crash, brickd USB loss).
+        respawn=True,
+        respawn_delay=2.0,
         name='unico_stepper_driver_left_stepper',
         remappings=[
             ('drive_input', '/unicomini_base/rear_left/cmd_vel'),
